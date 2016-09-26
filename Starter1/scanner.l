@@ -28,7 +28,7 @@ NEWLINE                 \n
 DIGIT                   [0-9]
 
 %%
-{WS}                      { }
+{WS}                    { }
 
 {NEWLINE}               { yyline++; }
 
@@ -52,7 +52,10 @@ DIGIT                   [0-9]
                         }
 
 {DIGIT}+"."{DIGIT}*     {
-                          float floatval = atof(yytext);
+                          float floatval = strtof(yytext, NULL);
+                          if (errno == ERANGE) {
+                            yERROR("Float overflow");
+                          }
                           yylval.floatval = floatval;
                           yTRACE(TOK_FLOAT);
                         }
