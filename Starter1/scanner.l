@@ -28,6 +28,8 @@ NEWLINE                 \n
 DIGIT                   [0-9]
 
 %%
+{WS}                      { }
+
 {NEWLINE}               { yyline++; }
 
 "/*"                    {
@@ -50,7 +52,18 @@ DIGIT                   [0-9]
                         }
 
 {DIGIT}+"."{DIGIT}*     {
-                          
+                          float floatval = atof(yytext);
+                          yylval.floatval = floatval;
+                          yTRACE(TOK_FLOAT);
+                        }
+
+{DIGIT}+                {
+                          int intval = atoi(yytext);
+                          if (intval < 0) {
+                            yERROR("Integer overflow");
+                          }
+                          yylval.intval = intval;
+                          yTRACE(TOK_INTEGER);
                         }
 
 .                       { yERROR("Unknown token"); }

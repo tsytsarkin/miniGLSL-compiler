@@ -51,14 +51,16 @@ extern int yyline;              /* variable holding current line number   */
 %}
 
 
-// TODO:Modify me to add more data types
-// Can access me from flex useing yyval
-
+// Access these values in flex using yylval
 %union {
-  int num;
+  int intval;
+  float floatval;
 }
-// TODO:Replace myToken with your tokens, you can use these tokens in flex
-%token           myToken1 myToken2  
+// The tokens
+%token           TOK_FLOAT
+%token           TOK_INTEGER
+%token           TOK_MINUS
+%token           TOK_PLUS
 
 
 %start    program
@@ -81,10 +83,11 @@ tokens
   :  tokens token  
   |      
   ;
-// TODO: replace myToken with the token the you defined.
 token
-  :     myToken1 
-  |     myToken2                     
+  :     TOK_FLOAT
+  |     TOK_INTEGER
+  |     TOK_MINUS
+  |     TOK_PLUS
   ;
 
 
