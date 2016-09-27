@@ -81,6 +81,7 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_SQUARE_BRACKET_OPEN
 %token           TOK_SQUARE_BRACKET_CLOSE
 %token           TOK_COLON
+%token           TOK_SEMICOLON
 %token           TOK_COMMA
 %token           TOK_SQUIGGLY_BRACKET_OPEN
 %token           TOK_SQUIGGLY_BRACKET_CLOSE

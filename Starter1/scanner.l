@@ -161,6 +161,10 @@ IDENT_CHAR              [a-zA-Z_]
                           yTRACE(TOK_COLON);
                         }
 
+";"                     {
+                          yTRACE(TOK_SEMICOLON);
+                        }
+
 ","                     {
                           yTRACE(TOK_COMMA);
                         }
