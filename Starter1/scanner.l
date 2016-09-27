@@ -146,6 +146,30 @@ IDENT_CHAR              [a-zA-Z_]
                           yTRACE(TOK_GREATER);
                         }
 
+"("                     {
+                          yTRACE(TOK_BRACKET_OPEN);
+                        }
+
+")"                     {
+                          yTRACE(TOK_BRACKET_CLOSE);
+                        }
+
+"["                     {
+                          yTRACE(TOK_SQUARE_BRACKET_OPEN);
+                        }
+
+"]"                     {
+                          yTRACE(TOK_SQUARE_BRACKET_CLOSE);
+                        }
+
+":"                     {
+                          yTRACE(TOK_COLON);
+                        }
+
+","                     {
+                          yTRACE(TOK_COMMA);
+                        }
+
 .                       { yERROR("Unknown token"); }
 
 %%
