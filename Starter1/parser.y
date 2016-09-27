@@ -64,6 +64,7 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_MINUS
 %token           TOK_PLUS
 %token           TOK_EQUAL
+%token           TOK_EQUAL_EQUAL
 %token           TOK_LESS_OR_EQUAL
 %token           TOK_GREATER_OR_EQUAL
 %token           TOK_STAR
@@ -71,8 +72,6 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_CARET
 %token           TOK_NOT
 %token           TOK_NOT_EQUAL
-%token           TOK_TRUE
-%token           TOK_FALSE
 %token           TOK_AND
 %token           TOK_OR
 %token           TOK_LESS
@@ -83,6 +82,8 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_SQUARE_BRACKET_CLOSE
 %token           TOK_COLON
 %token           TOK_COMMA
+%token           TOK_SQUIGGLY_BRACKET_OPEN
+%token           TOK_SQUIGGLY_BRACKET_CLOSE
 
 
 %start    program

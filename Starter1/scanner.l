@@ -89,9 +89,12 @@ IDENT_CHAR              [a-zA-Z_]
                           yTRACE(TOK_PLUS);
                         }
 
-
 "="                     {
                           yTRACE(TOK_EQUAL);
+                        }
+
+"=="                    {
+                          yTRACE(TOK_EQUAL_EQUAL);
                         }
 
 "<="                    { 
@@ -122,19 +125,11 @@ IDENT_CHAR              [a-zA-Z_]
                           yTRACE(TOK_NOT_EQUAL);
                         }
 
-"TRUE"                  {
-                          yTRACE(TOK_TRUE);
-                        }
-
-"FALSE"                 {
-                          yTRACE(TOK_FALSE);
-                        }
-
-"&"                     {
+"&&"                    {
                           yTRACE(TOK_AND);
                         }
 
-"|"                     {
+"||"                    {
                           yTRACE(TOK_OR);
                         }
 
@@ -168,6 +163,14 @@ IDENT_CHAR              [a-zA-Z_]
 
 ","                     {
                           yTRACE(TOK_COMMA);
+                        }
+
+"{"                     {
+                          yTRACE(TOK_SQUIGGLY_BRACKET_OPEN);
+                        }
+
+"}"                     {
+                          yTRACE(TOK_SQUIGGLY_BRACKET_CLOSE);
                         }
 
 .                       { yERROR("Unknown token"); }
