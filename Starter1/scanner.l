@@ -81,6 +81,50 @@ DIGIT                   [0-9]
                           yTRACE(TOK_GREATER_OR_EQUAL);
                         }
 
+"*"                     {
+                          yTRACE(TOK_STAR);
+                        }
+
+"/"                     {
+                          yTRACE(TOK_SLASH);
+                        }
+
+"^"                     {
+                          yTRACE(TOK_CARET);
+                        }
+
+"!"                     {
+                          yTRACE(TOK_NOT);
+                        }
+
+"!="                    {
+                          yTRACE(TOK_NOT_EQUAL);
+                        }
+
+"TRUE"                  {
+                          yTRACE(TOK_TRUE);
+                        }
+
+"FALSE"                 {
+                          yTRACE(TOK_FALSE);
+                        }
+
+"&"                     {
+                          yTRACE(TOK_AND);
+                        }
+
+"|"                     {
+                          yTRACE(TOK_OR);
+                        }
+
+"<"                     {    
+                          yTRACE(TOK_LESS);
+                        }
+
+">"                     {
+                          yTRACE(TOK_GREATER);
+                        }
+
 .                       { yERROR("Unknown token"); }
 
 %%
