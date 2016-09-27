@@ -26,6 +26,7 @@ int yyline = 1;
 WS                      [ \t]
 NEWLINE                 \n
 DIGIT                   [0-9]
+IDENT_CHAR              [a-zA-Z_]
 
 %%
 {WS}                    { }
@@ -54,7 +55,7 @@ DIGIT                   [0-9]
 {DIGIT}+"."{DIGIT}*     {
                           float floatval = strtof(yytext, NULL);
                           if (errno == ERANGE) {
-                            yERROR("Float overflow");
+                            yERROR("Float out of bounds");
                           }
                           yylval.floatval = floatval;
                           yTRACE(TOK_FLOAT);
@@ -62,12 +63,32 @@ DIGIT                   [0-9]
 
 {DIGIT}+                {
                           int intval = atoi(yytext);
-                          if (intval < 0) {
-                            yERROR("Integer overflow");
+                          if (intval < 0 || intval > MAX_INTEGER) {
+                            yERROR("Integer out of bounds");
                           }
                           yylval.intval = intval;
                           yTRACE(TOK_INTEGER);
                         }
+
+[a-zA-Z_0-9]+           {
+                          if (yytext[0] >= '0' && yytext[0] <= '9') {
+                            yERROR("Identifier cannot start with a number");
+                          }
+                          if (strlen(yytext) > MAX_IDENTIFIER) {
+                            yERROR("Identifier exceeds maximum length of 32 characters");
+                          }
+                          yylval.strval = yytext;
+                          yTRACE(TOK_IDENTIFIER);
+                        }
+
+"-"                     {
+                          yTRACE(TOK_MINUS);
+                        }
+
+"+"                     {
+                          yTRACE(TOK_PLUS);
+                        }
+
 
 "="                     {
                           yTRACE(TOK_EQUAL);

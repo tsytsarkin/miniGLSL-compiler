@@ -55,10 +55,12 @@ extern int yyline;              /* variable holding current line number   */
 %union {
   int intval;
   float floatval;
+  char *strval;
 }
 // The tokens
 %token           TOK_FLOAT
 %token           TOK_INTEGER
+%token           TOK_IDENTIFIER
 %token           TOK_MINUS
 %token           TOK_PLUS
 %token           TOK_EQUAL
