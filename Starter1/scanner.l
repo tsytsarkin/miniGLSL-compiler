@@ -34,8 +34,8 @@ IDENT_CHAR              [a-zA-Z_]
 {NEWLINE}               { yyline++; }
 
 "/*"                    {
-                          int c1      = 0;
-                          int c2      = yyinput();
+                          int c1 = 0;
+                          int c2 = yyinput();
                           int curline = yyline;
                           for(;;) {
                             if (c2 == EOF) {
@@ -79,6 +79,22 @@ IDENT_CHAR              [a-zA-Z_]
                           }
                           yylval.strval = yytext;
                           yTRACE(TOK_IDENTIFIER);
+                        }
+
+\"([^\\\"]|\\.)*\"      {
+// Match anything within quotes. If the character is a '\' then it must be used as an
+// escape character. We also cannot match a '"' within a string, unless it is escaped.
+                          unsigned int len = strlen(yytext);
+                          if (len > MAX_TEXT) {
+                            yERROR("String length exceeds max length");
+                          }
+                          unsigned int i;
+                          for (i = 0; i < len; i++) {
+                            if (yytext[i] == '\n') {
+                              yERROR("String cannot span multiple lines");
+                            }
+                          }
+                          yTRACE(TOK_STRING);
                         }
 
 "-"                     {
