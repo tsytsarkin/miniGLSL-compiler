@@ -69,6 +69,18 @@ DIGIT                   [0-9]
                           yTRACE(TOK_INTEGER);
                         }
 
+"="                     {
+                          yTRACE(TOK_EQUAL);
+                        }
+
+"<="                    { 
+                          yTRACE(TOK_LESS_OR_EQUAL);
+                        }
+
+">="                    {
+                          yTRACE(TOK_GREATER_OR_EQUAL);
+                        }
+
 .                       { yERROR("Unknown token"); }
 
 %%

@@ -61,6 +61,9 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_INTEGER
 %token           TOK_MINUS
 %token           TOK_PLUS
+%token           TOK_EQUAL
+%token           TOK_LESS_OR_EQUAL
+%token           TOK_GREATER_OR_EQUAL
 
 
 %start    program
