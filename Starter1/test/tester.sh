@@ -43,7 +43,7 @@ for TEST in $TESTS; do
   else
     STATUS="${RED}FAIL${DEFAULT}"
 
-    # Output the failure information to the failure file
+    # Output the failure information to the failure file and to stdout
     echo "-------------" | tee -a $FAILURES_FILE
     echo $TEST | tee -a $FAILURES_FILE
     echo "$FAILURES" | tee -a $FAILURES_FILE
@@ -51,9 +51,11 @@ for TEST in $TESTS; do
   fi
 
   # Print the status nicely
-  printf "%-${MIN_OUTPUT_LENGTH}s : ${STATUS}\n" $TEST
+  RESULTS+="$(printf "%-${MIN_OUTPUT_LENGTH}s : ${STATUS}" $TEST)"$'\n'
 
   # Cleanup
   rm -f $TEST_FILE
 done
+
+printf "$RESULTS"
 
