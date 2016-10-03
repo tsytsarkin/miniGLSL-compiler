@@ -59,6 +59,7 @@ IDENT_CHAR              [a-zA-Z_]
                           }
                           yylval.floatval = floatval;
                           yTRACE(TOK_FLOAT);
+                          return TOK_FLOAT;
                         }
 
 {DIGIT}+                {
@@ -68,6 +69,7 @@ IDENT_CHAR              [a-zA-Z_]
                           }
                           yylval.intval = intval;
                           yTRACE(TOK_INTEGER);
+                          return TOK_INTEGER;
                         }
 
 [a-zA-Z_0-9]+           {
@@ -79,6 +81,7 @@ IDENT_CHAR              [a-zA-Z_]
                           }
                           yylval.strval = yytext;
                           yTRACE(TOK_IDENTIFIER);
+                          return TOK_IDENTIFIER;
                         }
 
 \"([^\\\"]|\\.)*\"?     {
@@ -100,102 +103,127 @@ IDENT_CHAR              [a-zA-Z_]
                             }
                           }
                           yTRACE(TOK_STRING);
+                          return TOK_STRING;
                         }
 
 "-"                     {
                           yTRACE(TOK_MINUS);
+                          return TOK_MINUS;
                         }
 
 "+"                     {
                           yTRACE(TOK_PLUS);
+                          return TOK_PLUS;
                         }
 
 "="                     {
                           yTRACE(TOK_EQUAL);
+                          return TOK_EQUAL;
                         }
 
 "=="                    {
                           yTRACE(TOK_EQUAL_EQUAL);
+                          return TOK_EQUAL_EQUAL;
                         }
 
 "<="                    { 
                           yTRACE(TOK_LESS_OR_EQUAL);
+                          return TOK_LESS_OR_EQUAL;
                         }
 
 ">="                    {
                           yTRACE(TOK_GREATER_OR_EQUAL);
+                          return TOK_GREATER_OR_EQUAL;
                         }
 
 "*"                     {
                           yTRACE(TOK_STAR);
+                          return TOK_STAR;
                         }
 
 "/"                     {
                           yTRACE(TOK_SLASH);
+                          return TOK_SLASH;
                         }
 
 "^"                     {
                           yTRACE(TOK_CARET);
+                          return TOK_CARET;
                         }
 
 "!"                     {
                           yTRACE(TOK_NOT);
+                          return TOK_NOT;
                         }
 
 "!="                    {
                           yTRACE(TOK_NOT_EQUAL);
+                          return TOK_NOT_EQUAL;
                         }
 
 "&&"                    {
                           yTRACE(TOK_AND);
+                          return TOK_AND;
                         }
 
 "||"                    {
                           yTRACE(TOK_OR);
+                          return TOK_OR;
                         }
 
 "<"                     {    
                           yTRACE(TOK_LESS);
+                          return TOK_LESS;
                         }
 
 ">"                     {
                           yTRACE(TOK_GREATER);
+                          return TOK_GREATER;
                         }
 
 "("                     {
                           yTRACE(TOK_BRACKET_OPEN);
+                          return TOK_BRACKET_OPEN;
                         }
 
 ")"                     {
                           yTRACE(TOK_BRACKET_CLOSE);
+                          return TOK_BRACKET_CLOSE;
                         }
 
 "["                     {
                           yTRACE(TOK_SQUARE_BRACKET_OPEN);
+                          return TOK_SQUARE_BRACKET_OPEN;
                         }
 
 "]"                     {
                           yTRACE(TOK_SQUARE_BRACKET_CLOSE);
+                          return TOK_SQUARE_BRACKET_CLOSE;
                         }
 
 ":"                     {
                           yTRACE(TOK_COLON);
+                          return TOK_COLON;
                         }
 
 ";"                     {
                           yTRACE(TOK_SEMICOLON);
+                          return TOK_SEMICOLON;
                         }
 
 ","                     {
                           yTRACE(TOK_COMMA);
+                          return TOK_COMMA;
                         }
 
 "{"                     {
-                          yTRACE(TOK_SQUIGGLY_BRACKET_OPEN);
+                          yTRACE(TOK_CURLY_BRACKET_OPEN);
+                          return TOK_CURLY_BRACKET_OPEN;
                         }
 
 "}"                     {
-                          yTRACE(TOK_SQUIGGLY_BRACKET_CLOSE);
+                          yTRACE(TOK_CURLY_BRACKET_CLOSE);
+                          return TOK_CURLY_BRACKET_CLOSE;
                         }
 
 .                       { yERROR("Unknown token"); }
