@@ -3,7 +3,9 @@
 TEST_FILE="test.out"
 FAILURES_FILE="failures.out"
 
+# Empty the failures file
 rm -f $FAILURES_FILE
+> $FAILURES_FILE
 
 # Colours for output
 DEFAULT="\e[39m"
