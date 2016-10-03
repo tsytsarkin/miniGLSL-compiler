@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TEST_PROGRAM="../compiler467 -Tn"
+
 TEST_FILE="test.out"
 FAILURES_FILE="failures.out"
 
@@ -44,7 +46,7 @@ for TEST in $TESTS; do
   TEST_OUT="${TEST}.out"
 
   # Get the output from the input file
-  ../compiler467 -Tn $TEST_IN &> $TEST_FILE
+  $TEST_PROGRAM $TEST_IN &> $TEST_FILE
 
   # If the -o option is specified, overwrite the expected file
   if [[ $OVERWRITE -eq 1 ]]; then
