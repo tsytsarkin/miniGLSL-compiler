@@ -24,6 +24,21 @@ for TEST in $TESTS; do
   fi 
 done
 
+# Interpret argument 1 as overwrite if its -o
+# Interpret all other arguments as specific tests cases that we want to run
+if [[ $1 == '-o' ]]; then
+  OVERWRITE=1
+  # Take all arguments after the first if they aren't empty
+  if [[ ${@:2} != "" ]]; then
+    TESTS="${@:2}"
+  fi
+else
+  # Take all arguments if they aren't empty
+  if [[ $@ != "" ]]; then
+    TESTS="$@"
+  fi
+fi
+
 for TEST in $TESTS; do
   TEST_IN="${TEST}.in"
   TEST_OUT="${TEST}.out"
@@ -32,7 +47,7 @@ for TEST in $TESTS; do
   ../compiler467 -Tn $TEST_IN &> $TEST_FILE
 
   # If the -o option is specified, overwrite the expected file
-  if [[ "-o" == $1 ]]; then
+  if [[ $OVERWRITE -eq 1 ]]; then
     cp $TEST_FILE $TEST_OUT
   fi
 
