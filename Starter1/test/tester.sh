@@ -36,6 +36,10 @@ for TEST in $TESTS; do
     cp $TEST_FILE $TEST_OUT
   fi
 
+  if [ ! -f $TEST_OUT ]; then
+    > $TEST_OUT
+  fi
+
   # Perform the diff
   FAILURES=$(diff $TEST_OUT $TEST_FILE)
 

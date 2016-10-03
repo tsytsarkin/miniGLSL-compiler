@@ -81,10 +81,15 @@ IDENT_CHAR              [a-zA-Z_]
                           yTRACE(TOK_IDENTIFIER);
                         }
 
-\"([^\\\"]|\\.)*\"      {
+\"([^\\\"]|\\.)*\"?     {
 // Match anything within quotes. If the character is a '\' then it must be used as an
 // escape character. We also cannot match a '"' within a string, unless it is escaped.
+// The string should end in a '"', but if it doesn't we still want to match it and
+// execute this code so that we can throw the correct error (unmatched '"').
                           unsigned int len = strlen(yytext);
+                          if (yytext[len - 1] != '"') {
+                            yERROR("Unmatched '\"'");
+                          }
                           if (len > MAX_TEXT) {
                             yERROR("String length exceeds max length");
                           }
