@@ -93,7 +93,8 @@ IDENT_CHAR              [a-zA-Z_]
                           if (yytext[len - 1] != '"') {
                             yERROR("Unmatched '\"'");
                           }
-                          if (len > MAX_TEXT) {
+                          // Compensate for yytext containing 2 '"' characters
+                          if (len > MAX_TEXT + 2) {
                             yERROR("String length exceeds max length");
                           }
                           unsigned int i;
