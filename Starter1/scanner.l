@@ -72,6 +72,81 @@ IDENT_CHAR              [a-zA-Z_]
                           return TOK_INTEGER;
                         }
 
+"if"                    {
+                          yTRACE(TOK_IF);
+                          return TOK_INTEGER;
+                        }
+
+"else"                  {
+                          yTRACE(TOK_ELSE);
+                          return TOK_ELSE;
+                        }
+
+"while"                 {
+                          yTRACE(TOK_WHILE);
+                          return TOK_WHILE;
+                        }
+
+"const"                 {
+                          yTRACE(TOK_CONST);
+                          return TOK_CONST;
+                        }
+
+"int"                   {
+                          yTRACE(TOK_INT_TYPENAME);
+                          return TOK_INT_TYPENAME;
+                        }
+
+"float"                 {
+                          yTRACE(TOK_FLOAT_TYPENAME);
+                          return TOK_FLOAT_TYPENAME;
+                        }
+
+"vec2"                  {
+                          yTRACE(TOK_VEC2_TYPENAME);
+                          return TOK_VEC2_TYPENAME;
+                        }
+
+"vec3"                  {
+                          yTRACE(TOK_VEC3_TYPENAME);
+                          return TOK_VEC3_TYPENAME;
+                        }
+
+"vec4"                  {
+                          yTRACE(TOK_VEC3_TYPENAME);
+                          return TOK_VEC3_TYPENAME;
+                        }
+
+"ivec2"                 {
+                          yTRACE(TOK_IVEC2_TYPENAME);
+                          return TOK_IVEC2_TYPENAME;
+                        }
+
+"ivec3"                 {
+                          yTRACE(TOK_IVEC3_TYPENAME);
+                          return TOK_IVEC3_TYPENAME;
+                        }
+
+"ivec4"                 {
+                          yTRACE(TOK_IVEC3_TYPENAME);
+                          return TOK_IVEC3_TYPENAME;
+                        }
+
+"bvec2"                 {
+                          yTRACE(TOK_BVEC2_TYPENAME);
+                          return TOK_BVEC2_TYPENAME;
+                        }
+
+"bvec3"                 {
+                          yTRACE(TOK_BVEC3_TYPENAME);
+                          return TOK_BVEC3_TYPENAME;
+                        }
+
+"bvec4"                 {
+                          yTRACE(TOK_BVEC3_TYPENAME);
+                          return TOK_BVEC3_TYPENAME;
+                        }
+
 [a-zA-Z_0-9]+           {
                           if (yytext[0] >= '0' && yytext[0] <= '9') {
                             yERROR("Identifier cannot start with a number");

@@ -86,6 +86,22 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_COMMA
 %token           TOK_CURLY_BRACKET_OPEN
 %token           TOK_CURLY_BRACKET_CLOSE
+%token           TOK_IF
+%token           TOK_ELSE
+%token           TOK_WHILE
+%token           TOK_CONST
+%token           TOK_INT_TYPENAME
+%token           TOK_BOOL_TYPENAME
+%token           TOK_FLOAT_TYPENAME
+%token           TOK_VEC2_TYPENAME
+%token           TOK_VEC3_TYPENAME
+%token           TOK_VEC4_TYPENAME
+%token           TOK_IVEC2_TYPENAME
+%token           TOK_IVEC3_TYPENAME
+%token           TOK_IVEC4_TYPENAME
+%token           TOK_BVEC2_TYPENAME
+%token           TOK_BVEC3_TYPENAME
+%token           TOK_BVEC4_TYPENAME
 
 
 %start    program
