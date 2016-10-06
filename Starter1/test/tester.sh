@@ -46,7 +46,7 @@ for TEST in $TESTS; do
   TEST_OUT="${TEST}.out"
 
   # Get the output from the input file
-  $TEST_PROGRAM $TEST_IN &> $TEST_FILE
+  $TEST_PROGRAM $TEST_IN >> $TEST_FILE 2>&1
 
   # If the -o option is specified, overwrite the expected file
   if [[ $OVERWRITE -eq 1 ]]; then

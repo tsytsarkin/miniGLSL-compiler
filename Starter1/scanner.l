@@ -14,7 +14,7 @@
 
 #define YY_USER_INIT { yyin = inputFile; }
 #define	yyinput      input
-#define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
+#define yTRACE(x)    { if (traceScanner) { fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); fflush(stdout); } }
 #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; yyterminate(); }
 
 int CheckInt(void);
@@ -26,7 +26,7 @@ int yyline = 1;
 WS                      [ \t]
 NEWLINE                 \n
 DIGIT                   [0-9]
-IDENT_CHAR              [a-zA-Z_]
+IDENT_CHAR              [a-zA-Z_0-9]
 
 %%
 {WS}                    { }
@@ -147,7 +147,7 @@ IDENT_CHAR              [a-zA-Z_]
                           return TOK_BVEC3_TYPENAME;
                         }
 
-[a-zA-Z_0-9]+           {
+{IDENT_CHAR}+           {
                           if (yytext[0] >= '0' && yytext[0] <= '9') {
                             yERROR("Identifier cannot start with a number");
                           }

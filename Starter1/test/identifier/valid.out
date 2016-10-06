@@ -1,0 +1,5 @@
+TOKEN 260 : this_is_an_identifier1234
+TOKEN 260 : _also1_an2_identifier3
+TOKEN 260 : abcdefghijklmnopqrstuvwxyz_
+TOKEN 260 : ABCDEFGHIJKLMNOPQRSTUVWXYZ_
+TOKEN 260 : _0123456789_
