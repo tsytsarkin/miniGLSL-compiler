@@ -1,7 +1,9 @@
 %{
 /**********************************************************************
  *
- * **YOUR GROUP INFO SHOULD GO HERE**
+ *  Braden Watling
+ *  Nikita Tsytsarkin
+ *  g467-006
  *
  *  Interface to the scanner module for CSC467 course project
  **********************************************************************/

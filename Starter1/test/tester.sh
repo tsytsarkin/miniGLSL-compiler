@@ -41,6 +41,9 @@ else
   fi
 fi
 
+# Return the number of failed cases
+EXIT_CODE=0
+
 for TEST in $TESTS; do
   TEST_IN="${TEST}.in"
   TEST_OUT="${TEST}.out"
@@ -71,6 +74,9 @@ for TEST in $TESTS; do
     echo $TEST | tee -a $FAILURES_FILE
     echo "$FAILURES" | tee -a $FAILURES_FILE
     echo "-------------" | tee -a $FAILURES_FILE
+
+    # Increment the number of errors
+    ((EXIT_CODE++))
   fi
 
   # Print the status nicely
@@ -81,4 +87,6 @@ for TEST in $TESTS; do
 done
 
 printf "$RESULTS"
+
+exit $EXIT_CODE
 
