@@ -147,6 +147,31 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           return TOK_BVEC3_TYPENAME;
                         }
 
+"true"                  {
+                          yTRACE(TOK_TRUE);
+                          return TOK_TRUE;
+                        }
+
+"false"                 {
+                          yTRACE(TOK_FALSE);
+                          return TOK_FALSE;
+                        }
+
+"dp3"                   {
+                          yTRACE(TOK_FUNC_DP3);
+                          return TOK_FUNC_DP3;
+                        }
+
+"lit"                   {
+                          yTRACE(TOK_FUNC_LIT);
+                          return TOK_FUNC_LIT;
+                        }
+
+"rsq"                   {
+                          yTRACE(TOK_FUNC_RSQ);
+                          return TOK_FUNC_RSQ;
+                        }
+
 {IDENT_CHAR}+           {
                           if (yytext[0] >= '0' && yytext[0] <= '9') {
                             yERROR("Identifier cannot start with a number");

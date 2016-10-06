@@ -102,6 +102,11 @@ extern int yyline;              /* variable holding current line number   */
 %token           TOK_BVEC2_TYPENAME
 %token           TOK_BVEC3_TYPENAME
 %token           TOK_BVEC4_TYPENAME
+%token           TOK_TRUE
+%token           TOK_FALSE
+%token           TOK_FUNC_DP3
+%token           TOK_FUNC_LIT
+%token           TOK_FUNC_RSQ
 
 
 %start    program
