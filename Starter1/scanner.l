@@ -65,6 +65,11 @@ IDENT_CHAR              [a-zA-Z_0-9]
                         }
 
 {DIGIT}+                {
+                          // Assume that integers cannot start with 0
+                          if (strlen(yytext) > 1 && yytext[0] == '0') {
+                            yERROR("Integer cannot start with a 0");
+                          }
+
                           int intval = atoi(yytext);
                           if (intval < 0 || intval > MAX_INTEGER) {
                             yERROR("Integer out of bounds");

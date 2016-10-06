@@ -3,8 +3,3 @@ float/starts_with_0
 0a1
 > TOKEN 258 : 01234.0
 -------------
--------------
-int/starts_with_0
-0a1
-> TOKEN 259 : 01234
--------------
