@@ -99,6 +99,11 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           return TOK_INT_TYPENAME;
                         }
 
+"bool"                  {
+                          yTRACE(TOK_BOOL_TYPENAME);
+                          return TOK_BOOL_TYPENAME;
+                        }
+
 "float"                 {
                           yTRACE(TOK_FLOAT_TYPENAME);
                           return TOK_FLOAT_TYPENAME;
@@ -115,8 +120,8 @@ IDENT_CHAR              [a-zA-Z_0-9]
                         }
 
 "vec4"                  {
-                          yTRACE(TOK_VEC3_TYPENAME);
-                          return TOK_VEC3_TYPENAME;
+                          yTRACE(TOK_VEC4_TYPENAME);
+                          return TOK_VEC4_TYPENAME;
                         }
 
 "ivec2"                 {
@@ -130,8 +135,8 @@ IDENT_CHAR              [a-zA-Z_0-9]
                         }
 
 "ivec4"                 {
-                          yTRACE(TOK_IVEC3_TYPENAME);
-                          return TOK_IVEC3_TYPENAME;
+                          yTRACE(TOK_IVEC4_TYPENAME);
+                          return TOK_IVEC4_TYPENAME;
                         }
 
 "bvec2"                 {
@@ -145,8 +150,8 @@ IDENT_CHAR              [a-zA-Z_0-9]
                         }
 
 "bvec4"                 {
-                          yTRACE(TOK_BVEC3_TYPENAME);
-                          return TOK_BVEC3_TYPENAME;
+                          yTRACE(TOK_BVEC4_TYPENAME);
+                          return TOK_BVEC4_TYPENAME;
                         }
 
 "true"                  {
