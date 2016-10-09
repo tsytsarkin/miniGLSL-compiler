@@ -54,7 +54,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           }
                         }
 
-{DIGIT}+"."{DIGIT}*     {
+{DIGIT}+("."|("."?{DIGIT}*("E"|"e")("+"|"-")?)){DIGIT}*     {
                           float floatval = strtof(yytext, NULL);
                           if (errno == ERANGE) {
                             yERROR("Float out of bounds");
