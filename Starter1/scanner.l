@@ -54,7 +54,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           }
                         }
 
-{DIGIT}+("."|("."?{DIGIT}*("E"|"e")("+"|"-")?)){DIGIT}*     {
+{DIGIT}+("."{DIGIT}*|"."?{DIGIT}*[eE][+-]?{DIGIT}+) {
                           float floatval = atof(yytext);
                           if (floatval < 0 || floatval > MAX_INTEGER) {
                             yERROR("Float out of bounds");
