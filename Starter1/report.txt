@@ -1,0 +1,39 @@
+Group g467-006
+Braden Watling
+Nikita Tsytsarkin
+
+Breakdown of work:
+  Braden
+    - Implemented string token
+    - Implemented identifier token
+    - Built test framework
+
+  Nikita
+    - Implemented int + float tokens
+    - Implemented most symbol tokens (e.g. '==')
+
+Summary:
+  This portion of the project was to implement the scanner for
+  the Mini GLSL Compiler. This was done using flex in c. By
+  defining a regular expression to match each token, we were
+  able to have the scanner parse each token of the defined
+  language.
+
+  The special cases that we handled were string values,
+  identifiers, integer values, float values, and comments.
+  For integers we ensured that the value did not exceed
+  MAX_INTEGER. For floats, we ensured that the value could
+  be specified with or without scientific notation, and that
+  the value did not exceed MAX_INTEGER. For strings, we ensured
+  that the string length did not exceed MAX_TEXT, that there was
+  always a matching '"' character, and that the string did not
+  contain any newline characters. For identifiers, we ensured
+  that they did not start with a number, and that the
+  identifier length did not exceed MAX_IDENTIFIER. Finally,
+  for comments, it was ensured that every comment block was
+  properly terminated with '*/'.
+
+  Errors were sent to the error file, and trace output was
+  sent to the trace file. To test the scanner's functionality,
+  one should enable trace output using the command line option
+  -Tn.

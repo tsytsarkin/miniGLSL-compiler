@@ -35,7 +35,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
 
 {NEWLINE}               { yyline++; }
 
-"/*"                    {
+"/*"                    { // COMMENT
                           int c1 = 0;
                           int c2 = yyinput();
                           int curline = yyline;
@@ -54,7 +54,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           }
                         }
 
-{DIGIT}+("."{DIGIT}*|"."?{DIGIT}*[eE][+-]?{DIGIT}+) {
+{DIGIT}*("."{DIGIT}*|"."?{DIGIT}*[eE][+-]?{DIGIT}+) { // FLOAT
                           float floatval = atof(yytext);
                           if (floatval < 0 || floatval > MAX_INTEGER) {
                             yERROR("Float out of bounds");
@@ -64,7 +64,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           return TOK_FLOAT;
                         }
 
-{DIGIT}+                {
+{DIGIT}+                { // INTEGER
                           int intval = atoi(yytext);
                           if (intval < 0 || intval > MAX_INTEGER) {
                             yERROR("Integer out of bounds");
@@ -179,7 +179,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           return TOK_FUNC_RSQ;
                         }
 
-{IDENT_CHAR}+           {
+{IDENT_CHAR}+           { // IDENTIFIER
                           if (yytext[0] >= '0' && yytext[0] <= '9') {
                             yERROR("Identifier cannot start with a number");
                           }
@@ -191,7 +191,7 @@ IDENT_CHAR              [a-zA-Z_0-9]
                           return TOK_IDENTIFIER;
                         }
 
-\"([^\\\"]|\\.)*\"?     {
+\"([^\\\"]|\\.)*\"?     { // STRING
 // Match anything within quotes. If the character is a '\' then it must be used as an
 // escape character. We also cannot match a '"' within a string, unless it is escaped.
 // The string should end in a '"', but if it doesn't we still want to match it and
