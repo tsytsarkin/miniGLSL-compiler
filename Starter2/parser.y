@@ -82,13 +82,18 @@ enum {
 %token <as_int>   INT_C
 %token <as_str>   ID
 
-%nonassoc '=' NEQ '<' LEQ '>' GEQ
-%left     '+' '-'
-%left     '*' '/'
-%right    '^'
-%nonassoc '!' UMINUS
-
 %start    program
+
+// Lowest precedence
+%left     OR AND GEQ '>' LEQ '<' NEQ EQ
+%left     '-' '+'
+%left     '/' '*'
+%right    '^'
+%left     '!' UMINUS
+%left     CONSTRUCTOR_PREC FUNCTION_PREC VECTOR_PREC
+// Highest precedence
+
+%right    THEN_PREC ELSE
 
 %%
 
@@ -121,14 +126,17 @@ declaration
   ;
 statement
   : variable '=' expression ';'
-  | IF '(' expression ')' statement else_statement
+  | if_statement
   | WHILE '(' expression ')' statement
   | scope
   | ';'
   ;
+if_statement
+  : IF '(' expression ')' statement %prec THEN_PREC
+  | IF '(' expression ')' statement else_statement
+  ;
 else_statement
   : ELSE statement
-  | %empty
   ;
 type
   : INT_T
@@ -152,11 +160,11 @@ expression
   ;
 variable
   : ID
-  | ID '[' INT_C ']'
+  | ID '[' INT_C ']' %prec VECTOR_PREC
   ;
 unary_op
   : '!'
-  | '-'
+  | '-' %prec UMINUS
   ;
 binary_op
   : AND
@@ -174,10 +182,10 @@ binary_op
   | '^'
   ;
 constructor
-  : type '(' arguments ')'
+  : type '(' arguments ')' %prec CONSTRUCTOR_PREC
   ;
 function
-  : function_name '(' arguments_opt ')'
+  : function_name '(' arguments_opt ')' %prec FUNCTION_PREC
   ;
 function_name
   : FUNC
