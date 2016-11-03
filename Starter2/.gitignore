@@ -1,0 +1,6 @@
+*.o
+*.swp
+parser.c
+compiler467
+y.output
+parser.tab.h

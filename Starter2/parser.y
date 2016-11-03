@@ -24,9 +24,9 @@
 #define YYERROR_VERBOSE
 #define yTRACE(x)    { if (traceParser) fprintf(traceFile, "%s\n", x); }
 
-void yyerror(char* s);    /* what to do in case of error            */
-int yylex();              /* procedure for calling lexical analyzer */
-extern int yyline;        /* variable holding current line number   */
+void yyerror(const char* s);    /* what to do in case of error            */
+int yylex();                    /* procedure for calling lexical analyzer */
+extern int yyline;              /* variable holding current line number   */
 
 enum {
   DP3 = 0, 
@@ -82,8 +82,6 @@ enum {
 %token <as_int>   INT_C
 %token <as_str>   ID
 
-%left     '|'
-%left     '&'
 %nonassoc '=' NEQ '<' LEQ '>' GEQ
 %left     '+' '-'
 %left     '*' '/'
@@ -101,55 +99,97 @@ enum {
  *       language grammar
  *    2. Implement the trace parser option of the compiler
  ***********************************************************************/
+
 program
-  :   tokens       
+  : scope
   ;
-tokens
-  :  tokens token  
-  |
+scope
+  : '{' declarations statements '}'
   ;
-token
-  : ID 
-  | AND
-  | OR
-  | NEQ
-  | LEQ
-  | GEQ
-  | EQ
-  | TRUE_C
-  | FALSE_C
-  | INT_C
-  | FLOAT_C
-  | CONST
-  | ELSE
-  | IF
-  | WHILE
-  | FLOAT_T
-  | INT_T
+declarations
+  : declarations declaration
+  | %empty
+  ;
+statements
+  : statements statement
+  | %empty
+  ;
+declaration
+  : type ID ';'
+  | type ID '=' expression ';'
+  | CONST type ID '=' expression ';'
+  ;
+statement
+  : variable '=' expression ';'
+  | IF '(' expression ')' statement else_statement
+  | WHILE '(' expression ')' statement
+  | scope
+  | ';'
+  ;
+else_statement
+  : ELSE statement
+  | %empty
+  ;
+type
+  : INT_T
   | BOOL_T
-  | VEC_T
+  | FLOAT_T
   | IVEC_T
   | BVEC_T
-  | FUNC               
+  | VEC_T
+  ;
+expression
+  : constructor
+  | function
+  | INT_C
+  | FLOAT_C
+  | variable
+  | unary_op expression
+  | expression binary_op expression
+  | TRUE_C
+  | FALSE_C
+  | '(' expression ')'
+  ;
+variable
+  : ID
+  | ID '[' INT_C ']'
+  ;
+unary_op
+  : '!'
+  | '-'
+  ;
+binary_op
+  : AND
+  | OR
+  | EQ
+  | NEQ
+  | '<'
+  | LEQ
+  | '>'
+  | GEQ
   | '+'
   | '-'
   | '*'
   | '/'
-  | '^'  
-  | '!'
-  | '='
-  | '<'
-  | '>'   
-  | ','
-  | ';'
-  | '('
-  | ')'
-  | '['
-  | ']'
-  | '{'
-  | '}'                                    
+  | '^'
   ;
-
+constructor
+  : type '(' arguments ')'
+  ;
+function
+  : function_name '(' arguments_opt ')'
+  ;
+function_name
+  : FUNC
+  ;
+arguments_opt
+  : arguments
+  | %empty
+  ;
+arguments
+  : arguments ',' expression
+  | expression
+  ;
 
 %%
 
@@ -159,7 +199,7 @@ token
  * The given yyerror function should not be touched. You may add helper
  * functions as necessary in subsequent phases.
  ***********************************************************************/
-void yyerror(char* s) {
+void yyerror(const char* s) {
   if(errorOccurred) {
     return;    /* Error has already been reported by scanner */
   } else {
