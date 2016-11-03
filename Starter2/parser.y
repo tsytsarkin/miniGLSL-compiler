@@ -29,8 +29,8 @@ int yylex();                    /* procedure for calling lexical analyzer */
 extern int yyline;              /* variable holding current line number   */
 
 enum {
-  DP3 = 0, 
-  LIT = 1, 
+  DP3 = 0,
+  LIT = 1,
   RSQ = 2
 };
 
@@ -85,15 +85,32 @@ enum {
 %start    program
 
 // Lowest precedence
-%left     OR AND GEQ '>' LEQ '<' NEQ EQ
-%left     '-' '+'
-%left     '/' '*'
-%right    '^'
-%left     '!' UMINUS
-%left     CONSTRUCTOR_PREC FUNCTION_PREC VECTOR_PREC
-// Highest precedence
 
-%right    THEN_PREC ELSE
+// Binary operators
+%left           OR AND GEQ '>' LEQ '<' NEQ EQ
+%left           '-' '+'
+%left           '/' '*'
+%right          '^'
+
+// Unary operators
+%left           '!' UMINUS
+%left           CONSTRUCTOR FUNCTION VECTOR
+
+// Give the reduction of a binary expression higher
+// precendence than the shifting of unary and binary operators
+%precedence     BINARY_EXPRESSION
+
+// Give the reduction of a unary expression higher
+// precedence than the reduction of a binary expression
+// and the shifting of unary and binary operators
+%precedence     UNARY_EXPRESSION
+
+// Give the shifting of else a higher precedence than
+// the reduction of if-then
+%precedence     IF_THEN
+%precedence     ELSE
+
+// Highest precedence
 
 %%
 
@@ -132,7 +149,7 @@ statement
   | ';'
   ;
 if_statement
-  : IF '(' expression ')' statement %prec THEN_PREC
+  : IF '(' expression ')' statement %prec IF_THEN
   | IF '(' expression ')' statement else_statement
   ;
 else_statement
@@ -152,15 +169,15 @@ expression
   | INT_C
   | FLOAT_C
   | variable
-  | unary_op expression
-  | expression binary_op expression
+  | unary_op expression %prec UNARY_EXPRESSION
+  | expression binary_op expression %prec BINARY_EXPRESSION
   | TRUE_C
   | FALSE_C
   | '(' expression ')'
   ;
 variable
   : ID
-  | ID '[' INT_C ']' %prec VECTOR_PREC
+  | ID '[' INT_C ']' %prec VECTOR
   ;
 unary_op
   : '!'
@@ -182,10 +199,10 @@ binary_op
   | '^'
   ;
 constructor
-  : type '(' arguments ')' %prec CONSTRUCTOR_PREC
+  : type '(' arguments ')' %prec CONSTRUCTOR
   ;
 function
-  : function_name '(' arguments_opt ')' %prec FUNCTION_PREC
+  : function_name '(' arguments_opt ')' %prec FUNCTION
   ;
 function_name
   : FUNC
@@ -215,7 +232,7 @@ void yyerror(const char* s) {
   }
 
   fprintf(errorFile, "\nPARSER ERROR, LINE %d", yyline);
-  
+
   if(strcmp(s, "parse error")) {
     if(strncmp(s, "parse error, ", 13)) {
       fprintf(errorFile, ": %s\n", s);
