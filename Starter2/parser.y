@@ -164,16 +164,16 @@ type
   | VEC_T
   ;
 expression
-  : constructor
-  | function
-  | INT_C
-  | FLOAT_C
-  | variable
-  | unary_op expression %prec UNARY_EXPRESSION
-  | expression binary_op expression %prec BINARY_EXPRESSION
-  | TRUE_C
-  | FALSE_C
-  | '(' expression ')'
+  : constructor { yTRACE("constructor expression"); }
+  | function { yTRACE("function expression"); }
+  | INT_C { yTRACE("INT_C expression"); }
+  | FLOAT_C { yTRACE("FLOAT_C expression"); }
+  | variable { yTRACE("variable expression"); }
+  | unary_op expression %prec UNARY_EXPRESSION { yTRACE("unary_op expression"); }
+  | expression binary_op expression %prec BINARY_EXPRESSION { yTRACE("binary_op expression"); }
+  | TRUE_C { yTRACE("TRUE_C expression"); }
+  | FALSE_C { yTRACE("FALSE_C expression"); }
+  | '(' expression ')' { yTRACE("brackets expression"); }
   ;
 variable
   : ID
