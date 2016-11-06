@@ -1,0 +1,17 @@
+Unable to open file types.in
+Unable to open file types/.in
+Unable to open file types/.in
+TOKEN 123 : {
+TOKEN 258 : float
+TOKEN 279 : i
+TOKEN  59 : ;
+TOKEN 258 : float
+TOKEN 279 : j
+TOKEN  61 : =
+TOKEN 277 : 1.34234
+TOKEN  59 : ;
+TOKEN 279 : j
+TOKEN  61 : =
+TOKEN 277 : 123.0
+TOKEN  59 : ;
+TOKEN 125 : }

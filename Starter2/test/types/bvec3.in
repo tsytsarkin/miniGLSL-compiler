@@ -1,0 +1,5 @@
+{
+    bvec3 i;
+    bvec3 j = bvec3(true, false, true);
+    j[2] = false;
+}
