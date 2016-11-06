@@ -1,17 +1,20 @@
-Unable to open file types.in
-Unable to open file types/.in
-Unable to open file types/.in
-TOKEN 123 : {
-TOKEN 258 : float
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 258 : float
-TOKEN 279 : j
-TOKEN  61 : =
-TOKEN 277 : 1.34234
-TOKEN  59 : ;
-TOKEN 279 : j
-TOKEN  61 : =
-TOKEN 277 : 123.0
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     float i;
+  3:     float j = 1.34234;
+  4:     j = 123.0;
+  5: }
+empty declarations
+FLOAT_T type
+declaration
+declarations
+FLOAT_T type
+FLOAT_C expression
+assignment declaration
+declarations
+empty statements
+ID variable
+FLOAT_C expression
+assignment statement
+statements
+scope
+program

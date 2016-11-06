@@ -1,15 +1,24 @@
-TOKEN 123 : {
-TOKEN 259 : int
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 258 : float
-TOKEN 279 : result
-TOKEN  59 : ;
-TOKEN 279 : result
-TOKEN  61 : =
-TOKEN 264 : rsq
-TOKEN  40 : (
-TOKEN 279 : i
-TOKEN  41 : )
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     int i;
+  3:     float result;
+  4:     result = rsq(i);
+  5: }
+empty declarations
+INT_T type
+declaration
+declarations
+FLOAT_T type
+declaration
+declarations
+empty statements
+ID variable
+function_name
+ID variable
+variable expression
+arguments
+function
+function expression
+assignment statement
+statements
+scope
+program

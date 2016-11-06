@@ -1,20 +1,30 @@
-TOKEN 123 : {
-TOKEN 258 : float
-TOKEN 279 : f
-TOKEN  59 : ;
-TOKEN 274 : vec3
-TOKEN 279 : v1
-TOKEN  59 : ;
-TOKEN 274 : vec3
-TOKEN 279 : v2
-TOKEN  59 : ;
-TOKEN 279 : f
-TOKEN  61 : =
-TOKEN 264 : dp3
-TOKEN  40 : (
-TOKEN 279 : v1
-TOKEN  44 : ,
-TOKEN 279 : v2
-TOKEN  41 : )
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     float f;
+  3:     vec3 v1;
+  4:     vec3 v2;
+  5:     f = dp3(v1, v2);
+  6: }
+empty declarations
+FLOAT_T type
+declaration
+declarations
+VEC_T type
+declaration
+declarations
+VEC_T type
+declaration
+declarations
+empty statements
+ID variable
+function_name
+ID variable
+variable expression
+ID variable
+variable expression
+arguments
+function
+function expression
+assignment statement
+statements
+scope
+program

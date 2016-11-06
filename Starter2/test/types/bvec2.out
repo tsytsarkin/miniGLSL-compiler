@@ -1,22 +1,24 @@
-TOKEN 123 : {
-TOKEN 275 : bvec2
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 275 : bvec2
-TOKEN 279 : j
-TOKEN  61 : =
-TOKEN 275 : bvec2
-TOKEN  40 : (
-TOKEN 263 : true
-TOKEN  44 : ,
-TOKEN 262 : false
-TOKEN  41 : )
-TOKEN  59 : ;
-TOKEN 279 : j
-TOKEN  91 : [
-TOKEN 278 : 0
-TOKEN  93 : ]
-TOKEN  61 : =
-TOKEN 262 : false
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     bvec2 i;
+  3:     bvec2 j = bvec2(true,false);
+  4:     j[0] = false;
+  5: }
+empty declarations
+BVEC_T type
+declaration
+declarations
+BVEC_T type
+BVEC_T type
+TRUE_C expression
+FALSE_C expression
+constructor
+constructor expression
+assignment declaration
+declarations
+empty statements
+vector variable
+FALSE_C expression
+assignment statement
+statements
+scope
+program

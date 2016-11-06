@@ -1,2 +1,6 @@
 
 LEXICAL ERROR, LINE 1: Unmatched /*
+  1: /*This is not a valid comment since it doesn't terminate
+  2: 
+  3: 
+  4: 

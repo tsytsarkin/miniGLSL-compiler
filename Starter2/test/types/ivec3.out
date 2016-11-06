@@ -1,24 +1,25 @@
-TOKEN 123 : {
-TOKEN 276 : ivec3
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 276 : ivec3
-TOKEN 279 : j
-TOKEN  61 : =
-TOKEN 276 : ivec3
-TOKEN  40 : (
-TOKEN 278 : 1
-TOKEN  44 : ,
-TOKEN 278 : 2
-TOKEN  44 : ,
-TOKEN 278 : 3
-TOKEN  41 : )
-TOKEN  59 : ;
-TOKEN 279 : j
-TOKEN  91 : [
-TOKEN 278 : 2
-TOKEN  93 : ]
-TOKEN  61 : =
-TOKEN 278 : 5
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     ivec3 i;
+  3:     ivec3 j = ivec3(1, 2, 3);
+  4:     j[2] = 5;
+  5: }
+empty declarations
+IVEC_T type
+declaration
+declarations
+IVEC_T type
+IVEC_T type
+INT_C expression
+INT_C expression
+INT_C expression
+constructor
+constructor expression
+assignment declaration
+declarations
+empty statements
+vector variable
+INT_C expression
+assignment statement
+statements
+scope
+program

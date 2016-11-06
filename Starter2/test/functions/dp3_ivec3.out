@@ -1,20 +1,30 @@
-TOKEN 123 : {
-TOKEN 259 : int
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 276 : ivec3
-TOKEN 279 : v1
-TOKEN  59 : ;
-TOKEN 276 : ivec3
-TOKEN 279 : v2
-TOKEN  59 : ;
-TOKEN 279 : i
-TOKEN  61 : =
-TOKEN 264 : dp3
-TOKEN  40 : (
-TOKEN 279 : v1
-TOKEN  44 : ,
-TOKEN 279 : v2
-TOKEN  41 : )
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     int i;
+  3:     ivec3 v1;
+  4:     ivec3 v2;
+  5:     i = dp3(v1, v2);
+  6: }
+empty declarations
+INT_T type
+declaration
+declarations
+IVEC_T type
+declaration
+declarations
+IVEC_T type
+declaration
+declarations
+empty statements
+ID variable
+function_name
+ID variable
+variable expression
+ID variable
+variable expression
+arguments
+function
+function expression
+assignment statement
+statements
+scope
+program

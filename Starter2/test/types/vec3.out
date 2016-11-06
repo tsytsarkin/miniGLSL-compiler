@@ -1,24 +1,25 @@
-TOKEN 123 : {
-TOKEN 274 : vec3
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 274 : vec3
-TOKEN 279 : j
-TOKEN  61 : =
-TOKEN 274 : vec3
-TOKEN  40 : (
-TOKEN 277 : 1.23
-TOKEN  44 : ,
-TOKEN 277 : 2.34
-TOKEN  44 : ,
-TOKEN 277 : 3.45
-TOKEN  41 : )
-TOKEN  59 : ;
-TOKEN 279 : j
-TOKEN  91 : [
-TOKEN 278 : 2
-TOKEN  93 : ]
-TOKEN  61 : =
-TOKEN 277 : 3.5
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     vec3 i;
+  3:     vec3 j = vec3(1.23, 2.34, 3.45);
+  4:     j[2] = 3.5;
+  5: }
+empty declarations
+VEC_T type
+declaration
+declarations
+VEC_T type
+VEC_T type
+FLOAT_C expression
+FLOAT_C expression
+FLOAT_C expression
+constructor
+constructor expression
+assignment declaration
+declarations
+empty statements
+vector variable
+FLOAT_C expression
+assignment statement
+statements
+scope
+program

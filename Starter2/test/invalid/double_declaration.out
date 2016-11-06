@@ -1,6 +1,7 @@
 
 PARSER ERROR, LINE 2: syntax error, unexpected ',', expecting ';' or '='
-TOKEN 123 : {
-TOKEN 259 : int
-TOKEN 279 : num1
-TOKEN  44 : ,
+  1: {
+  2:     int num1, num2;
+  3: }
+empty declarations
+INT_T type

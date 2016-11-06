@@ -1,5 +1,15 @@
-TOKEN 123 : {
-TOKEN 260 : bool
-TOKEN 279 : i
-TOKEN  59 : ;
-TOKEN 125 : }
+  1: {
+  2:     bool i;
+  3:     i = false;
+  4: }
+empty declarations
+BOOL_T type
+declaration
+declarations
+empty statements
+ID variable
+FALSE_C expression
+assignment statement
+statements
+scope
+program

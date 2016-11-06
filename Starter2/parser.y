@@ -129,12 +129,12 @@ scope
   : '{' declarations statements '}' { yTRACE("scope"); }
   ;
 declarations
-  : declarations declaration { /* No trace - repeated declarations */ }
-  | %empty
+  : declarations declaration { yTRACE("declarations"); }
+  | %empty { yTRACE("empty declarations"); }
   ;
 statements
-  : statements statement { /* No trace - repeated statements */ }
-  | %empty
+  : statements statement { yTRACE("statements"); }
+  | %empty { yTRACE("empty statements"); }
   ;
 declaration
   : type ID ';' { yTRACE("declaration"); }
@@ -205,7 +205,7 @@ function
   : function_name '(' arguments_opt ')' %prec FUNCTION { yTRACE("function"); }
   ;
 function_name
-  : FUNC { /* No trace */ }
+  : FUNC { yTRACE("function_name"); }
   ;
 arguments_opt
   : arguments { yTRACE("arguments"); }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TEST_PROGRAM="../compiler467 -Tp"
+TEST_PROGRAM="../compiler467 -Ds -Tp"
 
 TEST_FILE="test.out"
 FAILURES_FILE="failures.out"
