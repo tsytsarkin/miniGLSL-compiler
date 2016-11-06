@@ -1,0 +1,9 @@
+Unable to open file invalid/double_assign.in.in
+
+PARSER ERROR, LINE 2: syntax error, unexpected '='
+TOKEN 123 : {
+TOKEN 259 : int
+TOKEN 279 : a
+TOKEN  61 : =
+TOKEN 279 : b
+TOKEN  61 : =

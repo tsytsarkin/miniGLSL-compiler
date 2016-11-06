@@ -1,0 +1,6 @@
+
+PARSER ERROR, LINE 2: syntax error, unexpected ',', expecting ';' or '='
+TOKEN 123 : {
+TOKEN 259 : int
+TOKEN 279 : num1
+TOKEN  44 : ,
