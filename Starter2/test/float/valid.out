@@ -1,0 +1,26 @@
+  1: {
+  2:     float f = 1234.1234;
+  3:     f = 1234.;
+  4:     f = 1234.0;
+  5:     f = .1;
+  6: }
+empty declarations
+FLOAT_T type
+FLOAT_C expression
+assignment declaration
+declarations
+empty statements
+ID variable
+FLOAT_C expression
+assignment statement
+statements
+ID variable
+FLOAT_C expression
+assignment statement
+statements
+ID variable
+FLOAT_C expression
+assignment statement
+statements
+scope
+program

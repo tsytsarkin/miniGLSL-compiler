@@ -1,0 +1,11 @@
+
+LEXICAL ERROR, LINE 3: Identifier is too long.
+  1: {
+  2:     int abcdefghijklmnopqrstuvwxyz012345;
+  3:     float abcdefghijklmnopqrstuvwxyz0123456;
+  4: }
+empty declarations
+INT_T type
+declaration
+declarations
+FLOAT_T type

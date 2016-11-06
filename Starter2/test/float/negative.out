@@ -1,0 +1,13 @@
+  1: {
+  2:     float f = -12345.54321;
+  3: }
+empty declarations
+FLOAT_T type
+- unary_op
+FLOAT_C expression
+unary_op expression
+assignment declaration
+declarations
+empty statements
+scope
+program

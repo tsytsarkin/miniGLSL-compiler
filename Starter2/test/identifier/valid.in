@@ -1,0 +1,7 @@
+{
+    int this_is_an_identifier1234;
+    float _also1_an2_identifier3;
+    vec2 abcdefghijklmnopqrstuvwxyz_;
+    ivec3 ABCDEFGHIJKLMNOPQRSTUVWXYZ_;
+    bvec4 _0123456789_;
+}

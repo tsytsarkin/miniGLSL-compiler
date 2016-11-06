@@ -1,0 +1,7 @@
+
+LEXICAL ERROR, LINE 2: Integers and identifiers/keywords must be separated by whitespace.
+  1: {
+  2:      int 0identifier;
+  3: }
+empty declarations
+INT_T type
