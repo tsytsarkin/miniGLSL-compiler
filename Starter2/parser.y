@@ -123,45 +123,45 @@ enum {
  ***********************************************************************/
 
 program
-  : scope
+  : scope { yTRACE("program"); }
   ;
 scope
-  : '{' declarations statements '}'
+  : '{' declarations statements '}' { yTRACE("scope"); }
   ;
 declarations
-  : declarations declaration
+  : declarations declaration { /* No trace - repeated declarations */ }
   | %empty
   ;
 statements
-  : statements statement
+  : statements statement { /* No trace - repeated statements */ }
   | %empty
   ;
 declaration
-  : type ID ';'
-  | type ID '=' expression ';'
-  | CONST type ID '=' expression ';'
+  : type ID ';' { yTRACE("declaration"); }
+  | type ID '=' expression ';' { yTRACE("assignment declaration"); }
+  | CONST type ID '=' expression ';' { yTRACE("const assignment declaration"); }
   ;
 statement
-  : variable '=' expression ';'
-  | if_statement
-  | WHILE '(' expression ')' statement
-  | scope
-  | ';'
+  : variable '=' expression ';' { yTRACE("assignment statement"); }
+  | if_statement { yTRACE("if_statement statement"); }
+  | WHILE '(' expression ')' statement { yTRACE("while statement"); }
+  | scope { yTRACE("scope statement"); }
+  | ';' { yTRACE("semicolon statement"); }
   ;
 if_statement
-  : IF '(' expression ')' statement %prec IF_THEN
-  | IF '(' expression ')' statement else_statement
+  : IF '(' expression ')' statement %prec IF_THEN { yTRACE("if-then if_statement"); }
+  | IF '(' expression ')' statement else_statement { yTRACE("if-then-else if_statement"); }
   ;
 else_statement
-  : ELSE statement
+  : ELSE statement { yTRACE("else_statement"); }
   ;
 type
-  : INT_T
-  | BOOL_T
-  | FLOAT_T
-  | IVEC_T
-  | BVEC_T
-  | VEC_T
+  : INT_T { yTRACE("INT_T type"); }
+  | BOOL_T { yTRACE("BOOL_T type"); }
+  | FLOAT_T { yTRACE("FLOAT_T type"); }
+  | IVEC_T { yTRACE("IVEC_T type"); }
+  | BVEC_T { yTRACE("BVEC_T type"); }
+  | VEC_T { yTRACE("VEC_T type"); }
   ;
 expression
   : constructor { yTRACE("constructor expression"); }
@@ -176,44 +176,44 @@ expression
   | '(' expression ')' { yTRACE("brackets expression"); }
   ;
 variable
-  : ID
-  | ID '[' INT_C ']' %prec VECTOR
+  : ID { yTRACE("ID variable"); }
+  | ID '[' INT_C ']' %prec VECTOR { yTRACE("vector variable"); }
   ;
 unary_op
-  : '!'
-  | '-' %prec UMINUS
+  : '!' { yTRACE("! unary_op"); }
+  | '-' %prec UMINUS { yTRACE("- unary_op"); }
   ;
 binary_op
-  : AND
-  | OR
-  | EQ
-  | NEQ
-  | '<'
-  | LEQ
-  | '>'
-  | GEQ
-  | '+'
-  | '-'
-  | '*'
-  | '/'
-  | '^'
+  : AND { yTRACE("&& binary_op"); }
+  | OR { yTRACE("|| binary_op"); }
+  | EQ { yTRACE("== binary_op"); }
+  | NEQ { yTRACE("!= binary_op"); }
+  | '<' { yTRACE("< binary_op"); }
+  | LEQ { yTRACE("<= binary_op"); }
+  | '>' { yTRACE("> binary_op"); }
+  | GEQ { yTRACE(">= binary_op"); }
+  | '+' { yTRACE("+ binary_op"); }
+  | '-' { yTRACE("- binary_op"); }
+  | '*' { yTRACE("* binary_op"); }
+  | '/' { yTRACE("/ binary_op"); }
+  | '^' { yTRACE("^ binary_op"); }
   ;
 constructor
-  : type '(' arguments ')' %prec CONSTRUCTOR
+  : type '(' arguments ')' %prec CONSTRUCTOR { yTRACE("constructor"); }
   ;
 function
-  : function_name '(' arguments_opt ')' %prec FUNCTION
+  : function_name '(' arguments_opt ')' %prec FUNCTION { yTRACE("function"); }
   ;
 function_name
-  : FUNC
+  : FUNC { /* No trace */ }
   ;
 arguments_opt
-  : arguments
-  | %empty
+  : arguments { yTRACE("arguments"); }
+  | %empty { yTRACE("empty arguments"); }
   ;
 arguments
-  : arguments ',' expression
-  | expression
+  : arguments ',' expression { /* No trace */ }
+  | expression { /* No trace */ }
   ;
 
 %%
