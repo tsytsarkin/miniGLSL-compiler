@@ -1,0 +1,28 @@
+  1: {
+  2:     int i;
+  3:     int j;
+  4:     int k;
+  5:     k = i + j;
+  6: }
+empty declarations
+INT_T type
+declaration
+declarations
+INT_T type
+declaration
+declarations
+INT_T type
+declaration
+declarations
+empty statements
+ID variable
+ID variable
+variable expression
++ binary_op
+ID variable
+variable expression
+binary_op expression
+assignment statement
+statements
+scope
+program

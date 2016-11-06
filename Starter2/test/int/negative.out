@@ -1,0 +1,13 @@
+  1: {
+  2:     int i = -12345;
+  3: }
+empty declarations
+INT_T type
+- unary_op
+INT_C expression
+unary_op expression
+assignment declaration
+declarations
+empty statements
+scope
+program

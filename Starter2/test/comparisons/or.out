@@ -1,0 +1,26 @@
+  1: {
+  2:     bool i = true;
+  3:     bool j = false;
+  4:     i = i || j;
+  5: }
+empty declarations
+BOOL_T type
+TRUE_C expression
+assignment declaration
+declarations
+BOOL_T type
+FALSE_C expression
+assignment declaration
+declarations
+empty statements
+ID variable
+ID variable
+variable expression
+|| binary_op
+ID variable
+variable expression
+binary_op expression
+assignment statement
+statements
+scope
+program

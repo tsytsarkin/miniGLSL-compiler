@@ -1,0 +1,26 @@
+  1: {
+  2:     int i = 1234;
+  3:     int j = 0;
+  4:     int k = 1;
+  5:     int l = 2097151;
+  6: }
+empty declarations
+INT_T type
+INT_C expression
+assignment declaration
+declarations
+INT_T type
+INT_C expression
+assignment declaration
+declarations
+INT_T type
+INT_C expression
+assignment declaration
+declarations
+INT_T type
+INT_C expression
+assignment declaration
+declarations
+empty statements
+scope
+program

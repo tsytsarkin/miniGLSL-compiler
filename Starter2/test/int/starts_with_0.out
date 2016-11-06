@@ -1,0 +1,7 @@
+
+LEXICAL ERROR, LINE 2: Octal numbers are not allowed.
+  1: {
+  2:     int i = 01234;
+  3: }
+empty declarations
+INT_T type

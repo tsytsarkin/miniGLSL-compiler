@@ -1,0 +1,19 @@
+  1: {
+  2:     bool i = true;
+  3:     i = !i;
+  4: }
+empty declarations
+BOOL_T type
+TRUE_C expression
+assignment declaration
+declarations
+empty statements
+ID variable
+! unary_op
+ID variable
+variable expression
+unary_op expression
+assignment statement
+statements
+scope
+program
