@@ -1,5 +1,7 @@
 /***********************************************************************
- * **YOUR GROUP INFO SHOULD GO HERE**
+ * Braden Watling
+ * Nikita Tsytsarkin
+ * g467-006
  *
  * common.h
  *
