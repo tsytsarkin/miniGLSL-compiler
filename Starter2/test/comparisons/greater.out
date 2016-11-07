@@ -4,7 +4,6 @@
   4:     bool k;
   5:     k = i > j;
   6: }
-empty declarations
 INT_T type
 INT_C (1) expression
 assignment declaration (i)
@@ -16,7 +15,6 @@ declarations
 BOOL_T type
 declaration (k)
 declarations
-empty statements
 ID (k) variable
 ID (i) variable
 variable expression

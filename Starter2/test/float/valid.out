@@ -4,12 +4,10 @@
   4:     f = 1234.0;
   5:     f = .1;
   6: }
-empty declarations
 FLOAT_T type
 FLOAT_C (1234.123413) expression
 assignment declaration (f)
 declarations
-empty statements
 ID (f) variable
 FLOAT_C (1234.000000) expression
 assignment statement

@@ -127,11 +127,11 @@ scope
   ;
 declarations
   : declarations declaration { yTRACE("declarations"); }
-  | %empty { yTRACE("empty declarations"); }
+  | %empty { }
   ;
 statements
   : statements statement { yTRACE("statements"); }
-  | %empty { yTRACE("empty statements"); }
+  | %empty { }
   ;
 declaration
   : type ID ';' { yTRACE_FORMAT("declaration (%s)\n", $2); }

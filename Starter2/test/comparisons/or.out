@@ -3,7 +3,6 @@
   3:     bool j = false;
   4:     i = i || j;
   5: }
-empty declarations
 BOOL_T type
 TRUE_C expression
 assignment declaration (i)
@@ -12,7 +11,6 @@ BOOL_T type
 FALSE_C expression
 assignment declaration (j)
 declarations
-empty statements
 ID (i) variable
 ID (i) variable
 variable expression

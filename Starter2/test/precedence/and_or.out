@@ -1,8 +1,6 @@
   1: {
   2:     b = i && j || k;
   3: }
-empty declarations
-empty statements
 ID (b) variable
 ID (i) variable
 variable expression

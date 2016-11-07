@@ -5,7 +5,6 @@
   5:     ivec3 ABCDEFGHIJKLMNOPQRSTUVWXYZ_;
   6:     bvec4 _0123456789_;
   7: }
-empty declarations
 INT_T type
 declaration (this_is_an_identifier1234)
 declarations
@@ -21,6 +20,5 @@ declarations
 BVEC4_T type
 declaration (_0123456789_)
 declarations
-empty statements
 scope
 program

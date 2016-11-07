@@ -3,7 +3,6 @@ PARSER ERROR, LINE 2: syntax error, unexpected '='
   1: {
   2:     int a = b = 3;
   3: }
-empty declarations
 INT_T type
 ID (b) variable
 variable expression

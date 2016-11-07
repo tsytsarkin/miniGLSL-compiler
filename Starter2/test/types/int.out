@@ -3,7 +3,6 @@
   3:     int j = 123;
   4:     j = 93;
   5: }
-empty declarations
 INT_T type
 declaration (i)
 declarations
@@ -11,7 +10,6 @@ INT_T type
 INT_C (123) expression
 assignment declaration (j)
 declarations
-empty statements
 ID (j) variable
 INT_C (93) expression
 assignment statement

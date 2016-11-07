@@ -4,7 +4,6 @@ LEXICAL ERROR, LINE 3: Identifier is too long.
   2:     int abcdefghijklmnopqrstuvwxyz012345;
   3:     float abcdefghijklmnopqrstuvwxyz0123456;
   4: }
-empty declarations
 INT_T type
 declaration (abcdefghijklmnopqrstuvwxyz012345)
 declarations

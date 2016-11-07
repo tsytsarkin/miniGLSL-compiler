@@ -3,5 +3,4 @@ LEXICAL ERROR, LINE 2: Floating point literal is out of range (case 2).
   1: {
   2:     float d = 32763923382392339339949373334934934983907.01;
   3: }
-empty declarations
 FLOAT_T type

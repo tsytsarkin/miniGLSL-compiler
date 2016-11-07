@@ -3,5 +3,4 @@ LEXICAL ERROR, LINE 2: Integers and identifiers/keywords must be separated by wh
   1: {
   2:     float f = 1e;
   3: }
-empty declarations
 FLOAT_T type

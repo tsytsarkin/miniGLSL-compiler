@@ -3,5 +3,4 @@ LEXICAL ERROR, LINE 2: Octal numbers are not allowed.
   1: {
   2:     float f = 01234.0;
   3: }
-empty declarations
 FLOAT_T type

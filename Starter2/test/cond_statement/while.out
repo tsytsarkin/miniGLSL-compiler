@@ -6,8 +6,6 @@
   6:         c = 9 + 1;
   7:     }
   8: }
-empty declarations
-empty statements
 TRUE_C expression
 ID (i) variable
 INT_C (9) expression
@@ -20,8 +18,6 @@ ID (j) variable
 variable expression
 == binary_op
 binary_op expression
-empty declarations
-empty statements
 ID (b) variable
 ID (b) variable
 variable expression

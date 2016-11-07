@@ -1,13 +1,11 @@
   1: {
   2:     float f = -12345.54321;
   3: }
-empty declarations
 FLOAT_T type
 FLOAT_C (12345.542969) expression
 - unary_op
 unary_op expression
 assignment declaration (f)
 declarations
-empty statements
 scope
 program

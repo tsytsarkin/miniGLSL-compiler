@@ -2,12 +2,10 @@
   2:     bool i = true;
   3:     i = !i;
   4: }
-empty declarations
 BOOL_T type
 TRUE_C expression
 assignment declaration (i)
 declarations
-empty statements
 ID (i) variable
 ID (i) variable
 variable expression

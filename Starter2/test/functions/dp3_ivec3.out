@@ -4,7 +4,6 @@
   4:     ivec3 v2;
   5:     i = dp3(v1, v2);
   6: }
-empty declarations
 INT_T type
 declaration (i)
 declarations
@@ -14,7 +13,6 @@ declarations
 IVEC3_T type
 declaration (v2)
 declarations
-empty statements
 ID (i) variable
 function_name
 ID (v1) variable

@@ -3,5 +3,4 @@ PARSER ERROR, LINE 2: syntax error, unexpected ',', expecting ';' or '='
   1: {
   2:     int num1, num2;
   3: }
-empty declarations
 INT_T type

@@ -1,13 +1,11 @@
   1: {
   2:     int i = -12345;
   3: }
-empty declarations
 INT_T type
 INT_C (12345) expression
 - unary_op
 unary_op expression
 assignment declaration (i)
 declarations
-empty statements
 scope
 program

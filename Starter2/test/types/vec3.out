@@ -3,7 +3,6 @@
   3:     vec3 j = vec3(1.23, 2.34, 3.45);
   4:     j[2] = 3.5;
   5: }
-empty declarations
 VEC3_T type
 declaration (i)
 declarations
@@ -16,7 +15,6 @@ constructor
 constructor expression
 assignment declaration (j)
 declarations
-empty statements
 vector variable (j) [2]
 FLOAT_C (3.500000) expression
 assignment statement

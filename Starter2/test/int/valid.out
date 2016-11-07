@@ -4,7 +4,6 @@
   4:     int k = 1;
   5:     int l = 2097151;
   6: }
-empty declarations
 INT_T type
 INT_C (1234) expression
 assignment declaration (i)
@@ -21,6 +20,5 @@ INT_T type
 INT_C (2097151) expression
 assignment declaration (l)
 declarations
-empty statements
 scope
 program

@@ -3,7 +3,6 @@
   3:     float j = 1.34234;
   4:     j = 123.0;
   5: }
-empty declarations
 FLOAT_T type
 declaration (i)
 declarations
@@ -11,7 +10,6 @@ FLOAT_T type
 FLOAT_C (1.342340) expression
 assignment declaration (j)
 declarations
-empty statements
 ID (j) variable
 FLOAT_C (123.000000) expression
 assignment statement

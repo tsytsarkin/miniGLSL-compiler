@@ -3,8 +3,6 @@
   3:     if (true) c = d;
   4:     if (a == b) {c = !d;}
   5: }
-empty declarations
-empty statements
 ID (a) variable
 variable expression
 ID (b) variable
@@ -28,8 +26,6 @@ ID (b) variable
 variable expression
 == binary_op
 binary_op expression
-empty declarations
-empty statements
 ID (c) variable
 ID (d) variable
 variable expression

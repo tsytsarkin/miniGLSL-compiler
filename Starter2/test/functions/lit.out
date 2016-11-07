@@ -3,14 +3,12 @@
   3:     vec4 v2;
   4:     v2 = lit(v1);
   5: }
-empty declarations
 VEC4_T type
 declaration (v1)
 declarations
 VEC4_T type
 declaration (v2)
 declarations
-empty statements
 ID (v2) variable
 function_name
 ID (v1) variable

@@ -7,19 +7,13 @@
   7: 
   8:     if (a) if (b) a = false; else b = false;
   9: }
-empty declarations
-empty statements
 FALSE_C expression
-empty declarations
-empty statements
 ID (i) variable
 INT_C (10) expression
 assignment statement
 statements
 scope
 scope statement
-empty declarations
-empty statements
 ID (i) variable
 INT_C (15) expression
 assignment statement

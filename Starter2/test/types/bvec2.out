@@ -3,7 +3,6 @@
   3:     bvec2 j = bvec2(true,false);
   4:     j[0] = false;
   5: }
-empty declarations
 BVEC2_T type
 declaration (i)
 declarations
@@ -15,7 +14,6 @@ constructor
 constructor expression
 assignment declaration (j)
 declarations
-empty statements
 vector variable (j) [0]
 FALSE_C expression
 assignment statement

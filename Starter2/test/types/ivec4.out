@@ -3,7 +3,6 @@
   3:     ivec4 j = ivec4(1, 2, 3, 4);
   4:     j[3] = 0;
   5: }
-empty declarations
 IVEC4_T type
 declaration (i)
 declarations
@@ -17,7 +16,6 @@ constructor
 constructor expression
 assignment declaration (j)
 declarations
-empty statements
 vector variable (j) [3]
 INT_C (0) expression
 assignment statement

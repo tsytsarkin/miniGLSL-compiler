@@ -3,14 +3,12 @@
   3:     float result;
   4:     result = rsq(i);
   5: }
-empty declarations
 INT_T type
 declaration (i)
 declarations
 FLOAT_T type
 declaration (result)
 declarations
-empty statements
 ID (result) variable
 function_name
 ID (i) variable

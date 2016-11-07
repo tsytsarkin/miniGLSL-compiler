@@ -3,14 +3,12 @@
   3:     int j;
   4:     i = i / j;
   5: }
-empty declarations
 INT_T type
 declaration (i)
 declarations
 INT_T type
 declaration (j)
 declarations
-empty statements
 ID (i) variable
 ID (i) variable
 variable expression

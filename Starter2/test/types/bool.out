@@ -2,11 +2,9 @@
   2:     bool i;
   3:     i = false;
   4: }
-empty declarations
 BOOL_T type
 declaration (i)
 declarations
-empty statements
 ID (i) variable
 FALSE_C expression
 assignment statement
