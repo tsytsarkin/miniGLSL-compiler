@@ -43,3 +43,11 @@ Summary:
   cases by specifying the input and then comparing it to the
   expected output. The expected output was copied directly from
   the output of the parser, but was manually validated.
+
+  To run the tester, cd to the Starter2/test/ directory and
+  execute:
+    ./tester.sh
+  or to run a specific test:
+    ./tester.sh <test_name>
+  e.g:
+    ./tester.sh precedence/and_or
