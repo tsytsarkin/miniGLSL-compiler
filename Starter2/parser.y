@@ -72,7 +72,6 @@ enum {
 %token          FALSE_C TRUE_C
 %token          FUNC
 %token          IF WHILE ELSE
-%token          AND OR NEQ EQ LEQ GEQ
 
 // links specific values of tokens to yyval
 %token <as_vec>   VEC_T
@@ -87,23 +86,18 @@ enum {
 // Lowest precedence
 
 // Binary operators
-%left           OR AND GEQ '>' LEQ '<' NEQ EQ
+%left           OR
+%left           AND
+%left           GEQ '>' LEQ '<' NEQ EQ
 %left           '-' '+'
 %left           '/' '*'
 %right          '^'
 
 // Unary operators
 %left           '!' UMINUS
+
+// Special
 %left           CONSTRUCTOR FUNCTION VECTOR
-
-// Give the reduction of a binary expression higher
-// precendence than the shifting of unary and binary operators
-%precedence     BINARY_EXPRESSION
-
-// Give the reduction of a unary expression higher
-// precedence than the reduction of a binary expression
-// and the shifting of unary and binary operators
-%precedence     UNARY_EXPRESSION
 
 // Give the shifting of else a higher precedence than
 // the reduction of if-then
@@ -169,8 +163,21 @@ expression
   | INT_C { yTRACE("INT_C expression"); }
   | FLOAT_C { yTRACE("FLOAT_C expression"); }
   | variable { yTRACE("variable expression"); }
-  | unary_op expression %prec UNARY_EXPRESSION { yTRACE("unary_op expression"); }
-  | expression binary_op expression %prec BINARY_EXPRESSION { yTRACE("binary_op expression"); }
+  | '!' expression { yTRACE("! unary expression"); }
+  | '-' expression %prec UMINUS { yTRACE("- unary expression"); }
+  | expression AND expression { yTRACE("&& binary expression"); }
+  | expression OR expression { yTRACE("|| binary expression"); }
+  | expression EQ expression { yTRACE("== binary expression"); }
+  | expression NEQ expression  { yTRACE("!= binary expression"); }
+  | expression '<' expression  { yTRACE("< binary expression"); }
+  | expression LEQ expression { yTRACE("<= binary expression"); }
+  | expression '>' expression { yTRACE("> binary expression"); }
+  | expression GEQ expression { yTRACE(">= binary expression"); }
+  | expression '+' expression { yTRACE("+ binary expression"); }
+  | expression '-' expression { yTRACE("- binary expression"); }
+  | expression '*' expression { yTRACE("* binary expression"); }
+  | expression '/' expression { yTRACE("/ binary expression"); }
+  | expression '^' expression { yTRACE("^ binary expression"); }
   | TRUE_C { yTRACE("TRUE_C expression"); }
   | FALSE_C { yTRACE("FALSE_C expression"); }
   | '(' expression ')' { yTRACE("brackets expression"); }
@@ -178,25 +185,6 @@ expression
 variable
   : ID { yTRACE("ID variable"); }
   | ID '[' INT_C ']' %prec VECTOR { yTRACE("vector variable"); }
-  ;
-unary_op
-  : '!' { yTRACE("! unary_op"); }
-  | '-' %prec UMINUS { yTRACE("- unary_op"); }
-  ;
-binary_op
-  : AND { yTRACE("&& binary_op"); }
-  | OR { yTRACE("|| binary_op"); }
-  | EQ { yTRACE("== binary_op"); }
-  | NEQ { yTRACE("!= binary_op"); }
-  | '<' { yTRACE("< binary_op"); }
-  | LEQ { yTRACE("<= binary_op"); }
-  | '>' { yTRACE("> binary_op"); }
-  | GEQ { yTRACE(">= binary_op"); }
-  | '+' { yTRACE("+ binary_op"); }
-  | '-' { yTRACE("- binary_op"); }
-  | '*' { yTRACE("* binary_op"); }
-  | '/' { yTRACE("/ binary_op"); }
-  | '^' { yTRACE("^ binary_op"); }
   ;
 constructor
   : type '(' arguments ')' %prec CONSTRUCTOR { yTRACE("constructor"); }
