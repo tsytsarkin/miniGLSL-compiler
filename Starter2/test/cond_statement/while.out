@@ -9,30 +9,30 @@
 empty declarations
 empty statements
 TRUE_C expression
-ID variable
-INT_C expression
+ID (i) variable
+INT_C (9) expression
 assignment statement
 while statement
 statements
-ID variable
+ID (i) variable
 variable expression
-ID variable
+ID (j) variable
 variable expression
 == binary_op
 binary_op expression
 empty declarations
 empty statements
-ID variable
-ID variable
+ID (b) variable
+ID (b) variable
 variable expression
-INT_C expression
+INT_C (1) expression
 + binary_op
 binary_op expression
 assignment statement
 statements
-ID variable
-INT_C expression
-INT_C expression
+ID (c) variable
+INT_C (9) expression
+INT_C (1) expression
 + binary_op
 binary_op expression
 assignment statement

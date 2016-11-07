@@ -5,5 +5,5 @@ PARSER ERROR, LINE 2: syntax error, unexpected '='
   3: }
 empty declarations
 INT_T type
-ID variable
+ID (b) variable
 variable expression

@@ -4,10 +4,10 @@
   4: }
 empty declarations
 BOOL_T type
-declaration
+declaration (i)
 declarations
 empty statements
-ID variable
+ID (i) variable
 FALSE_C expression
 assignment statement
 statements

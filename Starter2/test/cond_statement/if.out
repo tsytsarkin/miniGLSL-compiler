@@ -5,33 +5,33 @@
   5: }
 empty declarations
 empty statements
-ID variable
+ID (a) variable
 variable expression
-ID variable
-ID variable
+ID (b) variable
+ID (c) variable
 variable expression
 assignment statement
 if-then if_statement
 if_statement statement
 statements
 TRUE_C expression
-ID variable
-ID variable
+ID (c) variable
+ID (d) variable
 variable expression
 assignment statement
 if-then if_statement
 if_statement statement
 statements
-ID variable
+ID (a) variable
 variable expression
-ID variable
+ID (b) variable
 variable expression
 == binary_op
 binary_op expression
 empty declarations
 empty statements
-ID variable
-ID variable
+ID (c) variable
+ID (d) variable
 variable expression
 ! unary_op
 unary_op expression

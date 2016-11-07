@@ -6,20 +6,20 @@
   6: }
 empty declarations
 INT_T type
-INT_C expression
-assignment declaration
+INT_C (1234) expression
+assignment declaration (i)
 declarations
 INT_T type
-INT_C expression
-assignment declaration
+INT_C (0) expression
+assignment declaration (j)
 declarations
 INT_T type
-INT_C expression
-assignment declaration
+INT_C (1) expression
+assignment declaration (k)
 declarations
 INT_T type
-INT_C expression
-assignment declaration
+INT_C (2097151) expression
+assignment declaration (l)
 declarations
 empty statements
 scope

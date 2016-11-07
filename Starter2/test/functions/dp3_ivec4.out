@@ -6,20 +6,20 @@
   6: }
 empty declarations
 INT_T type
-declaration
+declaration (i)
 declarations
 IVEC4_T type
-declaration
+declaration (v1)
 declarations
 IVEC4_T type
-declaration
+declaration (v2)
 declarations
 empty statements
-ID variable
+ID (i) variable
 function_name
-ID variable
+ID (v1) variable
 variable expression
-ID variable
+ID (v2) variable
 variable expression
 arguments
 function

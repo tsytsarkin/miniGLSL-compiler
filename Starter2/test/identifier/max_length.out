@@ -6,6 +6,6 @@ LEXICAL ERROR, LINE 3: Identifier is too long.
   4: }
 empty declarations
 INT_T type
-declaration
+declaration (abcdefghijklmnopqrstuvwxyz012345)
 declarations
 FLOAT_T type

@@ -5,20 +5,20 @@
   5: }
 empty declarations
 IVEC3_T type
-declaration
+declaration (i)
 declarations
 IVEC3_T type
 IVEC3_T type
-INT_C expression
-INT_C expression
-INT_C expression
+INT_C (1) expression
+INT_C (2) expression
+INT_C (3) expression
 constructor
 constructor expression
-assignment declaration
+assignment declaration (j)
 declarations
 empty statements
-vector variable
-INT_C expression
+vector variable (j) [2]
+INT_C (5) expression
 assignment statement
 statements
 scope

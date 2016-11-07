@@ -3,14 +3,14 @@
   3: }
 empty declarations
 empty statements
-ID variable
-ID variable
+ID (b) variable
+ID (i) variable
 variable expression
-ID variable
+ID (j) variable
 variable expression
 && binary_op
 binary_op expression
-ID variable
+ID (k) variable
 variable expression
 || binary_op
 binary_op expression

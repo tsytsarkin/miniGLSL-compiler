@@ -5,15 +5,15 @@
   5: }
 empty declarations
 FLOAT_T type
-declaration
+declaration (i)
 declarations
 FLOAT_T type
-FLOAT_C expression
-assignment declaration
+FLOAT_C (1.342340) expression
+assignment declaration (j)
 declarations
 empty statements
-ID variable
-FLOAT_C expression
+ID (j) variable
+FLOAT_C (123.000000) expression
 assignment statement
 statements
 scope

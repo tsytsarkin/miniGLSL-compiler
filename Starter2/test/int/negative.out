@@ -3,10 +3,10 @@
   3: }
 empty declarations
 INT_T type
-INT_C expression
+INT_C (12345) expression
 - unary_op
 unary_op expression
-assignment declaration
+assignment declaration (i)
 declarations
 empty statements
 scope

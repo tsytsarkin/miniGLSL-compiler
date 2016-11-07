@@ -12,16 +12,16 @@ empty statements
 FALSE_C expression
 empty declarations
 empty statements
-ID variable
-INT_C expression
+ID (i) variable
+INT_C (10) expression
 assignment statement
 statements
 scope
 scope statement
 empty declarations
 empty statements
-ID variable
-INT_C expression
+ID (i) variable
+INT_C (15) expression
 assignment statement
 statements
 scope
@@ -30,14 +30,14 @@ else_statement
 if-then-else if_statement
 if_statement statement
 statements
-ID variable
+ID (a) variable
 variable expression
-ID variable
+ID (b) variable
 variable expression
-ID variable
+ID (a) variable
 FALSE_C expression
 assignment statement
-ID variable
+ID (b) variable
 FALSE_C expression
 assignment statement
 else_statement

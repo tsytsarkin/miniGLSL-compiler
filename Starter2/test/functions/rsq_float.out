@@ -5,15 +5,15 @@
   5: }
 empty declarations
 FLOAT_T type
-declaration
+declaration (f)
 declarations
 FLOAT_T type
-declaration
+declaration (result)
 declarations
 empty statements
-ID variable
+ID (result) variable
 function_name
-ID variable
+ID (f) variable
 variable expression
 arguments
 function

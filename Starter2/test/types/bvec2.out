@@ -5,7 +5,7 @@
   5: }
 empty declarations
 BVEC2_T type
-declaration
+declaration (i)
 declarations
 BVEC2_T type
 BVEC2_T type
@@ -13,10 +13,10 @@ TRUE_C expression
 FALSE_C expression
 constructor
 constructor expression
-assignment declaration
+assignment declaration (j)
 declarations
 empty statements
-vector variable
+vector variable (j) [0]
 FALSE_C expression
 assignment statement
 statements

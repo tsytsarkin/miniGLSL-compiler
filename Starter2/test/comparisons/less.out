@@ -6,21 +6,21 @@
   6: }
 empty declarations
 INT_T type
-INT_C expression
-assignment declaration
+INT_C (5) expression
+assignment declaration (i)
 declarations
 INT_T type
-INT_C expression
-assignment declaration
+INT_C (6) expression
+assignment declaration (j)
 declarations
 BOOL_T type
-declaration
+declaration (k)
 declarations
 empty statements
-ID variable
-ID variable
+ID (k) variable
+ID (i) variable
 variable expression
-ID variable
+ID (j) variable
 variable expression
 < binary_op
 binary_op expression

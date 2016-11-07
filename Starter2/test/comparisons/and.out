@@ -7,20 +7,20 @@
 empty declarations
 BOOL_T type
 TRUE_C expression
-assignment declaration
+assignment declaration (i)
 declarations
 BOOL_T type
 FALSE_C expression
-assignment declaration
+assignment declaration (j)
 declarations
 BOOL_T type
-declaration
+declaration (k)
 declarations
 empty statements
-ID variable
-ID variable
+ID (k) variable
+ID (i) variable
 variable expression
-ID variable
+ID (j) variable
 variable expression
 && binary_op
 binary_op expression

@@ -7,19 +7,19 @@
   7: }
 empty declarations
 INT_T type
-declaration
+declaration (this_is_an_identifier1234)
 declarations
 FLOAT_T type
-declaration
+declaration (_also1_an2_identifier3)
 declarations
 VEC2_T type
-declaration
+declaration (abcdefghijklmnopqrstuvwxyz_)
 declarations
 IVEC3_T type
-declaration
+declaration (ABCDEFGHIJKLMNOPQRSTUVWXYZ_)
 declarations
 BVEC4_T type
-declaration
+declaration (_0123456789_)
 declarations
 empty statements
 scope

@@ -3,11 +3,11 @@
   3: }
 empty declarations
 empty statements
-ID variable
-INT_C expression
+ID (i) variable
+INT_C (1) expression
 - unary_op
 unary_op expression
-INT_C expression
+INT_C (2) expression
 - binary_op
 binary_op expression
 assignment statement

@@ -3,10 +3,10 @@
   3: }
 empty declarations
 empty statements
-ID variable
-INT_C expression
-INT_C expression
-INT_C expression
+ID (i) variable
+INT_C (5) expression
+INT_C (6) expression
+INT_C (7) expression
 * binary_op
 binary_op expression
 + binary_op

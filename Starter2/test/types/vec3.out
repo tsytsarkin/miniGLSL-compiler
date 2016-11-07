@@ -5,20 +5,20 @@
   5: }
 empty declarations
 VEC3_T type
-declaration
+declaration (i)
 declarations
 VEC3_T type
 VEC3_T type
-FLOAT_C expression
-FLOAT_C expression
-FLOAT_C expression
+FLOAT_C (1.230000) expression
+FLOAT_C (2.340000) expression
+FLOAT_C (3.450000) expression
 constructor
 constructor expression
-assignment declaration
+assignment declaration (j)
 declarations
 empty statements
-vector variable
-FLOAT_C expression
+vector variable (j) [2]
+FLOAT_C (3.500000) expression
 assignment statement
 statements
 scope

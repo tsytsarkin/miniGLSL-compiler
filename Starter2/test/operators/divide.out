@@ -5,16 +5,16 @@
   5: }
 empty declarations
 INT_T type
-declaration
+declaration (i)
 declarations
 INT_T type
-declaration
+declaration (j)
 declarations
 empty statements
-ID variable
-ID variable
+ID (i) variable
+ID (i) variable
 variable expression
-ID variable
+ID (j) variable
 variable expression
 / binary_op
 binary_op expression

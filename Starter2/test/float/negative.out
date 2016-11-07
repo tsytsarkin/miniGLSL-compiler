@@ -3,10 +3,10 @@
   3: }
 empty declarations
 FLOAT_T type
-FLOAT_C expression
+FLOAT_C (12345.542969) expression
 - unary_op
 unary_op expression
-assignment declaration
+assignment declaration (f)
 declarations
 empty statements
 scope

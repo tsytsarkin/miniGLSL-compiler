@@ -24,7 +24,8 @@
 //#include "symbol.h"
 //#include "semantic.h"
 #define YYERROR_VERBOSE
-#define yTRACE(x)    { if (traceParser) fprintf(traceFile, "%s\n", x); }
+#define yTRACE_FORMAT(format, args...) { if (traceParser) fprintf(traceFile, format, args); }
+#define yTRACE(x)                      { yTRACE_FORMAT("%s\n", x); }
 
 void yyerror(const char* s);    /* what to do in case of error            */
 int yylex();                    /* procedure for calling lexical analyzer */
@@ -133,9 +134,9 @@ statements
   | %empty { yTRACE("empty statements"); }
   ;
 declaration
-  : type ID ';' { yTRACE("declaration"); }
-  | type ID '=' expression ';' { yTRACE("assignment declaration"); }
-  | CONST type ID '=' expression ';' { yTRACE("const assignment declaration"); }
+  : type ID ';' { yTRACE_FORMAT("declaration (%s)\n", $2); }
+  | type ID '=' expression ';' { yTRACE_FORMAT("assignment declaration (%s)\n", $2); }
+  | CONST type ID '=' expression ';' { yTRACE_FORMAT("const assignment declaration (%s)\n", $3); }
   ;
 statement
   : variable '=' expression ';' { yTRACE("assignment statement"); }
@@ -155,15 +156,15 @@ type
   : INT_T { yTRACE("INT_T type"); }
   | BOOL_T { yTRACE("BOOL_T type"); }
   | FLOAT_T { yTRACE("FLOAT_T type"); }
-  | IVEC_T { yTRACE("IVEC_T type"); }
-  | BVEC_T { yTRACE("BVEC_T type"); }
-  | VEC_T { yTRACE("VEC_T type"); }
+  | IVEC_T { yTRACE_FORMAT("IVEC%d_T type\n", $1); }
+  | BVEC_T { yTRACE_FORMAT("BVEC%d_T type\n", $1); }
+  | VEC_T { yTRACE_FORMAT("VEC%d_T type\n", $1); }
   ;
 expression
   : constructor { yTRACE("constructor expression"); }
   | function { yTRACE("function expression"); }
-  | INT_C { yTRACE("INT_C expression"); }
-  | FLOAT_C { yTRACE("FLOAT_C expression"); }
+  | INT_C { yTRACE_FORMAT("INT_C (%d) expression\n", $1); }
+  | FLOAT_C { yTRACE_FORMAT("FLOAT_C (%f) expression\n", $1); }
   | variable { yTRACE("variable expression"); }
   | unary_op { yTRACE("unary_op expression"); }
   | binary_op { yTRACE("binary_op expression"); }
@@ -191,8 +192,8 @@ binary_op
   | expression '^' expression { yTRACE("^ binary_op"); }
   ;
 variable
-  : ID { yTRACE("ID variable"); }
-  | ID '[' INT_C ']' %prec VECTOR { yTRACE("vector variable"); }
+  : ID { yTRACE_FORMAT("ID (%s) variable\n", $1); }
+  | ID '[' INT_C ']' %prec VECTOR { yTRACE_FORMAT("vector variable (%s) [%d]\n", $1, $3); }
   ;
 constructor
   : type '(' arguments ')' %prec CONSTRUCTOR { yTRACE("constructor"); }

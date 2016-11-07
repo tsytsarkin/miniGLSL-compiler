@@ -5,11 +5,11 @@
 empty declarations
 BOOL_T type
 TRUE_C expression
-assignment declaration
+assignment declaration (i)
 declarations
 empty statements
-ID variable
-ID variable
+ID (i) variable
+ID (i) variable
 variable expression
 ! unary_op
 unary_op expression

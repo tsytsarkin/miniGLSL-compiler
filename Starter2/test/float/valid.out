@@ -6,20 +6,20 @@
   6: }
 empty declarations
 FLOAT_T type
-FLOAT_C expression
-assignment declaration
+FLOAT_C (1234.123413) expression
+assignment declaration (f)
 declarations
 empty statements
-ID variable
-FLOAT_C expression
+ID (f) variable
+FLOAT_C (1234.000000) expression
 assignment statement
 statements
-ID variable
-FLOAT_C expression
+ID (f) variable
+FLOAT_C (1234.000000) expression
 assignment statement
 statements
-ID variable
-FLOAT_C expression
+ID (f) variable
+FLOAT_C (0.100000) expression
 assignment statement
 statements
 scope
