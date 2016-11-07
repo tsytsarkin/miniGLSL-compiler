@@ -24,6 +24,7 @@
 //#include "symbol.h"
 //#include "semantic.h"
 #define YYERROR_VERBOSE
+/* Used to control the format of the output */
 #define yTRACE_FORMAT(format, args...) { if (traceParser) fprintf(traceFile, format, args); }
 #define yTRACE(x)                      { yTRACE_FORMAT("%s\n", x); }
 
@@ -119,6 +120,10 @@ enum {
  *    2. Implement the trace parser option of the compiler
  ***********************************************************************/
 
+/*
+ * Grammar definition. The parser trace is implemented in the actions
+ * of each rule.
+ */
 program
   : scope { yTRACE("program"); }
   ;
