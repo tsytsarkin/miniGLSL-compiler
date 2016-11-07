@@ -6,13 +6,13 @@ empty statements
 ID variable
 ID variable
 variable expression
+ID variable
+variable expression
 && binary_op
-ID variable
-variable expression
 binary_op expression
-|| binary_op
 ID variable
 variable expression
+|| binary_op
 binary_op expression
 assignment statement
 statements

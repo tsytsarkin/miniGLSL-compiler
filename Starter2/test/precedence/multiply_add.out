@@ -5,11 +5,11 @@ empty declarations
 empty statements
 ID variable
 INT_C expression
-+ binary_op
 INT_C expression
-binary_op expression
+INT_C expression
 * binary_op
-INT_C expression
+binary_op expression
++ binary_op
 binary_op expression
 assignment statement
 statements

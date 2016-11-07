@@ -24,16 +24,16 @@ if_statement statement
 statements
 ID variable
 variable expression
-== binary_op
 ID variable
 variable expression
+== binary_op
 binary_op expression
 empty declarations
 empty statements
 ID variable
-! unary_op
 ID variable
 variable expression
+! unary_op
 unary_op expression
 assignment statement
 statements

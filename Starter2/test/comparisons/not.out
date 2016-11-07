@@ -9,9 +9,9 @@ assignment declaration
 declarations
 empty statements
 ID variable
-! unary_op
 ID variable
 variable expression
+! unary_op
 unary_op expression
 assignment statement
 statements

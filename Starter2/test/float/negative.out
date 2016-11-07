@@ -3,8 +3,8 @@
   3: }
 empty declarations
 FLOAT_T type
-- unary_op
 FLOAT_C expression
+- unary_op
 unary_op expression
 assignment declaration
 declarations

@@ -16,24 +16,24 @@ while statement
 statements
 ID variable
 variable expression
-== binary_op
 ID variable
 variable expression
+== binary_op
 binary_op expression
 empty declarations
 empty statements
 ID variable
 ID variable
 variable expression
-+ binary_op
 INT_C expression
++ binary_op
 binary_op expression
 assignment statement
 statements
 ID variable
 INT_C expression
-+ binary_op
 INT_C expression
++ binary_op
 binary_op expression
 assignment statement
 statements

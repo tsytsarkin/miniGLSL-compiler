@@ -163,24 +163,30 @@ expression
   | INT_C { yTRACE("INT_C expression"); }
   | FLOAT_C { yTRACE("FLOAT_C expression"); }
   | variable { yTRACE("variable expression"); }
-  | '!' expression { yTRACE("! unary expression"); }
-  | '-' expression %prec UMINUS { yTRACE("- unary expression"); }
-  | expression AND expression { yTRACE("&& binary expression"); }
-  | expression OR expression { yTRACE("|| binary expression"); }
-  | expression EQ expression { yTRACE("== binary expression"); }
-  | expression NEQ expression  { yTRACE("!= binary expression"); }
-  | expression '<' expression  { yTRACE("< binary expression"); }
-  | expression LEQ expression { yTRACE("<= binary expression"); }
-  | expression '>' expression { yTRACE("> binary expression"); }
-  | expression GEQ expression { yTRACE(">= binary expression"); }
-  | expression '+' expression { yTRACE("+ binary expression"); }
-  | expression '-' expression { yTRACE("- binary expression"); }
-  | expression '*' expression { yTRACE("* binary expression"); }
-  | expression '/' expression { yTRACE("/ binary expression"); }
-  | expression '^' expression { yTRACE("^ binary expression"); }
+  | unary_op { yTRACE("unary_op expression"); }
+  | binary_op { yTRACE("binary_op expression"); }
   | TRUE_C { yTRACE("TRUE_C expression"); }
   | FALSE_C { yTRACE("FALSE_C expression"); }
   | '(' expression ')' { yTRACE("brackets expression"); }
+  ;
+unary_op
+  : '!' expression { yTRACE("! unary_op"); }
+  | '-' expression %prec UMINUS { yTRACE("- unary_op"); }
+  ;
+binary_op
+  : expression AND expression { yTRACE("&& binary_op"); }
+  | expression OR expression { yTRACE("|| binary_op"); }
+  | expression EQ expression { yTRACE("== binary_op"); }
+  | expression NEQ expression  { yTRACE("!= binary_op"); }
+  | expression '<' expression  { yTRACE("< binary_op"); }
+  | expression LEQ expression { yTRACE("<= binary_op"); }
+  | expression '>' expression { yTRACE("> binary_op"); }
+  | expression GEQ expression { yTRACE(">= binary_op"); }
+  | expression '+' expression { yTRACE("+ binary_op"); }
+  | expression '-' expression { yTRACE("- binary_op"); }
+  | expression '*' expression { yTRACE("* binary_op"); }
+  | expression '/' expression { yTRACE("/ binary_op"); }
+  | expression '^' expression { yTRACE("^ binary_op"); }
   ;
 variable
   : ID { yTRACE("ID variable"); }
