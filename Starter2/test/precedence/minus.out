@@ -1,0 +1,16 @@
+  1: {
+  2:     i = -1 -2;
+  3: }
+empty declarations
+empty statements
+ID variable
+- unary_op
+INT_C expression
+unary_op expression
+- binary_op
+INT_C expression
+binary_op expression
+assignment statement
+statements
+scope
+program

@@ -1,0 +1,46 @@
+  1: {
+  2:     if (a) b = c;
+  3:     if (true) c = d;
+  4:     if (a == b) {c = !d;}
+  5: }
+empty declarations
+empty statements
+ID variable
+variable expression
+ID variable
+ID variable
+variable expression
+assignment statement
+if-then if_statement
+if_statement statement
+statements
+TRUE_C expression
+ID variable
+ID variable
+variable expression
+assignment statement
+if-then if_statement
+if_statement statement
+statements
+ID variable
+variable expression
+== binary_op
+ID variable
+variable expression
+binary_op expression
+empty declarations
+empty statements
+ID variable
+! unary_op
+ID variable
+variable expression
+unary_op expression
+assignment statement
+statements
+scope
+scope statement
+if-then if_statement
+if_statement statement
+statements
+scope
+program

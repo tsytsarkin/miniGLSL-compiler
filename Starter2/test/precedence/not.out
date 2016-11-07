@@ -1,0 +1,14 @@
+  1: {
+  2:     i = !i;
+  3: }
+empty declarations
+empty statements
+ID variable
+! unary_op
+ID variable
+variable expression
+unary_op expression
+assignment statement
+statements
+scope
+program

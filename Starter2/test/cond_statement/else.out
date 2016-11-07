@@ -1,0 +1,32 @@
+  1: {
+  2:     if (false) { 
+  3:         i = 10;
+  4:     } else {
+  5:         i = 15;
+  6:     }
+  7: }
+empty declarations
+empty statements
+FALSE_C expression
+empty declarations
+empty statements
+ID variable
+INT_C expression
+assignment statement
+statements
+scope
+scope statement
+empty declarations
+empty statements
+ID variable
+INT_C expression
+assignment statement
+statements
+scope
+scope statement
+else_statement
+if-then-else if_statement
+if_statement statement
+statements
+scope
+program

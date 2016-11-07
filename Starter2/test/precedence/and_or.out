@@ -1,0 +1,20 @@
+  1: {
+  2:     b = i && j || k;
+  3: }
+empty declarations
+empty statements
+ID variable
+ID variable
+variable expression
+&& binary_op
+ID variable
+variable expression
+binary_op expression
+|| binary_op
+ID variable
+variable expression
+binary_op expression
+assignment statement
+statements
+scope
+program

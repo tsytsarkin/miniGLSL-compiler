@@ -1,0 +1,45 @@
+  1: {
+  2:     while (true)
+  3:         i = 9;
+  4:     while (i == j){
+  5:         b = b + 1;
+  6:         c = 9 + 1;
+  7:     }
+  8: }
+empty declarations
+empty statements
+TRUE_C expression
+ID variable
+INT_C expression
+assignment statement
+while statement
+statements
+ID variable
+variable expression
+== binary_op
+ID variable
+variable expression
+binary_op expression
+empty declarations
+empty statements
+ID variable
+ID variable
+variable expression
++ binary_op
+INT_C expression
+binary_op expression
+assignment statement
+statements
+ID variable
+INT_C expression
++ binary_op
+INT_C expression
+binary_op expression
+assignment statement
+statements
+scope
+scope statement
+while statement
+statements
+scope
+program
