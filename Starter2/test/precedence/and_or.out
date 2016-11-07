@@ -1,6 +1,7 @@
   1: {
   2:     b = i && j || k;
-  3: }
+  3:     b = k || i && j;
+  4: }
 ID (b) variable
 ID (i) variable
 variable expression
@@ -10,6 +11,19 @@ variable expression
 binary_op expression
 ID (k) variable
 variable expression
+|| binary_op
+binary_op expression
+assignment statement
+statements
+ID (b) variable
+ID (k) variable
+variable expression
+ID (i) variable
+variable expression
+ID (j) variable
+variable expression
+&& binary_op
+binary_op expression
 || binary_op
 binary_op expression
 assignment statement

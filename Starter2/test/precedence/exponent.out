@@ -1,6 +1,7 @@
   1: {
   2:     i = i + 4^5;
-  3: }
+  3:     i = 4^5 + i;
+  4: }
 ID (i) variable
 ID (i) variable
 variable expression
@@ -8,6 +9,17 @@ INT_C (4) expression
 INT_C (5) expression
 ^ binary_op
 binary_op expression
++ binary_op
+binary_op expression
+assignment statement
+statements
+ID (i) variable
+INT_C (4) expression
+INT_C (5) expression
+^ binary_op
+binary_op expression
+ID (i) variable
+variable expression
 + binary_op
 binary_op expression
 assignment statement

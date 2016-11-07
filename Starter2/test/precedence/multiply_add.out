@@ -1,12 +1,23 @@
   1: {
   2:     i = 5 + 6 * 7;
-  3: }
+  3:     i = 6 * 7 + 5;
+  4: }
 ID (i) variable
 INT_C (5) expression
 INT_C (6) expression
 INT_C (7) expression
 * binary_op
 binary_op expression
++ binary_op
+binary_op expression
+assignment statement
+statements
+ID (i) variable
+INT_C (6) expression
+INT_C (7) expression
+* binary_op
+binary_op expression
+INT_C (5) expression
 + binary_op
 binary_op expression
 assignment statement
