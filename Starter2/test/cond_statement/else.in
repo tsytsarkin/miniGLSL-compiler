@@ -4,4 +4,6 @@
     } else {
         i = 15;
     }
+
+    if (a) if (b) a = false; else b = false;
 }

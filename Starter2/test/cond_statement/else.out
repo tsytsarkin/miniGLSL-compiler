@@ -4,7 +4,9 @@
   4:     } else {
   5:         i = 15;
   6:     }
-  7: }
+  7: 
+  8:     if (a) if (b) a = false; else b = false;
+  9: }
 empty declarations
 empty statements
 FALSE_C expression
@@ -26,6 +28,22 @@ scope
 scope statement
 else_statement
 if-then-else if_statement
+if_statement statement
+statements
+ID variable
+variable expression
+ID variable
+variable expression
+ID variable
+FALSE_C expression
+assignment statement
+ID variable
+FALSE_C expression
+assignment statement
+else_statement
+if-then-else if_statement
+if_statement statement
+if-then if_statement
 if_statement statement
 statements
 scope
