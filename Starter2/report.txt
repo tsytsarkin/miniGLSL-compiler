@@ -4,29 +4,42 @@ Nikita Tsytsarkin
 
 Breakdown of work:
   Braden
-    - Implemented parsing
-    - Built test framework
+    - Initial grammar implementation (directly from lab manual)
+    - Initial precedence implementation
+    - Parser trace implementation
 
   Nikita
     - Wrote tests
+    - Found issues with the original precedence implementation
 
 Summary:
   This portion of the project was to implement the parser for
-  the Mini GLSL Compiler. This was done using Bison parser
-  generator in c. This parser used grammar provided in the lab 
-  manual. Scanner provided with lab starter pack was used. 
-  The solution also implements "trace parser" 
-  functionality (-Tp command-line flag).
+  the MiniGLSL Compiler. This was done using Bison parser
+  generator in C. This parser used grammar provided in the lab 
+  manual. The scanner provided with lab starter pack was used. 
+  The solution also implements "trace parser" functionality
+  (-Tp command-line flag).
 
-  Setting the precedence proved to be challenging, and major
-  efforts were spent to achieve correct parsing.
+  One challenge that we faced in this assignment was properly
+  setting the operator precedence. This was difficult because
+  while attempting to fix a shift/reduce conflict, we
+  accidentally created precedence issues. To solve this, we had
+  to modify part of the grammar structure (particularly with
+  unary/binary operators).
   
-  Resolving shift/reduce conflicts was tricky as well. 
+  Another shift/reduce conflict we encountered was the ambiguity
+  in the original grammar for nested if and else statements.
+  For example:
+    if (a) if (b) foo(); else bar();
+  could be interpreted as:
+    if (a) { if (b) foo(); else bar(); }
+  or:
+    if (a) { if (b) foo(); } else bar();
+  To solve this, we simply gave the shifting of 'else' a higher
+  precedence than the reduction of the if rule.
 
-  Testing framework from the previous lab was reused with 
-  minor alterations. The parser was verified by running 
-  various test cases and comparing test output to expected output.
-  Errors were sent to the error file, and trace output was
-  sent to the trace file. To test the parser's functionality,
-  one should enable trace output using the command line option
-  -Tp.
+  To verify the parser, we used the testing framework we built
+  for the previous lab, with minor alterations. We created test
+  cases by specifying the input and then comparing it to the
+  expected output. The expected output was copied directly from
+  the output of the parser, but was manually validated.
