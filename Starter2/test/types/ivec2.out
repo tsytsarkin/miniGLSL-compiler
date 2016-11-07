@@ -4,11 +4,11 @@
   4:     j[0] = 4;
   5: }
 empty declarations
-IVEC_T type
+IVEC2_T type
 declaration
 declarations
-IVEC_T type
-IVEC_T type
+IVEC2_T type
+IVEC2_T type
 INT_C expression
 INT_C expression
 constructor

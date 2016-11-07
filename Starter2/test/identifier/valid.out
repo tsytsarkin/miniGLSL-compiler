@@ -12,13 +12,13 @@ declarations
 FLOAT_T type
 declaration
 declarations
-VEC_T type
+VEC2_T type
 declaration
 declarations
-IVEC_T type
+IVEC3_T type
 declaration
 declarations
-BVEC_T type
+BVEC4_T type
 declaration
 declarations
 empty statements

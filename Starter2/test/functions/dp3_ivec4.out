@@ -8,10 +8,10 @@ empty declarations
 INT_T type
 declaration
 declarations
-IVEC_T type
+IVEC4_T type
 declaration
 declarations
-IVEC_T type
+IVEC4_T type
 declaration
 declarations
 empty statements

@@ -4,11 +4,11 @@
   4:     j[3] = 6.44;
   5: }
 empty declarations
-VEC_T type
+VEC4_T type
 declaration
 declarations
-VEC_T type
-VEC_T type
+VEC4_T type
+VEC4_T type
 FLOAT_C expression
 FLOAT_C expression
 FLOAT_C expression

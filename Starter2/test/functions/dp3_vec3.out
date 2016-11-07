@@ -8,10 +8,10 @@ empty declarations
 FLOAT_T type
 declaration
 declarations
-VEC_T type
+VEC3_T type
 declaration
 declarations
-VEC_T type
+VEC3_T type
 declaration
 declarations
 empty statements

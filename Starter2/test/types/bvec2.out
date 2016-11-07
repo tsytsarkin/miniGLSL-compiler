@@ -4,11 +4,11 @@
   4:     j[0] = false;
   5: }
 empty declarations
-BVEC_T type
+BVEC2_T type
 declaration
 declarations
-BVEC_T type
-BVEC_T type
+BVEC2_T type
+BVEC2_T type
 TRUE_C expression
 FALSE_C expression
 constructor

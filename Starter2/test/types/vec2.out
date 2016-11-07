@@ -4,11 +4,11 @@
   4:     j[0] = 3.456;
   5: }
 empty declarations
-VEC_T type
+VEC2_T type
 declaration
 declarations
-VEC_T type
-VEC_T type
+VEC2_T type
+VEC2_T type
 FLOAT_C expression
 FLOAT_C expression
 constructor

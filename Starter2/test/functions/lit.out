@@ -4,10 +4,10 @@
   4:     v2 = lit(v1);
   5: }
 empty declarations
-VEC_T type
+VEC4_T type
 declaration
 declarations
-VEC_T type
+VEC4_T type
 declaration
 declarations
 empty statements
