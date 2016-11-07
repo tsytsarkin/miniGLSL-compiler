@@ -1,0 +1,32 @@
+Group g467-006
+Braden Watling
+Nikita Tsytsarkin
+
+Breakdown of work:
+  Braden
+    - Implemented parsing
+    - Built test framework
+
+  Nikita
+    - Wrote tests
+
+Summary:
+  This portion of the project was to implement the parser for
+  the Mini GLSL Compiler. This was done using Bison parser
+  generator in c. This parser used grammar provided in the lab 
+  manual. Scanner provided with lab starter pack was used. 
+  The solution also implements "trace parser" 
+  functionality (-Tp command-line flag).
+
+  Setting the precedence proved to be challenging, and major
+  efforts were spent to achieve correct parsing.
+  
+  Resolving shift/reduce conflicts was tricky as well. 
+
+  Testing framework from the previous lab was reused with 
+  minor alterations. The parser was verified by running 
+  various test cases and comparing test output to expected output.
+  Errors were sent to the error file, and trace output was
+  sent to the trace file. To test the parser's functionality,
+  one should enable trace output using the command line option
+  -Tp.
