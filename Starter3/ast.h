@@ -19,28 +19,49 @@ typedef struct node_ node;
 extern node *ast;
 
 typedef enum {
-  UNKNOWN               = 0,
+  UNKNOWN                = 0,
 
-  SCOPE_NODE            = (1 << 0),
+  SCOPE_NODE             = (1 << 0),
   
-  EXPRESSION_NODE       = (1 << 2),
-  UNARY_EXPRESION_NODE  = (1 << 2) | (1 << 3),
-  BINARY_EXPRESSION_NODE= (1 << 2) | (1 << 4),
-  INT_NODE              = (1 << 2) | (1 << 5), 
-  FLOAT_NODE            = (1 << 2) | (1 << 6),
-  IDENT_NODE            = (1 << 2) | (1 << 7),
-  VAR_NODE              = (1 << 2) | (1 << 8),
-  FUNCTION_NODE         = (1 << 2) | (1 << 9),
-  CONSTRUCTOR_NODE      = (1 << 2) | (1 << 10),
+  EXPRESSION_NODE        = (1 << 2),
+  UNARY_EXPRESSION_NODE  = (1 << 2) | (1 << 3),
+  BINARY_EXPRESSION_NODE = (1 << 2) | (1 << 4),
+  INT_NODE               = (1 << 2) | (1 << 5), 
+  FLOAT_NODE             = (1 << 2) | (1 << 6),
+  IDENT_NODE             = (1 << 2) | (1 << 7),
+  VAR_NODE               = (1 << 2) | (1 << 8),
+  FUNCTION_NODE          = (1 << 2) | (1 << 9),
+  CONSTRUCTOR_NODE       = (1 << 2) | (1 << 10),
 
-  STATEMENT_NODE        = (1 << 1),
-  IF_STATEMENT_NODE     = (1 << 1) | (1 << 11),
-  WHILE_STATEMENT_NODE  = (1 << 1) | (1 << 12),
-  ASSIGNMENT_NODE       = (1 << 1) | (1 << 13),
-  NESTED_SCOPE_NODE     = (1 << 1) | (1 << 14),
+  STATEMENT_NODE         = (1 << 1),
+  IF_STATEMENT_NODE      = (1 << 1) | (1 << 11),
+  WHILE_STATEMENT_NODE   = (1 << 1) | (1 << 12),
+  ASSIGNMENT_NODE        = (1 << 1) | (1 << 13),
+  NESTED_SCOPE_NODE      = (1 << 1) | (1 << 14),
 
-  DECLARATION_NODE      = (1 << 15)
+  DECLARATION_NODE       = (1 << 15)
 } node_kind;
+
+typedef enum {
+  OP_UMINUS,
+  OP_NOT
+} unary_op;
+
+typedef enum {
+  OP_AND,
+  OP_OR,
+  OP_EQ,
+  OP_NEQ,
+  OP_LT,
+  OP_LEQ,
+  OP_GT,
+  OP_GEQ,
+  OP_PLUS,
+  OP_MINUS,
+  OP_MUL,
+  OP_DIV,
+  OP_XOR
+} binary_op;
 
 struct node_ {
 
@@ -64,7 +85,14 @@ struct node_ {
       node *right;
     } binary_expr;
 
-    // etc.
+    struct {
+      int val;
+    } int_expr;
+
+    struct {
+      float val;
+    } float_expr;
+
   };
 };
 

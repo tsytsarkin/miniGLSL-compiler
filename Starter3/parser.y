@@ -97,17 +97,15 @@ enum {
 %right    '!' UMINUS                // 1
 %left     '(' '['                   // 0
 
-// resolve dangling else shift/reduce conflict with associativity
-%left     WITHOUT_ELSE
-%left     WITH_ELSE
+// Give the shifting of else a higher precedence than
+// the reduction of if-then
+%precedence     IF_THEN
+%precedence     ELSE
 
 // type declarations
 // TODO: fill this out
 %type <as_ast> expression
-
-// expect one shift/reduce conflict, where Bison chooses to shift
-// the ELSE.
-%expect 1
+%type <as_ast> variable
 
 %start    program
 
@@ -156,10 +154,10 @@ declaration
 statement
   : variable '=' expression ';'
       { yTRACE("statement -> variable = expression ;\n") }
-  | IF '(' expression ')' statement ELSE statement %prec WITH_ELSE
-      { yTRACE("statement -> IF ( expression ) statement ELSE statement \n") }
-  | IF '(' expression ')' statement %prec WITHOUT_ELSE
+  | IF '(' expression ')' statement %prec IF_THEN
       { yTRACE("statement -> IF ( expression ) statement \n") }
+  | IF '(' expression ')' statement ELSE statement
+      { yTRACE("statement -> IF ( expression ) statement ELSE statement \n") }
   | scope 
       { yTRACE("statement -> scope \n") }
   | ';'
@@ -191,51 +189,51 @@ expression
 
   /* unary opterators */
   | '-' expression %prec UMINUS
-      { yTRACE("expression -> - expression \n") }
+      { yTRACE("expression -> - expression \n") $$ = ast_allocate(UNARY_EXPRESSION_NODE, OP_UMINUS, $2); }
   | '!' expression %prec '!'
-      { yTRACE("expression -> ! expression \n") }
+      { yTRACE("expression -> ! expression \n") $$ = ast_allocate(UNARY_EXPRESSION_NODE, OP_NOT, $2); }
 
   /* binary operators */
   | expression AND expression %prec AND
-      { yTRACE("expression -> expression AND expression \n") }
+      { yTRACE("expression -> expression AND expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_AND, $1, $3); }
   | expression OR expression %prec OR
-      { yTRACE("expression -> expression OR expression \n") }
+      { yTRACE("expression -> expression OR expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_OR, $1, $3); }
   | expression EQ expression %prec EQ
-      { yTRACE("expression -> expression EQ expression \n") }
+      { yTRACE("expression -> expression EQ expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_EQ, $1, $3); }
   | expression NEQ expression %prec NEQ
-      { yTRACE("expression -> expression NEQ expression \n") }
+      { yTRACE("expression -> expression NEQ expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_NEQ, $1, $3); }
   | expression '<' expression %prec '<'
-      { yTRACE("expression -> expression < expression \n") }
+      { yTRACE("expression -> expression < expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_LT, $1, $3); }
   | expression LEQ expression %prec LEQ
-      { yTRACE("expression -> expression LEQ expression \n") }
+      { yTRACE("expression -> expression LEQ expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_LEQ, $1, $3); }
   | expression '>' expression %prec '>'
-      { yTRACE("expression -> expression > expression \n") }
+      { yTRACE("expression -> expression > expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_GT, $1, $3); }
   | expression GEQ expression %prec GEQ
-      { yTRACE("expression -> expression GEQ expression \n") }
+      { yTRACE("expression -> expression GEQ expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_GEQ, $1, $3); }
   | expression '+' expression %prec '+'
-      { yTRACE("expression -> expression + expression \n") }
+      { yTRACE("expression -> expression + expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_PLUS, $1, $3); }
   | expression '-' expression %prec '-'
-      { yTRACE("expression -> expression - expression \n") }
+      { yTRACE("expression -> expression - expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_MINUS, $1, $3); }
   | expression '*' expression %prec '*'
-      { yTRACE("expression -> expression * expression \n") }
+      { yTRACE("expression -> expression * expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_MUL, $1, $3); }
   | expression '/' expression %prec '/'
-      { yTRACE("expression -> expression / expression \n") }
+      { yTRACE("expression -> expression / expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_DIV, $1, $3); }
   | expression '^' expression %prec '^'
-      { yTRACE("expression -> expression ^ expression \n") }
+      { yTRACE("expression -> expression ^ expression \n") $$ = ast_allocate(BINARY_EXPRESSION_NODE, OP_XOR, $1, $3); }
 
   /* literals */
   | TRUE_C
-      { yTRACE("expression -> TRUE_C \n") }
+      { yTRACE("expression -> TRUE_C \n") $$ = ast_allocate(INT_NODE, 1); }
   | FALSE_C
-      { yTRACE("expression -> FALSE_C \n") }
+      { yTRACE("expression -> FALSE_C \n") $$ = ast_allocate(INT_NODE, 0); }
   | INT_C
-      { yTRACE("expression -> INT_C \n") }
+      { yTRACE("expression -> INT_C \n") $$ = ast_allocate(INT_NODE, $1); }
   | FLOAT_C
-      { yTRACE("expression -> FLOAT_C \n") }
+      { yTRACE("expression -> FLOAT_C \n") $$ = ast_allocate(FLOAT_NODE, $1); }
 
   /* misc */
   | '(' expression ')'
-      { yTRACE("expression -> ( expression ) \n") }
+      { yTRACE("expression -> ( expression ) \n") $$ = $2; }
   | variable { }
     { yTRACE("expression -> variable \n") }
   ;
