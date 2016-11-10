@@ -22,11 +22,11 @@ typedef enum {
   UNKNOWN                = 0,
 
   SCOPE_NODE             = (1 << 0),
-  
+ 
   EXPRESSION_NODE        = (1 << 2),
   UNARY_EXPRESSION_NODE  = (1 << 2) | (1 << 3),
   BINARY_EXPRESSION_NODE = (1 << 2) | (1 << 4),
-  INT_NODE               = (1 << 2) | (1 << 5), 
+  INT_NODE               = (1 << 2) | (1 << 5),
   FLOAT_NODE             = (1 << 2) | (1 << 6),
   IDENT_NODE             = (1 << 2) | (1 << 7),
   VAR_NODE               = (1 << 2) | (1 << 8),
@@ -70,10 +70,10 @@ struct node_ {
 
   union {
     struct {
-      // declarations?
-      // statements?
+      node *declarations;
+      node *statements;
     } scope;
-  
+
     struct {
       int op;
       node *right;
@@ -93,11 +93,20 @@ struct node_ {
       float val;
     } float_expr;
 
+    struct {
+      char *identifier;
+      bool has_index;
+      int index;
+    } variable;
+
   };
 };
 
 node *ast_allocate(node_kind type, ...);
 void ast_free(node *ast);
 void ast_print(node * ast);
+
+void ast_visit_preorder(node *root, void (*f)(node *, void *), void *data);
+void ast_visit_postorder(node *root, void (*f)(node *, void *), void *data);
 
 #endif /* AST_H_ */

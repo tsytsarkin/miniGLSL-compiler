@@ -3,9 +3,9 @@
  * Braden Watling
  * Nikita Tsytsarkin
  * g467-006
- * 
+ *
  *   Interface to the parser module for CSC467 course project.
- * 
+ *
  *   Phase 2: Implement context free grammar for source language, and
  *            parse tracing functionality.
  *   Phase 3: Construct the AST for the source language program.
@@ -33,8 +33,8 @@ int yylex();                    /* procedure for calling lexical analyzer */
 extern int yyline;              /* variable holding current line number   */
 
 enum {
-  DP3 = 0, 
-  LIT = 1, 
+  DP3 = 0,
+  LIT = 1,
   RSQ = 2
 };
 
@@ -104,8 +104,13 @@ enum {
 
 // type declarations
 // TODO: fill this out
+%type <as_ast> scope
+%type <as_ast> declarations
+%type <as_ast> statements
 %type <as_ast> expression
 %type <as_ast> variable
+%type <as_ast> arguments_opt
+%type <as_ast> arguments
 
 %start    program
 
@@ -119,31 +124,31 @@ enum {
  *    2. Implement the trace parser option of the compiler
  ***********************************************************************/
 program
-  : scope 
-      { yTRACE("program -> scope\n") } 
+  : scope
+      { yTRACE("program -> scope\n") }
   ;
 
 scope
   : '{' declarations statements '}'
-      { yTRACE("scope -> { declarations statements }\n") }
+      { yTRACE("scope -> { declarations statements }\n") $$ = ast_allocate(SCOPE_NODE, $2, $3); }
   ;
 
 declarations
   : declarations declaration
-      { yTRACE("declarations -> declarations declaration\n") }
-  | 
-      { yTRACE("declarations -> \n") }
+      { yTRACE("declarations -> declarations declaration\n") $$ = ast_allocate(DECLARATION_NODE); }
+  | %empty
+      { yTRACE("declarations -> \n") $$ = NULL; }
   ;
 
 statements
   : statements statement
-      { yTRACE("statements -> statements statement\n") }
-  | 
-      { yTRACE("statements -> \n") }
+      { yTRACE("statements -> statements statement\n") $$ = ast_allocate(STATEMENT_NODE); }
+  | %empty
+      { yTRACE("statements -> \n") $$ = NULL; }
   ;
 
 declaration
-  : type ID ';' 
+  : type ID ';'
       { yTRACE("declaration -> type ID ;\n") }
   | type ID '=' expression ';'
       { yTRACE("declaration -> type ID = expression ;\n") }
@@ -158,7 +163,7 @@ statement
       { yTRACE("statement -> IF ( expression ) statement \n") }
   | IF '(' expression ')' statement ELSE statement
       { yTRACE("statement -> IF ( expression ) statement ELSE statement \n") }
-  | scope 
+  | scope
       { yTRACE("statement -> scope \n") }
   | ';'
       { yTRACE("statement -> ; \n") }
@@ -183,9 +188,9 @@ expression
 
   /* function-like operators */
   : type '(' arguments_opt ')' %prec '('
-      { yTRACE("expression -> type ( arguments_opt ) \n") }
+      { yTRACE("expression -> type ( arguments_opt ) \n") $$ = ast_allocate(CONSTRUCTOR_NODE); }
   | FUNC '(' arguments_opt ')' %prec '('
-      { yTRACE("expression -> FUNC ( arguments_opt ) \n") }
+      { yTRACE("expression -> FUNC ( arguments_opt ) \n") $$ = ast_allocate(FUNCTION_NODE); }
 
   /* unary opterators */
   | '-' expression %prec UMINUS
@@ -234,7 +239,7 @@ expression
   /* misc */
   | '(' expression ')'
       { yTRACE("expression -> ( expression ) \n") $$ = $2; }
-  | variable { }
+  | variable
     { yTRACE("expression -> variable \n") }
   ;
 
@@ -245,18 +250,18 @@ variable
       { yTRACE("variable -> ID [ INT_C ] \n") }
   ;
 
+arguments_opt
+  : arguments
+      { yTRACE("arguments_opt -> arguments \n") }
+  | %empty
+      { yTRACE("arguments_opt -> \n") $$ = NULL; }
+  ;
+
 arguments
   : arguments ',' expression
       { yTRACE("arguments -> arguments , expression \n") }
   | expression
       { yTRACE("arguments -> expression \n") }
-  ;
-
-arguments_opt
-  : arguments
-      { yTRACE("arguments_opt -> arguments \n") }
-  |
-      { yTRACE("arguments_opt -> \n") }
   ;
 
 %%
@@ -275,7 +280,7 @@ void yyerror(const char* s) {
   }
 
   fprintf(errorFile, "\nPARSER ERROR, LINE %d", yyline);
-  
+
   if(strcmp(s, "parse error")) {
     if(strncmp(s, "parse error, ", 13)) {
       fprintf(errorFile, ": %s\n", s);
