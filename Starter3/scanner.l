@@ -57,9 +57,9 @@ const                         { yOUT(CONST); }
 bool                          { yOUT(BOOL_T); }
 int                           { yOUT(INT_T); }
 float                         { yOUT(FLOAT_T); }
-vec(2|3|4)                    { yylval.as_vec = yytext[3] - '1'; yOUT(VEC_T); }
-ivec(2|3|4)                   { yylval.as_vec = yytext[4] - '1'; yOUT(IVEC_T); }
-bvec(2|3|4)                   { yylval.as_vec = yytext[4] - '1'; yOUT(BVEC_T); }
+vec(2|3|4)                    { yylval.as_vec = yytext[3] - '0'; yOUT(VEC_T); }
+ivec(2|3|4)                   { yylval.as_vec = yytext[4] - '0'; yOUT(IVEC_T); }
+bvec(2|3|4)                   { yylval.as_vec = yytext[4] - '0'; yOUT(BVEC_T); }
 
 if                            { yOUT(IF); }
 else                          { yOUT(ELSE); }
