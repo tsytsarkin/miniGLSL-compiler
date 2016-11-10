@@ -106,7 +106,9 @@ enum {
 // TODO: fill this out
 %type <as_ast> scope
 %type <as_ast> declarations
+%type <as_ast> declaration
 %type <as_ast> statements
+%type <as_ast> statement
 %type <as_ast> expression
 %type <as_ast> variable
 %type <as_ast> arguments_opt
@@ -125,7 +127,7 @@ enum {
  ***********************************************************************/
 program
   : scope
-      { yTRACE("program -> scope\n") }
+      { yTRACE("program -> scope\n") ast = $1; }
   ;
 
 scope
@@ -135,25 +137,25 @@ scope
 
 declarations
   : declarations declaration
-      { yTRACE("declarations -> declarations declaration\n") $$ = ast_allocate(DECLARATION_NODE); }
+      { yTRACE("declarations -> declarations declaration\n") if ($1 != NULL ) $1->declaration.next_declaration = $2; $$ = $2; }
   | %empty
       { yTRACE("declarations -> \n") $$ = NULL; }
   ;
 
 statements
   : statements statement
-      { yTRACE("statements -> statements statement\n") $$ = ast_allocate(STATEMENT_NODE); }
+      { yTRACE("statements -> statements statement\n") if ($1 != NULL) $1->statement.next_statement = $2; $$ = $2; }
   | %empty
       { yTRACE("statements -> \n") $$ = NULL; }
   ;
 
 declaration
   : type ID ';'
-      { yTRACE("declaration -> type ID ;\n") }
+      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, NULL, false, NULL); }
   | type ID '=' expression ';'
-      { yTRACE("declaration -> type ID = expression ;\n") }
+      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, NULL, false, $4); }
   | CONST type ID '=' expression ';'
-      { yTRACE("declaration -> CONST type ID = expression ;\n") }
+      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, NULL, true, $5); }
   ;
 
 statement

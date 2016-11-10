@@ -55,14 +55,21 @@ node *ast_allocate(node_kind kind, ...) {
     // STATEMENT_NODE is a class of nodes
     break;
   case IF_STATEMENT_NODE:
+    ast->statement.next_statement = va_arg(args, node *);
     break;
   case WHILE_STATEMENT_NODE:
+    ast->statement.next_statement = va_arg(args, node *);
     break;
   case ASSIGNMENT_NODE:
+    ast->statement.next_statement = va_arg(args, node *);
     break;
   case NESTED_SCOPE_NODE:
+    ast->statement.next_statement = va_arg(args, node *);
     break;
   case DECLARATION_NODE:
+    ast->declaration.next_declaration = va_arg(args, node *);
+    ast->declaration.is_const = va_arg(args, int);
+    ast->declaration.assignment_expr = va_arg(args, node *);
     break;
   default: break;
   }
@@ -72,14 +79,23 @@ node *ast_allocate(node_kind kind, ...) {
   return ast;
 }
 
-void ast_free(node *ast) {
+void freeer(node *n, void *data) {
+  free(n);
+}
 
+void ast_free(node *ast) {
+  ast_visit_postorder(ast, freeer, NULL);
+}
+
+void printer(node *n, void *data) {
+  printf("HELLO!!!\n");
 }
 
 void ast_print(node * ast) {
-
+  ast_visit_preorder(ast, printer, NULL);
 }
 
+/****** VISITOR FUNCTIONS ******/
 typedef enum {
   VISIT_PREORDER,
   VISIT_POSTORDER
@@ -87,6 +103,14 @@ typedef enum {
 
 void visit(node *n, void (*f)(node *, void *), void *data, visit_order order);
 void visitor(node *root, void (*f)(node *, void *), void *data, visit_order order);
+
+void ast_visit_preorder(node *root, void (*f)(node *, void *), void *data) {
+  visitor(root, f, data, VISIT_PREORDER);
+}
+
+void ast_visit_postorder(node *root, void (*f)(node *, void *), void *data) {
+  visitor(root, f, data, VISIT_POSTORDER);
+}
 
 void visit(node *n, void (*f)(node *, void *), void *data, visit_order order) {
   if (n != NULL) {
@@ -148,6 +172,8 @@ void visitor(node *root, void (*f)(node *, void *), void *data, visit_order orde
     case NESTED_SCOPE_NODE:
       break;
     case DECLARATION_NODE:
+      visit(root->declaration.assignment_expr, f, data, order);
+      visit(root->declaration.next_declaration, f, data, order);
       break;
     default: break;
     }
@@ -156,13 +182,5 @@ void visitor(node *root, void (*f)(node *, void *), void *data, visit_order orde
       f(root, data);
     }
   }
-}
-
-void ast_visit_preorder(node *root, void (*f)(node *, void *), void *data) {
-  visitor(root, f, data, VISIT_PREORDER);
-}
-
-void ast_visit_postorder(node *root, void (*f)(node *, void *), void *data) {
-  visitor(root, f, data, VISIT_POSTORDER);
 }
 

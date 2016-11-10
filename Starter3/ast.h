@@ -75,6 +75,30 @@ struct node_ {
     } scope;
 
     struct {
+      node *next_declaration;
+      bool is_const;
+      node *assignment_expr;      
+    } declaration;
+
+    struct {
+      node *next_statement;
+
+      union {
+        struct {
+        } if_statement_node;
+
+        struct {
+        } while_statement_node;
+
+        struct {
+        } assignment_node;
+
+        struct {
+        } nested_scope_node;
+      };
+    } statement;
+
+    struct {
       int op;
       node *right;
     } unary_expr;
