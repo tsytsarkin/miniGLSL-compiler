@@ -26,51 +26,67 @@ node *ast_allocate(node_kind kind, ...) {
     ast->scope.declarations = va_arg(args, node *);
     ast->scope.statements = va_arg(args, node *);
     break;
-  case EXPRESSION_NODE:
-    // EXPRESSION_NODE is a class of nodes
-    break;
-  case UNARY_EXPRESSION_NODE:
-    break;
-  case BINARY_EXPRESSION_NODE:
-    ast->binary_expr.op = va_arg(args, int);
-    ast->binary_expr.left = va_arg(args, node *);
-    ast->binary_expr.right = va_arg(args, node *);
-    break;
-  case INT_NODE:
-    // No children
-    break;
-  case FLOAT_NODE:
-    // No children
-    break;
-  case IDENT_NODE:
-    // No children
-    break;
-  case VAR_NODE:
-    break;
-  case FUNCTION_NODE:
-    break;
-  case CONSTRUCTOR_NODE:
-    break;
-  case STATEMENT_NODE:
-    // STATEMENT_NODE is a class of nodes
-    break;
-  case IF_STATEMENT_NODE:
-    ast->statement.next_statement = va_arg(args, node *);
-    break;
-  case WHILE_STATEMENT_NODE:
-    ast->statement.next_statement = va_arg(args, node *);
-    break;
-  case ASSIGNMENT_NODE:
-    ast->statement.next_statement = va_arg(args, node *);
-    break;
-  case NESTED_SCOPE_NODE:
-    ast->statement.next_statement = va_arg(args, node *);
-    break;
+
   case DECLARATION_NODE:
-    ast->declaration.next_declaration = va_arg(args, node *);
     ast->declaration.is_const = va_arg(args, int);
     ast->declaration.assignment_expr = va_arg(args, node *);
     break;
+
+  case STATEMENT_NODE:
+    // STATEMENT_NODE is an abstract node
+    break;
+  case IF_STATEMENT_NODE:
+    ast->statement.if_else_statement.condition = va_arg(args, node *);
+    ast->statement.if_else_statement.if_statement = va_arg(args, node *);
+    ast->statement.if_else_statement.else_statement = va_arg(args, node *);
+    break;
+  case ASSIGNMENT_NODE:
+    ast->statement.assignment.variable = va_arg(args, node *);
+    ast->statement.assignment.expression = va_arg(args, node *);
+    break;
+  case NESTED_SCOPE_NODE:
+    // TODO: needed?
+    break;
+
+  case EXPRESSION_NODE:
+    // EXPRESSION_NODE is an abstract node
+    break;
+  case UNARY_EXPRESSION_NODE:
+    ast->expression.unary.op = va_arg(args, int);
+    ast->expression.unary.right = va_arg(args, node *);
+    break;
+  case BINARY_EXPRESSION_NODE:
+    ast->expression.binary.op = va_arg(args, int);
+    ast->expression.binary.left = va_arg(args, node *);
+    ast->expression.binary.right = va_arg(args, node *);
+    break;
+  case INT_NODE:
+    ast->expression.int_expr.val = va_arg(args, int);
+    break;
+  case FLOAT_NODE:
+    ast->expression.float_expr.val = va_arg(args, double);
+    break;
+  case IDENT_NODE:
+    ast->expression.ident.val = va_arg(args, char *);
+    break;
+  case VAR_NODE:
+    ast->expression.variable.identifier = va_arg(args, char *);
+    ast->expression.variable.has_index = va_arg(args, int);
+    ast->expression.variable.index = va_arg(args, int);
+    break;
+  case FUNCTION_NODE:
+    ast->expression.function.func_id = va_arg(args, int);
+    ast->expression.function.arguments = va_arg(args, node *);
+    break;
+  case CONSTRUCTOR_NODE:
+    ast->expression.constructor.type = va_arg(args, node *);
+    ast->expression.constructor.arguments = va_arg(args, node *);
+    break;
+
+  case ARGUMENT_NODE:
+    ast->argument.expression = va_arg(args, node *);
+    break;
+
   default: break;
   }
 
@@ -88,7 +104,7 @@ void ast_free(node *ast) {
 }
 
 void printer(node *n, void *data) {
-  printf("HELLO!!!\n");
+  printf("Hello, this is a node of type %d\n", n->kind);
 }
 
 void ast_print(node * ast) {
@@ -102,48 +118,59 @@ typedef enum {
 } visit_order;
 
 void visit(node *n, void (*f)(node *, void *), void *data, visit_order order);
-void visitor(node *root, void (*f)(node *, void *), void *data, visit_order order);
+void visitor(node *n, void (*f)(node *, void *), void *data, visit_order order);
 
-void ast_visit_preorder(node *root, void (*f)(node *, void *), void *data) {
-  visitor(root, f, data, VISIT_PREORDER);
+void ast_visit_preorder(node *n, void (*f)(node *, void *), void *data) {
+  visitor(n, f, data, VISIT_PREORDER);
 }
 
-void ast_visit_postorder(node *root, void (*f)(node *, void *), void *data) {
-  visitor(root, f, data, VISIT_POSTORDER);
+void ast_visit_postorder(node *n, void (*f)(node *, void *), void *data) {
+  visitor(n, f, data, VISIT_POSTORDER);
 }
 
-void visit(node *n, void (*f)(node *, void *), void *data, visit_order order) {
+void visitor(node *n, void (*f)(node *, void *), void *data, visit_order order) {
   if (n != NULL) {
     if (order == VISIT_PREORDER) {
       f(n, data);
-      visitor(n, f, data, order);
-    } else if (order == VISIT_POSTORDER) {
-      visitor(n, f, data, order);
-      f(n, data);
-    }
-  }
-}
-
-void visitor(node *root, void (*f)(node *, void *), void *data, visit_order order) {
-  if (root != NULL) {
-    if (order == VISIT_PREORDER) {
-      f(root, data);
     }
 
-    switch (ast->kind) {
+    switch (n->kind) {
     case SCOPE_NODE:
-      visit(root->scope.declarations, f, data, order);
-      visit(root->scope.statements, f, data, order);
+      visitor(n->scope.declarations, f, data, order);
+      visitor(n->scope.statements, f, data, order);
       break;
+
+    case DECLARATION_NODE:
+      visitor(n->declaration.assignment_expr, f, data, order);
+      visitor(n->declaration.next_declaration, f, data, order);
+      break;
+
+    case STATEMENT_NODE:
+      // STATEMENT_NODE is an abstract node
+      break;
+    case IF_STATEMENT_NODE:
+      visitor(n->statement.if_else_statement.condition, f, data, order);
+      visitor(n->statement.if_else_statement.if_statement, f, data, order);
+      visitor(n->statement.if_else_statement.else_statement, f, data, order);
+      visitor(n->statement.next_statement, f, data, order);
+      break;
+    case ASSIGNMENT_NODE:
+      visitor(n->statement.assignment.variable, f, data, order);
+      visitor(n->statement.assignment.expression, f, data, order);
+      visitor(n->statement.next_statement, f, data, order);
+      break;
+    case NESTED_SCOPE_NODE:
+      break;
+
     case EXPRESSION_NODE:
-      // EXPRESSION_NODE is a class of nodes
+      // EXPRESSION_NODE is an abstract node
       break;
     case UNARY_EXPRESSION_NODE:
-      visit(root->unary_expr.right, f, data, order);
+      visitor(n->expression.unary.right, f, data, order);
       break;
     case BINARY_EXPRESSION_NODE:
-      visit(root->binary_expr.left, f, data, order);
-      visit(root->binary_expr.right, f, data, order);
+      visitor(n->expression.binary.left, f, data, order);
+      visitor(n->expression.binary.right, f, data, order);
       break;
     case INT_NODE:
       // No children
@@ -155,31 +182,24 @@ void visitor(node *root, void (*f)(node *, void *), void *data, visit_order orde
       // No children
       break;
     case VAR_NODE:
+      // No children
       break;
     case FUNCTION_NODE:
+      visitor(n->expression.function.arguments, f, data, order);
       break;
     case CONSTRUCTOR_NODE:
+      visitor(n->expression.constructor.arguments, f, data, order);
       break;
-    case STATEMENT_NODE:
-      // STATEMENT_NODE is a class of nodes
-      break;
-    case IF_STATEMENT_NODE:
-      break;
-    case WHILE_STATEMENT_NODE:
-      break;
-    case ASSIGNMENT_NODE:
-      break;
-    case NESTED_SCOPE_NODE:
-      break;
-    case DECLARATION_NODE:
-      visit(root->declaration.assignment_expr, f, data, order);
-      visit(root->declaration.next_declaration, f, data, order);
-      break;
+
+    case ARGUMENT_NODE:
+      visitor(n->argument.expression, f, data, order);
+      visitor(n->argument.next_argument, f, data, order);
+
     default: break;
     }
 
     if (order == VISIT_POSTORDER) {
-      f(root, data);
+      f(n, data);
     }
   }
 }

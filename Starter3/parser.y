@@ -151,24 +151,24 @@ statements
 
 declaration
   : type ID ';'
-      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, NULL, false, NULL); }
+      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, NULL); }
   | type ID '=' expression ';'
-      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, NULL, false, $4); }
+      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $4); }
   | CONST type ID '=' expression ';'
-      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, NULL, true, $5); }
+      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $5); }
   ;
 
 statement
   : variable '=' expression ';'
-      { yTRACE("statement -> variable = expression ;\n") }
+      { yTRACE("statement -> variable = expression ;\n") $$ = ast_allocate(ASSIGNMENT_NODE, $1, $3); }
   | IF '(' expression ')' statement %prec IF_THEN
-      { yTRACE("statement -> IF ( expression ) statement \n") }
+      { yTRACE("statement -> IF ( expression ) statement \n") $$ = ast_allocate(IF_STATEMENT_NODE, $3, $5, NULL); }
   | IF '(' expression ')' statement ELSE statement
-      { yTRACE("statement -> IF ( expression ) statement ELSE statement \n") }
+      { yTRACE("statement -> IF ( expression ) statement ELSE statement \n") $$ = ast_allocate(IF_STATEMENT_NODE, $3, $5, $7); }
   | scope
       { yTRACE("statement -> scope \n") }
   | ';'
-      { yTRACE("statement -> ; \n") }
+      { yTRACE("statement -> ; \n") $$ = NULL; }
   ;
 
 type
@@ -247,23 +247,23 @@ expression
 
 variable
   : ID
-      { yTRACE("variable -> ID \n") }
+      { yTRACE("variable -> ID \n") $$ = ast_allocate(VAR_NODE, $1, false, 0); }
   | ID '[' INT_C ']' %prec '['
-      { yTRACE("variable -> ID [ INT_C ] \n") }
+      { yTRACE("variable -> ID [ INT_C ] \n") $$ = ast_allocate(VAR_NODE, $1, true, $3); }
   ;
 
 arguments_opt
   : arguments
       { yTRACE("arguments_opt -> arguments \n") }
   | %empty
-      { yTRACE("arguments_opt -> \n") $$ = NULL; }
+      { yTRACE("arguments_opt -> \n") $$ = NULL; $$ = NULL; }
   ;
 
 arguments
   : arguments ',' expression
-      { yTRACE("arguments -> arguments , expression \n") }
+      { yTRACE("arguments -> arguments , expression \n") if ($1 != NULL) $1->argument.next_argument = $3; $$ = $3; }
   | expression
-      { yTRACE("arguments -> expression \n") }
+      { yTRACE("arguments -> expression \n") $$ = ast_allocate(ARGUMENT_NODE, $1); }
   ;
 
 %%

@@ -35,11 +35,14 @@ typedef enum {
 
   STATEMENT_NODE         = (1 << 1),
   IF_STATEMENT_NODE      = (1 << 1) | (1 << 11),
-  WHILE_STATEMENT_NODE   = (1 << 1) | (1 << 12),
-  ASSIGNMENT_NODE        = (1 << 1) | (1 << 13),
-  NESTED_SCOPE_NODE      = (1 << 1) | (1 << 14),
+  ASSIGNMENT_NODE        = (1 << 1) | (1 << 12),
+  NESTED_SCOPE_NODE      = (1 << 1) | (1 << 13),
 
-  DECLARATION_NODE       = (1 << 15)
+  DECLARATION_NODE       = (1 << 14),
+
+  TYPE_NODE              = (1 << 15),
+
+  ARGUMENT_NODE         = (1 << 16),
 } node_kind;
 
 typedef enum {
@@ -75,54 +78,82 @@ struct node_ {
     } scope;
 
     struct {
-      node *next_declaration;
       bool is_const;
-      node *assignment_expr;      
+      node *type;
+      char *id;
+      node *assignment_expr;
+      node *next_declaration;
     } declaration;
 
     struct {
-      node *next_statement;
-
       union {
         struct {
-        } if_statement_node;
+          node *condition;
+          node *if_statement;
+          node *else_statement;
+        } if_else_statement;
 
         struct {
-        } while_statement_node;
+          node *variable;
+          node *expression;
+        } assignment;
 
+        // TODO: is this really needed?
         struct {
-        } assignment_node;
-
-        struct {
-        } nested_scope_node;
+        } nested_scope;
       };
+
+      node *next_statement;
     } statement;
 
     struct {
-      int op;
-      node *right;
-    } unary_expr;
+      union {
+        struct {
+          int op;
+          node *right;
+        } unary;
+
+        struct {
+          int op;
+          node *left;
+          node *right;
+        } binary;
+
+        struct {
+          int val;
+        } int_expr;
+
+        struct {
+          float val;
+        } float_expr;
+
+        struct {
+          char *val;
+        } ident;
+
+        struct {
+          char *identifier;
+          bool has_index;
+          int index;
+        } variable;
+
+        struct {
+          int func_id;
+          node *arguments;
+        } function;
+
+        struct {
+          node *type;
+          node *arguments;
+        } constructor;
+      };
+    } expression;
+
 
     struct {
-      int op;
-      node *left;
-      node *right;
-    } binary_expr;
-
-    struct {
-      int val;
-    } int_expr;
-
-    struct {
-      float val;
-    } float_expr;
-
-    struct {
-      char *identifier;
-      bool has_index;
-      int index;
-    } variable;
-
+      node *expression;
+      node *next_argument;
+    } argument;
   };
 };
 
