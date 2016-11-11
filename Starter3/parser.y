@@ -138,16 +138,42 @@ scope
 
 declarations
   : declarations declaration
-      { yTRACE("declarations -> declarations declaration\n") if ($1 != NULL ) $1->declaration.next_declaration = $2; $$ = $2; }
+      { yTRACE("declarations -> declarations declaration\n")
+        if ($1->declarations.first_declaration == NULL) {
+          // If this is the first declaration, initialize the list
+          $1->declarations.first_declaration = $2;
+          $1->declarations.last_declaration = $2;
+        } else {
+          // Otherwise add to the end of the list
+          $1->declarations.last_declaration->declaration.next_declaration = $2;
+        }
+        // The current declaration is the last one seen
+        $1->declarations.last_declaration = $2;
+        // Return the declarations object
+        $$ = $1;
+      }
   | %empty
-      { yTRACE("declarations -> \n") $$ = NULL; }
+      { yTRACE("declarations -> \n") $$ = ast_allocate(DECLARATIONS_NODE); }
   ;
 
 statements
   : statements statement
-      { yTRACE("statements -> statements statement\n") if ($1 != NULL) $1->statement.next_statement = $2; $$ = $2; }
+      { yTRACE("statements -> statements statement\n")
+        if ($1->statements.first_statement == NULL) {
+          // If this is the first statement, initialize the list
+          $1->statements.first_statement = $2;
+          $1->statements.last_statement = $2;
+        } else {
+          // Otherwise add to the end of the list
+          $1->statements.last_statement->statement.next_statement = $2;
+        }
+        // The current statement is the last one seen
+        $1->statements.last_statement = $2;
+        // Return the statements object
+        $$ = $1;
+      }
   | %empty
-      { yTRACE("statements -> \n") $$ = NULL; }
+      { yTRACE("statements -> \n") $$ = ast_allocate(STATEMENTS_NODE); }
   ;
 
 declaration

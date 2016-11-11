@@ -11,6 +11,7 @@
 
 node *ast = NULL;
 
+/****** BUILDING ******/
 node *ast_allocate(node_kind kind, ...) {
   va_list args;
 
@@ -27,24 +28,32 @@ node *ast_allocate(node_kind kind, ...) {
     n->scope.statements = va_arg(args, node *);
     break;
 
+  case DECLARATIONS_NODE:
+    n->declarations.first_declaration = NULL;
+    n->declarations.last_declaration = NULL;
+    break;
   case DECLARATION_NODE:
     n->declaration.is_const = va_arg(args, int);
     n->declaration.type = va_arg(args, node *);
     n->declaration.id = va_arg(args, char *);
     n->declaration.assignment_expr = va_arg(args, node *);
+    n->declaration.next_declaration = NULL;
     break;
 
-  case STATEMENT_NODE:
-    // STATEMENT_NODE is an abstract node
+  case STATEMENTS_NODE:
+    n->statements.first_statement = NULL;
+    n->statements.last_statement = NULL;
     break;
   case IF_STATEMENT_NODE:
     n->statement.if_else_statement.condition = va_arg(args, node *);
     n->statement.if_else_statement.if_statement = va_arg(args, node *);
     n->statement.if_else_statement.else_statement = va_arg(args, node *);
+    n->statement.next_statement = NULL;
     break;
   case ASSIGNMENT_NODE:
     n->statement.assignment.variable = va_arg(args, node *);
     n->statement.assignment.expression = va_arg(args, node *);
+    n->statement.next_statement = NULL;
     break;
   case NESTED_SCOPE_NODE:
     // TODO: needed?
@@ -92,6 +101,7 @@ node *ast_allocate(node_kind kind, ...) {
 
   case ARGUMENT_NODE:
     n->argument.expression = va_arg(args, node *);
+    n->argument.next_argument = NULL;
     break;
 
   default: break;
@@ -102,14 +112,16 @@ node *ast_allocate(node_kind kind, ...) {
   return n;
 }
 
-void freeer(node *n, void *data) {
+/****** FREEING ******/
+void free_postorder(node *n, void *data) {
   free(n);
 }
 
 void ast_free(node *n) {
-  ast_visit(n, NULL, freeer, NULL);
+  ast_visit(n, NULL, free_postorder, NULL);
 }
 
+/****** PRINTING ******/
 void print_preorder(node *n, void *) {
 
 }
@@ -127,18 +139,16 @@ void ast_print(node *n) {
   switch (n->kind) {
   case SCOPE_NODE:
     printf("( SCOPE ");
-
-    printf("( DECLARATIONS ");
     ast_print(n->scope.declarations);
-    printf(" ) ");
-// TODO: either add in-order traversal to the visitor pattern or make the declarations and statements their own nodes
-    printf("( STATEMENTS ");
     ast_print(n->scope.statements);
-    printf(" )");
-
     printf(" )");
     break;
 
+  case DECLARATIONS_NODE:
+    printf("( DECLARATIONS ");
+    ast_print(n->declarations.first_declaration);
+    printf(" ) ");
+    break;
   case DECLARATION_NODE:
     printf("( DECLARATION %s", n->declaration.id);
     ast_print(n->declaration.type);
@@ -146,8 +156,10 @@ void ast_print(node *n) {
     printf(" )");
     break;
 
-  case STATEMENT_NODE:
-    // STATEMENT_NODE is an abstract node
+  case STATEMENTS_NODE:
+    printf("( STATEMENTS ");
+    ast_print(n->statements.first_statement);
+    printf(" ) ");
     break;
   case IF_STATEMENT_NODE:
     break;
@@ -238,6 +250,7 @@ void ast_print(node *n) {
   }
 }
 
+/****** VISITOR ******/
 void ast_visit(node *n,
                void (*preorder)(node *, void *),
                void (*postorder)(node *, void *),
@@ -253,13 +266,16 @@ void ast_visit(node *n,
       ast_visit(n->scope.statements, preorder, postorder, data);
       break;
 
+    case DECLARATIONS_NODE:
+      ast_visit(n->declarations.first_declaration, preorder, postorder, data);
+      break;
     case DECLARATION_NODE:
       ast_visit(n->declaration.assignment_expr, preorder, postorder, data);
       ast_visit(n->declaration.next_declaration, preorder, postorder, data);
       break;
 
-    case STATEMENT_NODE:
-      // STATEMENT_NODE is an abstract node
+    case STATEMENTS_NODE:
+      ast_visit(n->statements.first_statement, preorder, postorder, data);
       break;
     case IF_STATEMENT_NODE:
       ast_visit(n->statement.if_else_statement.condition, preorder, postorder, data);
