@@ -64,9 +64,9 @@ bvec(2|3|4)                   { yylval.as_vec = yytext[4] - '0'; yOUT(BVEC_T); }
 if                            { yOUT(IF); }
 else                          { yOUT(ELSE); }
 
-dp3                           { yylval.as_func = 0; yOUT(FUNC); }
-rsq                           { yylval.as_func = 2; yOUT(FUNC); }
-lit                           { yylval.as_func = 1; yOUT(FUNC); }
+dp3                           { yylval.as_func = FUNC_DP3; yOUT(FUNC); }
+rsq                           { yylval.as_func = FUNC_RSQ; yOUT(FUNC); }
+lit                           { yylval.as_func = FUNC_LIT; yOUT(FUNC); }
 
 true                          { yOUT(TRUE_C); }
 false                         { yOUT(FALSE_C); }

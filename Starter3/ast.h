@@ -47,7 +47,7 @@ typedef enum {
 
 typedef enum {
   OP_UMINUS,
-  OP_NOT
+  OP_NOT,
 } unary_op;
 
 typedef enum {
@@ -63,8 +63,23 @@ typedef enum {
   OP_MINUS,
   OP_MUL,
   OP_DIV,
-  OP_XOR
+  OP_XOR,
 } binary_op;
+
+typedef enum {
+  TYPE_INT,
+  TYPE_IVEC,
+  TYPE_BOOL,
+  TYPE_BVEC,
+  TYPE_FLOAT,
+  TYPE_VEC,
+} type_enum;
+
+typedef enum {
+  FUNC_DP3,
+  FUNC_RSQ,
+  FUNC_LIT,
+} functions;
 
 struct node_ {
 
@@ -109,12 +124,12 @@ struct node_ {
     struct {
       union {
         struct {
-          int op;
+          unary_op op;
           node *right;
         } unary;
 
         struct {
-          int op;
+          binary_op op;
           node *left;
           node *right;
         } binary;
@@ -149,6 +164,10 @@ struct node_ {
       };
     } expression;
 
+    struct {
+      type_enum type;
+      int vec_dim;
+    } type;
 
     struct {
       node *expression;
@@ -158,8 +177,8 @@ struct node_ {
 };
 
 node *ast_allocate(node_kind type, ...);
-void ast_free(node *ast);
-void ast_print(node * ast);
+void ast_free(node *n);
+void ast_print(node *n);
 
 void ast_visit_preorder(node *root, void (*f)(node *, void *), void *data);
 void ast_visit_postorder(node *root, void (*f)(node *, void *), void *data);

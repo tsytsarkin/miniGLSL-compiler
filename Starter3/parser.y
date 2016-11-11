@@ -75,7 +75,6 @@ enum {
 %token          BOOL_T
 %token          CONST
 %token          FALSE_C TRUE_C
-%token          FUNC
 %token          IF ELSE
 %token          AND OR NEQ EQ LEQ GEQ
 
@@ -86,6 +85,7 @@ enum {
 %token <as_float> FLOAT_C
 %token <as_int>   INT_C
 %token <as_str>   ID
+%token <as_func>  FUNC
 
 // operator precdence
 %left     OR                        // 7
@@ -113,6 +113,7 @@ enum {
 %type <as_ast> variable
 %type <as_ast> arguments_opt
 %type <as_ast> arguments
+%type <as_ast> type
 
 %start    program
 
@@ -151,11 +152,11 @@ statements
 
 declaration
   : type ID ';'
-      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, NULL); }
+      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, $2, NULL); }
   | type ID '=' expression ';'
-      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $4); }
+      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, $2, $4); }
   | CONST type ID '=' expression ';'
-      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $5); }
+      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $2, $3, $5); }
   ;
 
 statement
@@ -173,26 +174,26 @@ statement
 
 type
   : INT_T
-      { yTRACE("type -> INT_T \n") }
+      { yTRACE("type -> INT_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_INT, 0); }
   | IVEC_T
-      { yTRACE("type -> IVEC_T \n") }
+      { yTRACE("type -> IVEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_IVEC, $1); }
   | BOOL_T
-      { yTRACE("type -> BOOL_T \n") }
+      { yTRACE("type -> BOOL_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_BOOL, 0); }
   | BVEC_T
-      { yTRACE("type -> BVEC_T \n") }
+      { yTRACE("type -> BVEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_BVEC, $1); }
   | FLOAT_T
-      { yTRACE("type -> FLOAT_T \n") }
+      { yTRACE("type -> FLOAT_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_FLOAT, 0); }
   | VEC_T
-      { yTRACE("type -> VEC_T \n") }
+      { yTRACE("type -> VEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_VEC, $1); }
   ;
 
 expression
 
   /* function-like operators */
   : type '(' arguments_opt ')' %prec '('
-      { yTRACE("expression -> type ( arguments_opt ) \n") $$ = ast_allocate(CONSTRUCTOR_NODE); }
+      { yTRACE("expression -> type ( arguments_opt ) \n") $$ = ast_allocate(CONSTRUCTOR_NODE, $1, $3); }
   | FUNC '(' arguments_opt ')' %prec '('
-      { yTRACE("expression -> FUNC ( arguments_opt ) \n") $$ = ast_allocate(FUNCTION_NODE); }
+      { yTRACE("expression -> FUNC ( arguments_opt ) \n") $$ = ast_allocate(FUNCTION_NODE, $1, $3); }
 
   /* unary opterators */
   | '-' expression %prec UMINUS
