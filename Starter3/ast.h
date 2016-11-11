@@ -22,7 +22,7 @@ typedef enum {
   UNKNOWN                = 0,
 
   SCOPE_NODE             = (1 << 0),
- 
+
   EXPRESSION_NODE        = (1 << 2),
   UNARY_EXPRESSION_NODE  = (1 << 2) | (1 << 3),
   BINARY_EXPRESSION_NODE = (1 << 2) | (1 << 4),
@@ -180,7 +180,9 @@ node *ast_allocate(node_kind type, ...);
 void ast_free(node *n);
 void ast_print(node *n);
 
-void ast_visit_preorder(node *root, void (*f)(node *, void *), void *data);
-void ast_visit_postorder(node *root, void (*f)(node *, void *), void *data);
+void ast_visit(node *n,
+               void (*preorder)(node *, void *),
+               void (*postorder)(node *, void *),
+               void *data);
 
 #endif /* AST_H_ */

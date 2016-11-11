@@ -107,10 +107,19 @@ void freeer(node *n, void *data) {
 }
 
 void ast_free(node *n) {
-  ast_visit_postorder(n, freeer, NULL);
+  ast_visit(n, NULL, freeer, NULL);
+}
+
+void print_preorder(node *n, void *) {
+
+}
+
+void print_postorder(node *n, void *) {
+
 }
 
 void ast_print(node *n) {
+  // TODO: convert this so we only have to specify the preorder and postorder printing operations at each node
   if (n == NULL) {
     return;
   }
@@ -122,7 +131,7 @@ void ast_print(node *n) {
     printf("( DECLARATIONS ");
     ast_print(n->scope.declarations);
     printf(" ) ");
-
+// TODO: either add in-order traversal to the visitor pattern or make the declarations and statements their own nodes
     printf("( STATEMENTS ");
     ast_print(n->scope.statements);
     printf(" )");
@@ -229,53 +238,39 @@ void ast_print(node *n) {
   }
 }
 
-/****** VISITOR FUNCTIONS ******/
-typedef enum {
-  VISIT_PREORDER,
-  VISIT_POSTORDER
-} visit_order;
-
-void visit(node *n, void (*f)(node *, void *), void *data, visit_order order);
-void visitor(node *n, void (*f)(node *, void *), void *data, visit_order order);
-
-void ast_visit_preorder(node *n, void (*f)(node *, void *), void *data) {
-  visitor(n, f, data, VISIT_PREORDER);
-}
-
-void ast_visit_postorder(node *n, void (*f)(node *, void *), void *data) {
-  visitor(n, f, data, VISIT_POSTORDER);
-}
-
-void visitor(node *n, void (*f)(node *, void *), void *data, visit_order order) {
+void ast_visit(node *n,
+               void (*preorder)(node *, void *),
+               void (*postorder)(node *, void *),
+               void *data) {
   if (n != NULL) {
-    if (order == VISIT_PREORDER) {
-      f(n, data);
+    if (preorder != NULL) {
+      preorder(n, data);
     }
 
     switch (n->kind) {
     case SCOPE_NODE:
-      visitor(n->scope.declarations, f, data, order);
-      visitor(n->scope.statements, f, data, order);
+      ast_visit(n->scope.declarations, preorder, postorder, data);
+      ast_visit(n->scope.statements, preorder, postorder, data);
       break;
 
     case DECLARATION_NODE:
-      visitor(n->declaration.assignment_expr, f, data, order);
-      visitor(n->declaration.next_declaration, f, data, order);
+      ast_visit(n->declaration.assignment_expr, preorder, postorder, data);
+      ast_visit(n->declaration.next_declaration, preorder, postorder, data);
       break;
 
     case STATEMENT_NODE:
       // STATEMENT_NODE is an abstract node
       break;
     case IF_STATEMENT_NODE:
-      visitor(n->statement.if_else_statement.condition, f, data, order);
-      visitor(n->statement.if_else_statement.if_statement, f, data, order);
-      visitor(n->statement.if_else_statement.else_statement, f, data, order);
-      visitor(n->statement.next_statement, f, data, order);
+      ast_visit(n->statement.if_else_statement.condition, preorder, postorder, data);
+      ast_visit(n->statement.if_else_statement.if_statement, preorder, postorder, data);
+      ast_visit(n->statement.if_else_statement.else_statement, preorder, postorder, data);
+      ast_visit(n->statement.next_statement, preorder, postorder, data);
       break;
     case ASSIGNMENT_NODE:
-      visitor(n->statement.assignment.variable, f, data, order);
-      visitor(n->statement.assignment.expression, f, data, order);
-      visitor(n->statement.next_statement, f, data, order);
+      ast_visit(n->statement.assignment.variable, preorder, postorder, data);
+      ast_visit(n->statement.assignment.expression, preorder, postorder, data);
+      ast_visit(n->statement.next_statement, preorder, postorder, data);
       break;
     case NESTED_SCOPE_NODE:
       break;
@@ -284,11 +279,11 @@ void visitor(node *n, void (*f)(node *, void *), void *data, visit_order order) 
       // EXPRESSION_NODE is an abstract node
       break;
     case UNARY_EXPRESSION_NODE:
-      visitor(n->expression.unary.right, f, data, order);
+      ast_visit(n->expression.unary.right, preorder, postorder, data);
       break;
     case BINARY_EXPRESSION_NODE:
-      visitor(n->expression.binary.left, f, data, order);
-      visitor(n->expression.binary.right, f, data, order);
+      ast_visit(n->expression.binary.left, preorder, postorder, data);
+      ast_visit(n->expression.binary.right, preorder, postorder, data);
       break;
     case INT_NODE:
       // No children
@@ -303,21 +298,20 @@ void visitor(node *n, void (*f)(node *, void *), void *data, visit_order order) 
       // No children
       break;
     case FUNCTION_NODE:
-      visitor(n->expression.function.arguments, f, data, order);
+      ast_visit(n->expression.function.arguments, preorder, postorder, data);
       break;
     case CONSTRUCTOR_NODE:
-      visitor(n->expression.constructor.arguments, f, data, order);
+      ast_visit(n->expression.constructor.arguments, preorder, postorder, data);
       break;
 
     case ARGUMENT_NODE:
-      visitor(n->argument.expression, f, data, order);
-      visitor(n->argument.next_argument, f, data, order);
+      ast_visit(n->argument.expression, preorder, postorder, data);
+      ast_visit(n->argument.next_argument, preorder, postorder, data);
 
     default: break;
     }
-
-    if (order == VISIT_POSTORDER) {
-      f(n, data);
+    if (postorder != NULL) {
+      postorder(n, data);
     }
   }
 }
