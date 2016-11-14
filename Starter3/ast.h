@@ -80,7 +80,7 @@ typedef enum {
   FUNC_DP3,
   FUNC_RSQ,
   FUNC_LIT,
-} functions;
+} function_id;
 
 struct node_ {
   node_kind kind;
@@ -165,7 +165,7 @@ struct node_ {
         } variable;
 
         struct {
-          int func_id;
+          function_id func_id;
           node *arguments;
         } function;
 

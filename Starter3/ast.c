@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 
 #include "ast.h"
 #include "symbol.h"
@@ -51,6 +52,7 @@ node *ast_allocate(node_kind kind, ...) {
     // Add the symbol that we are declaring to the symbol table
     symbol = n->declaration.identifier->expression.ident.val;
     info.type = n->declaration.type->type.type;
+    info.vec_dim = n->declaration.type->type.vec_dim;
     symbol_tables[current_scope_id].insert(std::make_pair(symbol, info));
     break;
 
@@ -96,7 +98,7 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.variable.index = va_arg(args, node *);
     break;
   case FUNCTION_NODE:
-    n->expression.function.func_id = va_arg(args, int);
+    n->expression.function.func_id = (function_id) va_arg(args, int);
     n->expression.function.arguments = va_arg(args, node *);
     break;
   case CONSTRUCTOR_NODE:
@@ -113,7 +115,8 @@ node *ast_allocate(node_kind kind, ...) {
     n->argument.expression = va_arg(args, node *);
     n->argument.next_argument = NULL;
 
-    // Only used during construction, and only meaningful for the first argument
+    // Points to the last argument seen. Only valid for the first argument
+    // and only used during construction.
     n->argument.last_argument = n;
     break;
 
@@ -135,9 +138,33 @@ void ast_free(node *n) {
 }
 
 /****** PRINTING ******/
-void print_preorder(node *n, void *) {
+void print_function_name(function_id func_id) {
+  switch (func_id) {
+  case FUNC_DP3: printf("dp3"); break;
+  case FUNC_RSQ: printf("rsq"); break;
+  case FUNC_LIT: printf("lit"); break;
+  }
+}
+
+void print_type_name(symbol_type type, int vec_dim) {
+  switch (type) {
+  case TYPE_INT:   printf("int "); break;
+  case TYPE_IVEC:  printf("ivec%d ", vec_dim); break;
+  case TYPE_BOOL:  printf("bool "); break;
+  case TYPE_BVEC:  printf("bvec%d ", vec_dim); break;
+  case TYPE_FLOAT: printf("float "); break;
+  case TYPE_VEC:   printf("vec%d ", vec_dim); break;
+  }
+}
+
+void print_preorder(node *n, void *data) {
+  std::vector<int> *scope_id_stack = (std::vector<int> *) data;
+
+  const symbol_info *info = NULL;
+
   switch (n->kind) {
   case SCOPE_NODE:
+    scope_id_stack->push_back(n->scope.scope_id);
     printf("(SCOPE ");
     break;
 
@@ -163,10 +190,10 @@ void print_preorder(node *n, void *) {
     break;
   case UNARY_EXPRESSION_NODE:
     printf("(UNARY ");
-    // TODO: Need to look up the types of variables using the symbol table
+    // TODO: Put the type of an expression in the AST (and populate it partially during build time (constants) and during semantic analysis)
     break;
   case BINARY_EXPRESSION_NODE:
-    // TODO: Need to look up the types of variables using the symbol table
+    // TODO: Put the type of an expression in the AST (and populate it partially during build time (constants) and during semantic analysis)
     break;
   case INT_NODE:
     printf("%d ", n->expression.int_expr.val);
@@ -180,34 +207,22 @@ void print_preorder(node *n, void *) {
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
       printf("(INDEX ");
-      printf("TODO-type ");
+      info = get_symbol_info(*scope_id_stack, n->expression.variable.identifier->expression.ident.val);
+      if (info != NULL) {
+        print_type_name(info->type, info->vec_dim);
+      }
     }
-    // TODO: Need to look up the types of variables using the symbol table
     break;
   case FUNCTION_NODE:
     printf("(CALL ");
-
-    switch (n->expression.function.func_id) {
-      case FUNC_DP3: printf("dp3 "); break;
-      case FUNC_RSQ: printf("rsq "); break;
-      case FUNC_LIT: printf("lit "); break;
-      default: break;
-    }
+    print_function_name(n->expression.function.func_id);
     break;
   case CONSTRUCTOR_NODE:
     printf("(CALL ");
     break;
 
   case TYPE_NODE:
-    switch (n->type.type) {
-    case TYPE_INT:   printf("int "); break;
-    case TYPE_IVEC:  printf("ivec%d ", n->type.vec_dim); break;
-    case TYPE_BOOL:  printf("bool "); break;
-    case TYPE_BVEC:  printf("bvec%d ", n->type.vec_dim); break;
-    case TYPE_FLOAT: printf("float "); break;
-    case TYPE_VEC:   printf("vec%d ", n->type.vec_dim); break;
-    default: break;
-    }
+    print_type_name(n->type.type, n->type.vec_dim);
     break;
 
   case ARGUMENT_NODE:
@@ -217,10 +232,13 @@ void print_preorder(node *n, void *) {
   }
 }
 
-void print_postorder(node *n, void *) {
+void print_postorder(node *n, void *data) {
+  std::vector<int> *scope_id_stack = (std::vector<int> *) data;
+
   switch (n->kind) {
   case SCOPE_NODE:
     printf(") ");
+    scope_id_stack->pop_back();
     break;
 
   case DECLARATIONS_NODE:
@@ -278,7 +296,10 @@ void print_postorder(node *n, void *) {
 }
 
 void ast_print(node *n) {
-  ast_visit(n, print_preorder, print_postorder, NULL);
+  std::vector<int> scope_id_stack;
+  scope_id_stack.push_back(0);
+
+  ast_visit(n, print_preorder, print_postorder, &scope_id_stack);
   printf("\n");
 }
 
