@@ -129,10 +129,6 @@ struct node_ {
           node *variable;
           node *expression;
         } assignment;
-
-        // TODO: is this really needed?
-        struct {
-        } nested_scope;
       };
 
       node *next_statement;

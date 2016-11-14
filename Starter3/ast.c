@@ -183,7 +183,6 @@ void print_preorder(node *n, void *) {
       printf("TODO-type ");
     }
     // TODO: Need to look up the types of variables using the symbol table
-    // TODO: Also, the index field of the variable struct should be an expression?
     break;
   case FUNCTION_NODE:
     printf("(CALL ");

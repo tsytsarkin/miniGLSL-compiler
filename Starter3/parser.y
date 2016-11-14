@@ -103,7 +103,6 @@ enum {
 %precedence     ELSE
 
 // type declarations
-// TODO: fill this out
 %type <as_ast> scope
 %type <as_ast> declarations
 %type <as_ast> declaration
