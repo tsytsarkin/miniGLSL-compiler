@@ -5,6 +5,8 @@
 #include <vector>
 #include <map>
 
+#include "ast.h"
+
 typedef struct {
   symbol_type type;
 } symbol_info;
