@@ -95,20 +95,26 @@ struct node_ {
 
     struct {
       node *first_declaration;
-      node *last_declaration;
+
+      // TODO: add a variable to count the number of declarations
+
+      node *last_declaration; // Only used during construction
     } declarations;
 
     struct {
       bool is_const;
       node *type;
-      char *id;
+      node *identifier;
       node *assignment_expr;
       node *next_declaration;
     } declaration;
 
     struct {
       node *first_statement;
-      node *last_statement;
+
+      // TODO: add a variable to count the number of statements
+
+      node *last_statement; // Only used during construction
     } statements;
 
     struct {
@@ -158,9 +164,8 @@ struct node_ {
         } ident;
 
         struct {
-          char *identifier;
-          bool has_index;
-          int index;
+          node *identifier;
+          node *index;
         } variable;
 
         struct {
@@ -183,6 +188,11 @@ struct node_ {
     struct {
       node *expression;
       node *next_argument;
+
+      // TODO: add a variable to count the number of arguments
+
+      // Only used during construction, and only meaningful for the first argument
+      node *last_argument;
     } argument;
   };
 };

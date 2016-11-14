@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <string.h>
 
 #include "ast.h"
 #include "common.h"
@@ -33,9 +32,9 @@ node *ast_allocate(node_kind kind, ...) {
     n->declarations.last_declaration = NULL;
     break;
   case DECLARATION_NODE:
-    n->declaration.is_const = va_arg(args, int);
+    n->declaration.is_const = (bool) va_arg(args, int);
     n->declaration.type = va_arg(args, node *);
-    n->declaration.id = va_arg(args, char *);
+    n->declaration.identifier = va_arg(args, node *);
     n->declaration.assignment_expr = va_arg(args, node *);
     n->declaration.next_declaration = NULL;
     break;
@@ -81,9 +80,8 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.ident.val = va_arg(args, char *);
     break;
   case VAR_NODE:
-    n->expression.variable.identifier = va_arg(args, char *);
-    n->expression.variable.has_index = va_arg(args, int);
-    n->expression.variable.index = va_arg(args, int);
+    n->expression.variable.identifier = va_arg(args, node *);
+    n->expression.variable.index = va_arg(args, node *);
     break;
   case FUNCTION_NODE:
     n->expression.function.func_id = va_arg(args, int);
@@ -102,6 +100,9 @@ node *ast_allocate(node_kind kind, ...) {
   case ARGUMENT_NODE:
     n->argument.expression = va_arg(args, node *);
     n->argument.next_argument = NULL;
+
+    // Only used during construction, and only meaningful for the first argument
+    n->argument.last_argument = n;
     break;
 
   default: break;
@@ -123,47 +124,26 @@ void ast_free(node *n) {
 
 /****** PRINTING ******/
 void print_preorder(node *n, void *) {
-
-}
-
-void print_postorder(node *n, void *) {
-
-}
-
-void ast_print(node *n) {
-  // TODO: convert this so we only have to specify the preorder and postorder printing operations at each node
-  if (n == NULL) {
-    return;
-  }
-
   switch (n->kind) {
   case SCOPE_NODE:
-    printf("( SCOPE ");
-    ast_print(n->scope.declarations);
-    ast_print(n->scope.statements);
-    printf(" )");
+    printf("(SCOPE ");
     break;
 
   case DECLARATIONS_NODE:
-    printf("( DECLARATIONS ");
-    ast_print(n->declarations.first_declaration);
-    printf(" ) ");
+    printf("(DECLARATIONS ");
     break;
   case DECLARATION_NODE:
-    printf("( DECLARATION %s", n->declaration.id);
-    ast_print(n->declaration.type);
-    ast_print(n->declaration.assignment_expr);
-    printf(" )");
+    printf("(DECLARATION ");
     break;
 
   case STATEMENTS_NODE:
-    printf("( STATEMENTS ");
-    ast_print(n->statements.first_statement);
-    printf(" ) ");
+    printf("(STATEMENTS ");
     break;
   case IF_STATEMENT_NODE:
+    printf("(IF ");
     break;
   case ASSIGNMENT_NODE:
+    printf("(ASSIGN ");
     break;
   case NESTED_SCOPE_NODE:
     // TODO: needed?
@@ -173,72 +153,51 @@ void ast_print(node *n) {
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
-    printf("( UNARY ");
+    printf("(UNARY ");
     // TODO: Need to look up the types of variables using the symbol table
     break;
   case BINARY_EXPRESSION_NODE:
     // TODO: Need to look up the types of variables using the symbol table
     break;
   case INT_NODE:
-    printf(" %d", n->expression.int_expr.val);
+    printf("%d ", n->expression.int_expr.val);
     break;
   case FLOAT_NODE:
-    printf(" %f", n->expression.float_expr.val);
+    printf("%f ", n->expression.float_expr.val);
     break;
   case IDENT_NODE:
-    printf(" %s", n->expression.ident.val);
+    printf("%s ", n->expression.ident.val);
     break;
   case VAR_NODE:
+    if (n->expression.variable.index != NULL) {
+      printf("(INDEX ");
+      printf("TODO-type ");
+    }
+    // TODO: Need to look up the types of variables using the symbol table
+    // TODO: Also, the index field of the variable struct should be an expression?
     break;
   case FUNCTION_NODE:
-    printf("( CALL");
+    printf("(CALL ");
 
     switch (n->expression.function.func_id) {
-      case FUNC_DP3:
-        printf(" dp3");
-        break;
-      case FUNC_RSQ:
-        printf(" rsq");
-        break;
-      case FUNC_LIT:
-        printf(" lit");
-        break;
+      case FUNC_DP3: printf("dp3 "); break;
+      case FUNC_RSQ: printf("rsq "); break;
+      case FUNC_LIT: printf("lit "); break;
       default: break;
     }
-
-    ast_print(n->expression.function.arguments);
-
-    printf(" )");
     break;
   case CONSTRUCTOR_NODE:
-    printf("( CALL ");
-
-    ast_print(n->expression.constructor.type);
-    ast_print(n->expression.constructor.arguments);
-
-    printf(" )");
+    printf("(CALL ");
     break;
 
   case TYPE_NODE:
     switch (n->type.type) {
-    case TYPE_INT:
-      printf(" int");
-      break;
-    case TYPE_IVEC:
-      printf(" ivec%d", n->type.vec_dim);
-      break;
-    case TYPE_BOOL:
-      printf(" bool");
-      break;
-    case TYPE_BVEC:
-      printf(" bvec%d", n->type.vec_dim);
-      break;
-    case TYPE_FLOAT:
-      printf(" float");
-      break;
-    case TYPE_VEC:
-      printf(" vec%d", n->type.vec_dim);
-      break;
+    case TYPE_INT:   printf("int "); break;
+    case TYPE_IVEC:  printf("ivec%d ", n->type.vec_dim); break;
+    case TYPE_BOOL:  printf("bool "); break;
+    case TYPE_BVEC:  printf("bvec%d ", n->type.vec_dim); break;
+    case TYPE_FLOAT: printf("float "); break;
+    case TYPE_VEC:   printf("vec%d ", n->type.vec_dim); break;
     default: break;
     }
     break;
@@ -248,6 +207,74 @@ void ast_print(node *n) {
 
   default: break;
   }
+}
+
+void print_postorder(node *n, void *) {
+  switch (n->kind) {
+  case SCOPE_NODE:
+    printf(") ");
+    break;
+
+  case DECLARATIONS_NODE:
+    printf(") ");
+    break;
+  case DECLARATION_NODE:
+    printf(") ");
+    break;
+
+  case STATEMENTS_NODE:
+    printf(") ");
+    break;
+  case IF_STATEMENT_NODE:
+    printf(") ");
+    break;
+  case ASSIGNMENT_NODE:
+    printf(") ");
+    break;
+  case NESTED_SCOPE_NODE:
+    // TODO: needed?
+    break;
+
+  case EXPRESSION_NODE:
+    // EXPRESSION_NODE is an abstract node
+    break;
+  case UNARY_EXPRESSION_NODE:
+    printf(") ");
+    break;
+  case BINARY_EXPRESSION_NODE:
+    printf(") ");
+    break;
+  case INT_NODE:
+    break;
+  case FLOAT_NODE:
+    break;
+  case IDENT_NODE:
+    break;
+  case VAR_NODE:
+    if (n->expression.variable.index != NULL) {
+      printf(") ");
+    }
+    break;
+  case FUNCTION_NODE:
+    printf(") ");
+    break;
+  case CONSTRUCTOR_NODE:
+    printf(") ");
+    break;
+
+  case TYPE_NODE:
+    break;
+
+  case ARGUMENT_NODE:
+    break;
+
+  default: break;
+  }
+}
+
+void ast_print(node *n) {
+  ast_visit(n, print_preorder, print_postorder, NULL);
+  printf("\n");
 }
 
 /****** VISITOR ******/
@@ -270,6 +297,8 @@ void ast_visit(node *n,
       ast_visit(n->declarations.first_declaration, preorder, postorder, data);
       break;
     case DECLARATION_NODE:
+      ast_visit(n->declaration.identifier, preorder, postorder, data);
+      ast_visit(n->declaration.type, preorder, postorder, data);
       ast_visit(n->declaration.assignment_expr, preorder, postorder, data);
       ast_visit(n->declaration.next_declaration, preorder, postorder, data);
       break;
@@ -311,21 +340,28 @@ void ast_visit(node *n,
       // No children
       break;
     case VAR_NODE:
-      // No children
+      ast_visit(n->expression.variable.identifier, preorder, postorder, data);
+      ast_visit(n->expression.variable.index, preorder, postorder, data);
       break;
     case FUNCTION_NODE:
       ast_visit(n->expression.function.arguments, preorder, postorder, data);
       break;
     case CONSTRUCTOR_NODE:
+      ast_visit(n->expression.constructor.type, preorder, postorder, data);
       ast_visit(n->expression.constructor.arguments, preorder, postorder, data);
+      break;
+
+    case TYPE_NODE:
       break;
 
     case ARGUMENT_NODE:
       ast_visit(n->argument.expression, preorder, postorder, data);
       ast_visit(n->argument.next_argument, preorder, postorder, data);
+      break;
 
     default: break;
     }
+
     if (postorder != NULL) {
       postorder(n, data);
     }

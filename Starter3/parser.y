@@ -178,11 +178,11 @@ statements
 
 declaration
   : type ID ';'
-      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, $2, NULL); }
+      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, ast_allocate(IDENT_NODE, $2), NULL); }
   | type ID '=' expression ';'
-      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, $2, $4); }
+      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, ast_allocate(IDENT_NODE, $2), $4); }
   | CONST type ID '=' expression ';'
-      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $2, $3, $5); }
+      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $2, ast_allocate(IDENT_NODE, $3), $5); }
   ;
 
 statement
@@ -274,21 +274,28 @@ expression
 
 variable
   : ID
-      { yTRACE("variable -> ID \n") $$ = ast_allocate(VAR_NODE, $1, false, 0); }
+      { yTRACE("variable -> ID \n") $$ = ast_allocate(VAR_NODE, ast_allocate(IDENT_NODE, $1), NULL); }
   | ID '[' INT_C ']' %prec '['
-      { yTRACE("variable -> ID [ INT_C ] \n") $$ = ast_allocate(VAR_NODE, $1, true, $3); }
+      { yTRACE("variable -> ID [ INT_C ] \n") $$ = ast_allocate(VAR_NODE, ast_allocate(IDENT_NODE, $1), ast_allocate(INT_NODE, $3)); }
   ;
 
 arguments_opt
   : arguments
       { yTRACE("arguments_opt -> arguments \n") }
   | %empty
-      { yTRACE("arguments_opt -> \n") $$ = NULL; $$ = NULL; }
+      { yTRACE("arguments_opt -> \n") $$ = NULL; }
   ;
 
 arguments
   : arguments ',' expression
-      { yTRACE("arguments -> arguments , expression \n") if ($1 != NULL) $1->argument.next_argument = $3; $$ = $3; }
+      { yTRACE("arguments -> arguments , expression \n")
+        if ($1 != NULL) {
+          node *arg_expr = ast_allocate(ARGUMENT_NODE, $3);
+          $1->argument.last_argument->argument.next_argument = arg_expr;
+          $1->argument.last_argument = arg_expr;
+        }
+        $$ = $1;
+      }
   | expression
       { yTRACE("arguments -> expression \n") $$ = ast_allocate(ARGUMENT_NODE, $1); }
   ;
