@@ -54,9 +54,6 @@ node *ast_allocate(node_kind kind, ...) {
     n->statement.assignment.expression = va_arg(args, node *);
     n->statement.next_statement = NULL;
     break;
-  case NESTED_SCOPE_NODE:
-    // TODO: needed?
-    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -145,9 +142,6 @@ void print_preorder(node *n, void *) {
   case ASSIGNMENT_NODE:
     printf("(ASSIGN ");
     break;
-  case NESTED_SCOPE_NODE:
-    // TODO: needed?
-    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -231,9 +225,6 @@ void print_postorder(node *n, void *) {
   case ASSIGNMENT_NODE:
     printf(") ");
     break;
-  case NESTED_SCOPE_NODE:
-    // TODO: needed?
-    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -316,8 +307,6 @@ void ast_visit(node *n,
       ast_visit(n->statement.assignment.variable, preorder, postorder, data);
       ast_visit(n->statement.assignment.expression, preorder, postorder, data);
       ast_visit(n->statement.next_statement, preorder, postorder, data);
-      break;
-    case NESTED_SCOPE_NODE:
       break;
 
     case EXPRESSION_NODE:

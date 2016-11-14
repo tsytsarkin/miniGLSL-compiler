@@ -36,14 +36,13 @@ typedef enum {
   STATEMENTS_NODE        = (1 << 1),
   IF_STATEMENT_NODE      = (1 << 1) | (1 << 11),
   ASSIGNMENT_NODE        = (1 << 1) | (1 << 12),
-  NESTED_SCOPE_NODE      = (1 << 1) | (1 << 13),
 
-  DECLARATIONS_NODE      = (1 << 14),
-  DECLARATION_NODE       = (1 << 15),
+  DECLARATIONS_NODE      = (1 << 13),
+  DECLARATION_NODE       = (1 << 14),
 
-  TYPE_NODE              = (1 << 16),
+  TYPE_NODE              = (1 << 15),
 
-  ARGUMENT_NODE         = (1 << 17),
+  ARGUMENT_NODE         = (1 << 16),
 } node_kind;
 
 typedef enum {
