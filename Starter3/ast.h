@@ -1,4 +1,3 @@
-
 #ifndef AST_H_
 #define AST_H_ 1
 
@@ -17,6 +16,8 @@
 struct node_;
 typedef struct node_ node;
 extern node *ast;
+
+extern unsigned int current_scope_id, max_scope_id;
 
 typedef enum {
   UNKNOWN                = 0,
@@ -73,7 +74,7 @@ typedef enum {
   TYPE_BVEC,
   TYPE_FLOAT,
   TYPE_VEC,
-} type_enum;
+} symbol_type;
 
 typedef enum {
   FUNC_DP3,
@@ -82,14 +83,14 @@ typedef enum {
 } functions;
 
 struct node_ {
-
-  // an example of tagging each node with a type
   node_kind kind;
 
   union {
     struct {
       node *declarations;
       node *statements;
+
+      unsigned int scope_id;
     } scope;
 
     struct {
@@ -180,7 +181,7 @@ struct node_ {
     } expression;
 
     struct {
-      type_enum type;
+      symbol_type type;
       int vec_dim;
     } type;
 

@@ -115,6 +115,8 @@ enum {
 %type <as_ast> arguments
 %type <as_ast> type
 
+%type <as_int> parent_scope_id_action
+
 %start    program
 
 %%
@@ -131,14 +133,38 @@ program
       { yTRACE("program -> scope\n") ast = $1; }
   ;
 
+parent_scope_id_action
+  : %empty
+      {
+        // Create a symbol table for this scope
+        symbol_tables.push_back(std::map<std::string, symbol_info>());
+
+        // Remember the parent's scope id
+        unsigned int parent_scope_id = current_scope_id;
+
+        // Choose the next available scope
+        current_scope_id = max_scope_id++;
+
+        // Make the parent's scope id available as $1
+        $$ = parent_scope_id;
+      }
+  ;
+
 scope
-  : '{' declarations statements '}'
-      { yTRACE("scope -> { declarations statements }\n") $$ = ast_allocate(SCOPE_NODE, $2, $3); }
+  : parent_scope_id_action '{' declarations statements '}'
+      {
+        yTRACE("scope -> { declarations statements }\n")
+        $$ = ast_allocate(SCOPE_NODE, $1, $3, $4);
+
+        // Set the scope id back to the parent's scope id
+        current_scope_id = $1;
+      }
   ;
 
 declarations
   : declarations declaration
-      { yTRACE("declarations -> declarations declaration\n")
+      {
+        yTRACE("declarations -> declarations declaration\n")
         if ($1->declarations.first_declaration == NULL) {
           // If this is the first declaration, initialize the list
           $1->declarations.first_declaration = $2;
@@ -158,7 +184,8 @@ declarations
 
 statements
   : statements statement
-      { yTRACE("statements -> statements statement\n")
+      {
+        yTRACE("statements -> statements statement\n")
         if ($1->statements.first_statement == NULL) {
           // If this is the first statement, initialize the list
           $1->statements.first_statement = $2;
@@ -269,7 +296,7 @@ expression
   | '(' expression ')'
       { yTRACE("expression -> ( expression ) \n") $$ = $2; }
   | variable
-    { yTRACE("expression -> variable \n") }
+      { yTRACE("expression -> variable \n") }
   ;
 
 variable
@@ -288,7 +315,8 @@ arguments_opt
 
 arguments
   : arguments ',' expression
-      { yTRACE("arguments -> arguments , expression \n")
+      {
+        yTRACE("arguments -> arguments , expression \n")
         if ($1 != NULL) {
           node *arg_expr = ast_allocate(ARGUMENT_NODE, $3);
           $1->argument.last_argument->argument.next_argument = arg_expr;

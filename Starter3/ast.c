@@ -1,14 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "ast.h"
+#include "symbol.h"
 #include "common.h"
 #include "parser.tab.h"
 
 #define DEBUG_PRINT_TREE 0
 
 node *ast = NULL;
+
+unsigned int max_scope_id = 0, current_scope_id = 0;
 
 /****** BUILDING ******/
 node *ast_allocate(node_kind kind, ...) {
@@ -21,10 +24,17 @@ node *ast_allocate(node_kind kind, ...) {
 
   va_start(args, kind);
 
+  char *symbol;
+  symbol_info info;
+
   switch (kind) {
   case SCOPE_NODE:
     n->scope.declarations = va_arg(args, node *);
     n->scope.statements = va_arg(args, node *);
+
+    // When we are creating a scope node, we have already built all of its children
+    // so its id should be the current scope id
+    n->scope.scope_id = current_scope_id;
     break;
 
   case DECLARATIONS_NODE:
@@ -37,6 +47,11 @@ node *ast_allocate(node_kind kind, ...) {
     n->declaration.identifier = va_arg(args, node *);
     n->declaration.assignment_expr = va_arg(args, node *);
     n->declaration.next_declaration = NULL;
+
+    // Add the symbol that we are declaring to the symbol table
+    symbol = n->declaration.identifier->expression.ident.val;
+    info.type = n->declaration.type->type.type;
+    symbol_tables[current_scope_id].insert(std::make_pair(symbol, info));
     break;
 
   case STATEMENTS_NODE:
@@ -90,7 +105,7 @@ node *ast_allocate(node_kind kind, ...) {
     break;
 
   case TYPE_NODE:
-    n->type.type = (type_enum) va_arg(args, int);
+    n->type.type = (symbol_type) va_arg(args, int);
     n->type.vec_dim = va_arg(args, int);
     break;
 
