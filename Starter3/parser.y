@@ -154,7 +154,7 @@ scope
   : parent_scope_id_action '{' declarations statements '}'
       {
         yTRACE("scope -> { declarations statements }\n")
-        $$ = ast_allocate(SCOPE_NODE, $1, $3, $4);
+        $$ = ast_allocate(SCOPE_NODE, $3, $4);
 
         // Set the scope id back to the parent's scope id
         current_scope_id = $1;
