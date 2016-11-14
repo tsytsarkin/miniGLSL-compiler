@@ -10,7 +10,6 @@
 
 typedef struct {
   symbol_type type;
-  int vec_dim;
 } symbol_info;
 
 // The symbol tables for each scope, indexed by scope id

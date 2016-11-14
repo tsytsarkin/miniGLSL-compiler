@@ -52,7 +52,6 @@ node *ast_allocate(node_kind kind, ...) {
     // Add the symbol that we are declaring to the symbol table
     symbol = n->declaration.identifier->expression.ident.val;
     info.type = n->declaration.type->type.type;
-    info.vec_dim = n->declaration.type->type.vec_dim;
     symbol_tables[current_scope_id].insert(std::make_pair(symbol, info));
     break;
 
@@ -78,24 +77,35 @@ node *ast_allocate(node_kind kind, ...) {
   case UNARY_EXPRESSION_NODE:
     n->expression.unary.op = (unary_op) va_arg(args, int);
     n->expression.unary.right = va_arg(args, node *);
+
+    // There is no implicit casting so just take the type of the RHS
+    n->expression.expr_type = n->expression.binary.right->expression.expr_type;
     break;
   case BINARY_EXPRESSION_NODE:
     n->expression.binary.op = (binary_op) va_arg(args, int);
     n->expression.binary.left = va_arg(args, node *);
     n->expression.binary.right = va_arg(args, node *);
+
+    // There is no implicit casting so just take the type of the RHS
+    n->expression.expr_type = n->expression.binary.right->expression.expr_type;
     break;
   case INT_NODE:
     n->expression.int_expr.val = va_arg(args, int);
+    n->expression.expr_type = TYPE_INT;
     break;
   case FLOAT_NODE:
     n->expression.float_expr.val = va_arg(args, double);
+    n->expression.expr_type = TYPE_FLOAT;
     break;
   case IDENT_NODE:
     n->expression.ident.val = va_arg(args, char *);
+    // TODO lookup the variable type from the symbol table and store it in n->expression.expr_type
     break;
   case VAR_NODE:
     n->expression.variable.identifier = va_arg(args, node *);
     n->expression.variable.index = va_arg(args, node *);
+    // Copy the type from the identifier
+    n->expression.expr_type = n->expression.variable.identifier->expression.expr_type;
     break;
   case FUNCTION_NODE:
     n->expression.function.func_id = (function_id) va_arg(args, int);
@@ -108,7 +118,6 @@ node *ast_allocate(node_kind kind, ...) {
 
   case TYPE_NODE:
     n->type.type = (symbol_type) va_arg(args, int);
-    n->type.vec_dim = va_arg(args, int);
     break;
 
   case ARGUMENT_NODE:
@@ -146,14 +155,20 @@ void print_function_name(function_id func_id) {
   }
 }
 
-void print_type_name(symbol_type type, int vec_dim) {
-  switch (type) {
-  case TYPE_INT:   printf("int "); break;
-  case TYPE_IVEC:  printf("ivec%d ", vec_dim); break;
-  case TYPE_BOOL:  printf("bool "); break;
-  case TYPE_BVEC:  printf("bvec%d ", vec_dim); break;
-  case TYPE_FLOAT: printf("float "); break;
-  case TYPE_VEC:   printf("vec%d ", vec_dim); break;
+void print_type_name(symbol_type type) {
+  if (type & TYPE_VEC) {
+    printf("vec%d ", type - TYPE_VEC);
+  } else if (type & TYPE_IVEC) {
+    printf("ivec%d ", type - TYPE_IVEC);
+  } else if (type & TYPE_BVEC) {
+    printf("bvec%d ", type - TYPE_BVEC);
+  } else {
+    switch (type) {
+    case TYPE_INT:   printf("int "); break;
+    case TYPE_BOOL:  printf("bool "); break;
+    case TYPE_FLOAT: printf("float "); break;
+    default: break;
+    }
   }
 }
 
@@ -209,7 +224,7 @@ void print_preorder(node *n, void *data) {
       printf("(INDEX ");
       info = get_symbol_info(*scope_id_stack, n->expression.variable.identifier->expression.ident.val);
       if (info != NULL) {
-        print_type_name(info->type, info->vec_dim);
+        print_type_name(info->type);
       }
     }
     break;
@@ -222,7 +237,7 @@ void print_preorder(node *n, void *data) {
     break;
 
   case TYPE_NODE:
-    print_type_name(n->type.type, n->type.vec_dim);
+    print_type_name(n->type.type);
     break;
 
   case ARGUMENT_NODE:

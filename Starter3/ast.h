@@ -68,12 +68,21 @@ typedef enum {
 } binary_op;
 
 typedef enum {
-  TYPE_INT,
-  TYPE_IVEC,
-  TYPE_BOOL,
-  TYPE_BVEC,
-  TYPE_FLOAT,
-  TYPE_VEC,
+  TYPE_INT              = (1 << 0),
+  TYPE_BOOL             = (1 << 1),
+  TYPE_FLOAT            = (1 << 2),
+  TYPE_VEC              = (1 << 3),
+  TYPE_VEC2             = (1 << 3) + 2,
+  TYPE_VEC3             = (1 << 3) + 3,
+  TYPE_VEC4             = (1 << 3) + 4,
+  TYPE_IVEC             = (1 << 4),
+  TYPE_IVEC2            = (1 << 4) + 2,
+  TYPE_IVEC3            = (1 << 4) + 3,
+  TYPE_IVEC4            = (1 << 4) + 4,
+  TYPE_BVEC             = (1 << 5),
+  TYPE_BVEC2            = (1 << 5) + 2,
+  TYPE_BVEC3            = (1 << 5) + 3,
+  TYPE_BVEC4            = (1 << 5) + 4,
 } symbol_type;
 
 typedef enum {
@@ -174,11 +183,12 @@ struct node_ {
           node *arguments;
         } constructor;
       };
+
+      symbol_type expr_type;
     } expression;
 
     struct {
       symbol_type type;
-      int vec_dim;
     } type;
 
     struct {

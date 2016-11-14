@@ -226,17 +226,17 @@ statement
 
 type
   : INT_T
-      { yTRACE("type -> INT_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_INT, 0); }
+      { yTRACE("type -> INT_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_INT); }
   | IVEC_T
-      { yTRACE("type -> IVEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_IVEC, $1); }
+      { yTRACE("type -> IVEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_IVEC + $1); }
   | BOOL_T
-      { yTRACE("type -> BOOL_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_BOOL, 0); }
+      { yTRACE("type -> BOOL_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_BOOL); }
   | BVEC_T
-      { yTRACE("type -> BVEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_BVEC, $1); }
+      { yTRACE("type -> BVEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_BVEC + $1); }
   | FLOAT_T
-      { yTRACE("type -> FLOAT_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_FLOAT, 0); }
+      { yTRACE("type -> FLOAT_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_FLOAT); }
   | VEC_T
-      { yTRACE("type -> VEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_VEC, $1); }
+      { yTRACE("type -> VEC_T \n") $$ = ast_allocate(TYPE_NODE, TYPE_VEC + $1); }
   ;
 
 expression

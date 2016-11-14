@@ -26,6 +26,7 @@
 
 /* Phases 3,4: Uncomment following includes as needed */
 #include "ast.h"
+#include "semantic.h"
 //#include "codegen.h"
 
 /***********************************************************************
@@ -87,6 +88,10 @@ int main (int argc, char *argv[]) {
  * global variable "ast", and build the AST there. */
   if(1 == yyparse()) {
     return 0; // parse failed
+  }
+
+  if (!semantic_check(ast)) {
+    return 0;
   }
 
 /* Phase 3: Call the AST dumping routine if requested */
