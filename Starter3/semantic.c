@@ -1,4 +1,4 @@
-
+#include <cstdlib>
 #include "semantic.h"
 
 int semantic_check( node *ast) {
@@ -14,9 +14,22 @@ symbol_type get_unary_expr_type(node *unary_node) {
 }
 
 symbol_type get_function_return_type(node *func_node) {
+  node *args = func_node->expression.function.arguments;
   switch (func_node->expression.function.func_id) {
   case FUNC_DP3:
-    // TODO look at the arguments and figure out if we should return a float or an int
+    // Look at the first argument to determine the return type.
+    if (args->argument.expression != NULL) {
+      switch (args->argument.expression->expression.expr_type) {
+      // If the first argument is TYPE_VEC[43], return TYPE_FLOAT
+      case TYPE_VEC4: case TYPE_VEC3:
+        return TYPE_FLOAT;
+      // If the first argument is TYPE_IVEC[43], return TYPE_INT
+      case TYPE_IVEC4: case TYPE_IVEC3:
+        return TYPE_INT;
+      // Otherwise fall through to TYPE_UNKNOWN
+      default: break;
+      }
+    }
     break;
   case FUNC_RSQ:
     return TYPE_FLOAT;

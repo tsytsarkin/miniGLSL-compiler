@@ -69,6 +69,15 @@ typedef enum {
   OP_XOR,
 } binary_op;
 
+/*
+ * TYPE_VEC, TYPE_IVEC, and TYPE_BVEC are abstract types.
+ * They shouldn't ever be assigned to a type, but can be
+ * used to check if a type is in their category. For example,
+ * we can check if a type belongs to the TYPE_VEC category:
+ *   my_type = TYPE_VEC3;
+ *   if (my_type & TYPE_VEC)
+ *     do_something();
+ */
 typedef enum {
   TYPE_UNKNOWN          = 0,
   TYPE_INT              = (1 << 0),

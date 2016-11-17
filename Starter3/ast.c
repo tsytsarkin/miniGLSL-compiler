@@ -115,7 +115,7 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.variable.identifier = va_arg(args, node *);
     n->expression.variable.index = va_arg(args, node *);
 
-    if (n->expression.variable.index != NULL) {
+    if (n->expression.variable.index == NULL) {
       // Copy the type from the identifier directly since we aren't indexing
       n->expression.expr_type = n->expression.variable.identifier->expression.expr_type;
     } else {
@@ -189,6 +189,7 @@ void print_type_name(symbol_type type) {
     case TYPE_INT:   printf("int"); break;
     case TYPE_BOOL:  printf("bool"); break;
     case TYPE_FLOAT: printf("float"); break;
+    case TYPE_UNKNOWN: printf("unknown"); break;
     default: break;
     }
   }
@@ -218,6 +219,8 @@ void print_preorder(node *n, void *data) {
     break;
   case ASSIGNMENT_NODE:
     printf("(ASSIGN ");
+    print_type_name(n->statement.assignment.variable->expression.expr_type);
+    printf(" ");
     break;
 
   case EXPRESSION_NODE:
