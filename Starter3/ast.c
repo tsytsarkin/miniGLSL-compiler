@@ -54,7 +54,7 @@ node *ast_allocate(node_kind kind, ...) {
     // Add the symbol that we are declaring to the symbol table
     symbol = n->declaration.identifier->expression.ident.val;
     sym_info.type = n->declaration.type->type.type;
-    symbol_tables[scope_id_stack.back()].insert(std::make_pair(symbol, sym_info));
+    set_symbol_info(scope_id_stack.back(), symbol, sym_info);
     break;
 
   case STATEMENTS_NODE:
