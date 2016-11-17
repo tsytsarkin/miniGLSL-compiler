@@ -6,6 +6,101 @@ int semantic_check( node *ast) {
 }
 
 symbol_type get_binary_expr_type(node *binary_node) {
+  node* right = binary_node->expression.binary.right;
+  node* left = binary_node->expression.binary.left;
+  // check if types match
+  if (get_base_type(right->expression.expr_type) != get_base_type(left->expression.expr_type)){
+    // TODO: log error (type mismatch)
+    return TYPE_UNKNOWN;
+  }
+  symbol_type r_type = right->expression.expr_type;
+  symbol_type l_type = left->expression.expr_type;
+  bool r_is_vec = r_type & TYPE_ANY_VEC;
+  bool l_is_vec = l_type & TYPE_ANY_VEC;
+  binary_op op = binary_node->expression.binary.op;
+  if(r_type == TYPE_UNKNOWN) //check for unknown input type
+    return TYPE_UNKNOWN;
+  switch (op) {
+  case OP_AND:
+  // fallthrough
+  case OP_OR:
+    if(r_type != l_type){
+      // TODO: log error, type mismatch
+      return TYPE_UNKNOWN;
+    }
+    if(r_type == TYPE_BOOL || r_type & TYPE_BVEC){
+      return r_type;
+    } else {
+      // TODO: log error (not a boolean type)
+      return TYPE_UNKNOWN;
+    }
+    break;
+  case OP_PLUS:
+  case OP_MINUS:
+    if(r_type != l_type){
+      // TODO: log error (type mismatch)
+      return TYPE_UNKNOWN;
+    }
+    if(r_type == TYPE_FLOAT || r_type & TYPE_VEC){
+      return TYPE_FLOAT;
+    } else if (r_type == TYPE_INT || r_type & TYPE_IVEC){
+      return TYPE_INT;
+    }
+    break;
+  case OP_DIV:
+  case OP_XOR:
+    if(r_type != l_type){
+      // TODO: log error. Type mismatch
+      return TYPE_UNKNOWN;
+    }
+    if(r_type == TYPE_INT || r_type == TYPE_FLOAT)
+      return r_type;
+    // TODO: log error. Unsupported type
+    return TYPE_UNKNOWN;
+    break;
+  case OP_MUL:
+    if(get_base_type(r_type) == TYPE_BOOL){
+      // TODO: log error. Unsupported type
+      return TYPE_UNKNOWN;
+    }
+    if(l_is_vec){
+      if(r_is_vec){
+        if(r_type == l_type){
+          return get_base_type(r_type);
+        } else {
+          // log error. trying to multiply 2 vectors with different size
+          return TYPE_UNKNOWN;
+        }
+      } else { // !r_is_vec
+        return l_type;
+      }
+    } else { // !l_is_vec
+      return r_type;
+    }
+    break;
+  case OP_LT:
+  case OP_LEQ:
+  case OP_GT:
+  case OP_GEQ:
+    if(r_is_vec || l_is_vec){
+      // TODO: log error. unsupported type
+      return TYPE_UNKNOWN;
+    }
+    if(r_type == l_type && (r_type == TYPE_INT || r_type == TYPE_FLOAT))
+        return r_type;
+    // TODO: log error. type mismatch
+    return TYPE_UNKNOWN;
+    break;
+  case OP_EQ:
+  case OP_NEQ:
+    if(r_type == l_type)
+      return r_type;
+    // TODO: log error. type mismatch
+    return TYPE_UNKNOWN;
+    break;
+  default: 
+    break;
+  }
   return TYPE_UNKNOWN;
 }
 

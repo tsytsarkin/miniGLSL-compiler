@@ -83,6 +83,7 @@ typedef enum {
   TYPE_INT              = (1 << 0),
   TYPE_BOOL             = (1 << 1),
   TYPE_FLOAT            = (1 << 2),
+  TYPE_ANY_VEC          = (1 << 3) + (1 << 4) + (1 << 5),
   TYPE_VEC              = (1 << 3),
   TYPE_VEC2             = (1 << 3) + 2,
   TYPE_VEC3             = (1 << 3) + 3,
