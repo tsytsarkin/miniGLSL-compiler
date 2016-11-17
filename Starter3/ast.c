@@ -106,7 +106,7 @@ node *ast_allocate(node_kind kind, ...) {
     // Look up the type of the symbol from the symbol table. If the symbol doesn't exist,
     // this will create an entry for the symbol in the symbol table with TYPE_UNKNOWN.
     // This is done so that we can find as many errors as possible.
-    sym_info = get_symbol_info(scope_id_stack, n->expression.variable.identifier->expression.ident.val);
+    sym_info = get_symbol_info(scope_id_stack, n->expression.ident.val);
     n->expression.expr_type = sym_info.type;
     break;
   case VAR_NODE:
