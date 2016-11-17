@@ -258,78 +258,77 @@ void print_preorder(node *n, void *data) {
   switch (n->kind) {
   case SCOPE_NODE:
     scope_id_stack->push_back(n->scope.scope_id);
-    printf("(SCOPE ");
+    printf(" (SCOPE");
     break;
 
   case DECLARATIONS_NODE:
-    printf("(DECLARATIONS ");
+    printf(" (DECLARATIONS");
     break;
   case DECLARATION_NODE:
-    printf("(DECLARATION ");
+    printf(" (DECLARATION");
     break;
 
   case STATEMENTS_NODE:
-    printf("(STATEMENTS ");
+    printf(" (STATEMENTS");
     break;
   case IF_STATEMENT_NODE:
-    printf("(IF ");
+    printf(" (IF");
     break;
   case ASSIGNMENT_NODE:
-    printf("(ASSIGN ");
+    printf(" (ASSIGN ");
     print_type_name(n->statement.assignment.variable->expression.expr_type);
-    printf(" ");
     break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
-    printf("(UNARY ");
+    printf(" (UNARY ");
     print_type_name(get_unary_expr_type(n));
     printf(" ");
     print_unary_op_name(n->expression.unary.op);
-    printf(" ");
     break;
   case BINARY_EXPRESSION_NODE:
-    printf("(BINARY ");
+    printf(" (BINARY ");
     print_type_name(get_binary_expr_type(n));
     printf(" ");
     print_binary_op_name(n->expression.binary.op);
-    printf(" ");
     break;
   case INT_NODE:
-    printf("%d ", n->expression.int_expr.val);
+    printf(" %d", n->expression.int_expr.val);
     break;
   case FLOAT_NODE:
-    printf("%f ", n->expression.float_expr.val);
+    printf(" %f", n->expression.float_expr.val);
     break;
   case BOOL_NODE:
+    printf(" ");
     printf(n->expression.bool_expr.val ? "true" : "false");
     break;
   case IDENT_NODE:
-    printf("%s ", n->expression.ident.val);
+    printf(" %s", n->expression.ident.val);
     break;
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
-      printf("(INDEX ");
+      printf(" (INDEX ");
       print_type_name(n->expression.expr_type);
-      printf(" ");
     }
     break;
   case FUNCTION_NODE:
-    printf("(CALL ");
+    printf(" (CALL ");
     print_function_name(n->expression.function.func_id);
     break;
   case CONSTRUCTOR_NODE:
-    printf("(CALL ");
+    printf(" (CALL");
     break;
 
   case TYPE_NODE:
-    print_type_name(n->type.type);
     printf(" ");
+    print_type_name(n->type.type);
     break;
 
   case ARGUMENT_NODE:
+    // Don't need to print anything special for the arguments, just
+    // let the visitor print their children.
     break;
 
   default: break;
@@ -341,35 +340,35 @@ void print_postorder(node *n, void *data) {
 
   switch (n->kind) {
   case SCOPE_NODE:
-    printf(") ");
+    printf(")");
     scope_id_stack->pop_back();
     break;
 
   case DECLARATIONS_NODE:
-    printf(") ");
+    printf(")");
     break;
   case DECLARATION_NODE:
-    printf(") ");
+    printf(")");
     break;
 
   case STATEMENTS_NODE:
-    printf(") ");
+    printf(")");
     break;
   case IF_STATEMENT_NODE:
-    printf(") ");
+    printf(")");
     break;
   case ASSIGNMENT_NODE:
-    printf(") ");
+    printf(")");
     break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
-    printf(") ");
+    printf(")");
     break;
   case BINARY_EXPRESSION_NODE:
-    printf(") ");
+    printf(")");
     break;
   case INT_NODE:
     break;
@@ -381,20 +380,22 @@ void print_postorder(node *n, void *data) {
     break;
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
-      printf(") ");
+      printf(")");
     }
     break;
   case FUNCTION_NODE:
-    printf(") ");
+    printf(")");
     break;
   case CONSTRUCTOR_NODE:
-    printf(") ");
+    printf(")");
     break;
 
   case TYPE_NODE:
     break;
 
   case ARGUMENT_NODE:
+    // Don't need to print anything special for the arguments, just
+    // let the visitor print their children.
     break;
 
   default: break;
