@@ -41,10 +41,8 @@ symbol_type get_binary_expr_type(node *binary_node) {
       // TODO: log error (type mismatch)
       return TYPE_UNKNOWN;
     }
-    if(r_type == TYPE_FLOAT || r_type & TYPE_VEC){
-      return TYPE_FLOAT;
-    } else if (r_type == TYPE_INT || r_type & TYPE_IVEC){
-      return TYPE_INT;
+    if(get_base_type(r_type) != TYPE_BOOL){
+      return r_type;
     }
     break;
   case OP_DIV:
