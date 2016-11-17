@@ -1,0 +1,3 @@
+  1: { bvec2 x; y = !x; }
+(SCOPE (DECLARATIONS (DECLARATION x bvec2 ) ) (STATEMENTS (ASSIGN unknown y (UNARY bvec2 ! x ) ) ) ) 
+Failed to compile
