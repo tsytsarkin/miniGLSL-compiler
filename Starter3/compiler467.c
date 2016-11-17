@@ -91,7 +91,7 @@ int main (int argc, char *argv[]) {
   }
 
   if (!semantic_check(ast)) {
-    return 0;
+    errorOccurred = TRUE;
   }
 
 /* Phase 3: Call the AST dumping routine if requested */

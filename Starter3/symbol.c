@@ -6,7 +6,7 @@
 
 std::vector<std::map<std::string, symbol_info> > symbol_tables;
 
-const symbol_info *get_symbol_info(const std::vector<int> &scope_id_stack, char *symbol_name) {
+symbol_info get_symbol_info(const std::vector<int> &scope_id_stack, char *symbol_name) {
   std::vector<int>::const_reverse_iterator iter;
 
   // Traverse the scope id stack backwards
@@ -20,10 +20,19 @@ const symbol_info *get_symbol_info(const std::vector<int> &scope_id_stack, char 
 
     // If the symbol was found, return it
     if (symbol_iter != symbol_table.end()) {
-      return &symbol_iter->second;
+      return symbol_iter->second;
     }
   }
 
-  // Otherwise, return NULL
-  return NULL;
+  // If the symbol was not found, add a dummy symbol to the symbol table of the
+  // current scope with TYPE_UNKNOWN and return it
+  std::map<std::string, symbol_info> &symbol_table = symbol_tables[scope_id_stack.back()];
+
+  symbol_info dummy_symbol_info;
+  dummy_symbol_info.type = TYPE_UNKNOWN;
+
+  symbol_table[symbol_name] = dummy_symbol_info;
+
+  return dummy_symbol_info;
 }
+

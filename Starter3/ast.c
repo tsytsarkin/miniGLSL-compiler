@@ -5,6 +5,7 @@
 
 #include "ast.h"
 #include "symbol.h"
+#include "semantic.h"
 #include "common.h"
 #include "parser.tab.h"
 
@@ -12,7 +13,7 @@
 
 node *ast = NULL;
 
-unsigned int max_scope_id = 0, current_scope_id = 0;
+std::vector<int> scope_id_stack;
 
 /****** BUILDING ******/
 node *ast_allocate(node_kind kind, ...) {
@@ -26,7 +27,7 @@ node *ast_allocate(node_kind kind, ...) {
   va_start(args, kind);
 
   char *symbol;
-  symbol_info info;
+  symbol_info sym_info;
 
   switch (kind) {
   case SCOPE_NODE:
@@ -35,7 +36,7 @@ node *ast_allocate(node_kind kind, ...) {
 
     // When we are creating a scope node, we have already built all of its children
     // so its id should be the current scope id
-    n->scope.scope_id = current_scope_id;
+    n->scope.scope_id = scope_id_stack.back();
     break;
 
   case DECLARATIONS_NODE:
@@ -51,8 +52,8 @@ node *ast_allocate(node_kind kind, ...) {
 
     // Add the symbol that we are declaring to the symbol table
     symbol = n->declaration.identifier->expression.ident.val;
-    info.type = n->declaration.type->type.type;
-    symbol_tables[current_scope_id].insert(std::make_pair(symbol, info));
+    sym_info.type = n->declaration.type->type.type;
+    symbol_tables[scope_id_stack.back()].insert(std::make_pair(symbol, sym_info));
     break;
 
   case STATEMENTS_NODE:
@@ -78,16 +79,14 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.unary.op = (unary_op) va_arg(args, int);
     n->expression.unary.right = va_arg(args, node *);
 
-    // There is no implicit casting so just take the type of the RHS
-    n->expression.expr_type = n->expression.binary.right->expression.expr_type;
+    n->expression.expr_type = get_unary_expr_type(n);
     break;
   case BINARY_EXPRESSION_NODE:
     n->expression.binary.op = (binary_op) va_arg(args, int);
     n->expression.binary.left = va_arg(args, node *);
     n->expression.binary.right = va_arg(args, node *);
 
-    // There is no implicit casting so just take the type of the RHS
-    n->expression.expr_type = n->expression.binary.right->expression.expr_type;
+    n->expression.expr_type = get_binary_expr_type(n);
     break;
   case INT_NODE:
     n->expression.int_expr.val = va_arg(args, int);
@@ -97,23 +96,43 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.float_expr.val = va_arg(args, double);
     n->expression.expr_type = TYPE_FLOAT;
     break;
+  case BOOL_NODE:
+    n->expression.bool_expr.val = (bool) va_arg(args, int);
+    n->expression.expr_type = TYPE_BOOL;
+    break;
   case IDENT_NODE:
     n->expression.ident.val = va_arg(args, char *);
-    // TODO lookup the variable type from the symbol table and store it in n->expression.expr_type
+
+    // Look up the type of the symbol from the symbol table. If the symbol doesn't exist,
+    // this will create an entry for the symbol in the symbol table with TYPE_UNKNOWN.
+    // This is done so that we can find as many errors as possible.
+    sym_info = get_symbol_info(scope_id_stack, n->expression.variable.identifier->expression.ident.val);
+    n->expression.expr_type = sym_info.type;
     break;
   case VAR_NODE:
     n->expression.variable.identifier = va_arg(args, node *);
     n->expression.variable.index = va_arg(args, node *);
-    // Copy the type from the identifier
-    n->expression.expr_type = n->expression.variable.identifier->expression.expr_type;
+
+    if (n->expression.variable.index != NULL) {
+      // Copy the type from the identifier directly since we aren't indexing
+      n->expression.expr_type = n->expression.variable.identifier->expression.expr_type;
+    } else {
+      // Get the base type since we are indexing
+      n->expression.expr_type = get_base_type(n->expression.variable.identifier->expression.expr_type);
+    }
     break;
   case FUNCTION_NODE:
     n->expression.function.func_id = (function_id) va_arg(args, int);
     n->expression.function.arguments = va_arg(args, node *);
+
+    // Look up the return type of the function
+    n->expression.expr_type = get_function_return_type(n);
     break;
   case CONSTRUCTOR_NODE:
     n->expression.constructor.type = va_arg(args, node *);
     n->expression.constructor.arguments = va_arg(args, node *);
+
+    n->expression.expr_type = n->expression.constructor.type->type.type;
     break;
 
   case TYPE_NODE:
@@ -157,16 +176,16 @@ void print_function_name(function_id func_id) {
 
 void print_type_name(symbol_type type) {
   if (type & TYPE_VEC) {
-    printf("vec%d ", type - TYPE_VEC);
+    printf("vec%d", type - TYPE_VEC);
   } else if (type & TYPE_IVEC) {
-    printf("ivec%d ", type - TYPE_IVEC);
+    printf("ivec%d", type - TYPE_IVEC);
   } else if (type & TYPE_BVEC) {
-    printf("bvec%d ", type - TYPE_BVEC);
+    printf("bvec%d", type - TYPE_BVEC);
   } else {
     switch (type) {
-    case TYPE_INT:   printf("int "); break;
-    case TYPE_BOOL:  printf("bool "); break;
-    case TYPE_FLOAT: printf("float "); break;
+    case TYPE_INT:   printf("int"); break;
+    case TYPE_BOOL:  printf("bool"); break;
+    case TYPE_FLOAT: printf("float"); break;
     default: break;
     }
   }
@@ -174,8 +193,6 @@ void print_type_name(symbol_type type) {
 
 void print_preorder(node *n, void *data) {
   std::vector<int> *scope_id_stack = (std::vector<int> *) data;
-
-  const symbol_info *info = NULL;
 
   switch (n->kind) {
   case SCOPE_NODE:
@@ -216,16 +233,17 @@ void print_preorder(node *n, void *data) {
   case FLOAT_NODE:
     printf("%f ", n->expression.float_expr.val);
     break;
+  case BOOL_NODE:
+    printf(n->expression.bool_expr.val ? "true" : "false");
+    break;
   case IDENT_NODE:
     printf("%s ", n->expression.ident.val);
     break;
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
       printf("(INDEX ");
-      info = get_symbol_info(*scope_id_stack, n->expression.variable.identifier->expression.ident.val);
-      if (info != NULL) {
-        print_type_name(info->type);
-      }
+      print_type_name(n->expression.expr_type);
+      printf(" ");
     }
     break;
   case FUNCTION_NODE:
@@ -238,6 +256,7 @@ void print_preorder(node *n, void *data) {
 
   case TYPE_NODE:
     print_type_name(n->type.type);
+    printf(" ");
     break;
 
   case ARGUMENT_NODE:
@@ -285,6 +304,8 @@ void print_postorder(node *n, void *data) {
   case INT_NODE:
     break;
   case FLOAT_NODE:
+    break;
+  case BOOL_NODE:
     break;
   case IDENT_NODE:
     break;
@@ -373,6 +394,9 @@ void ast_visit(node *n,
       // No children
       break;
     case FLOAT_NODE:
+      // No children
+      break;
+    case BOOL_NODE:
       // No children
       break;
     case IDENT_NODE:

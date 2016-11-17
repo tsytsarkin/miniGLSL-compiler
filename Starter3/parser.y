@@ -114,8 +114,6 @@ enum {
 %type <as_ast> arguments
 %type <as_ast> type
 
-%type <as_int> parent_scope_id_action
-
 %start    program
 
 %%
@@ -132,31 +130,21 @@ program
       { yTRACE("program -> scope\n") ast = $1; }
   ;
 
-parent_scope_id_action
-  : %empty
-      {
-        // Create a symbol table for this scope
-        symbol_tables.push_back(std::map<std::string, symbol_info>());
-
-        // Remember the parent's scope id
-        unsigned int parent_scope_id = current_scope_id;
-
-        // Choose the next available scope
-        current_scope_id = max_scope_id++;
-
-        // Make the parent's scope id available as $1
-        $$ = parent_scope_id;
-      }
-  ;
-
 scope
-  : parent_scope_id_action '{' declarations statements '}'
+  : {
+      // Create a symbol table for this scope
+      symbol_tables.push_back(std::map<std::string, symbol_info>());
+
+      // The current stack is indexed by symbol_tables.size() - 1
+      scope_id_stack.push_back(symbol_tables.size() - 1);
+    }
+    '{' declarations statements '}'
       {
         yTRACE("scope -> { declarations statements }\n")
         $$ = ast_allocate(SCOPE_NODE, $3, $4);
 
         // Set the scope id back to the parent's scope id
-        current_scope_id = $1;
+        scope_id_stack.pop_back();
       }
   ;
 
@@ -283,9 +271,9 @@ expression
 
   /* literals */
   | TRUE_C
-      { yTRACE("expression -> TRUE_C \n") $$ = ast_allocate(INT_NODE, 1); }
+      { yTRACE("expression -> TRUE_C \n") $$ = ast_allocate(BOOL_NODE, true); }
   | FALSE_C
-      { yTRACE("expression -> FALSE_C \n") $$ = ast_allocate(INT_NODE, 0); }
+      { yTRACE("expression -> FALSE_C \n") $$ = ast_allocate(BOOL_NODE, false); }
   | INT_C
       { yTRACE("expression -> INT_C \n") $$ = ast_allocate(INT_NODE, $1); }
   | FLOAT_C

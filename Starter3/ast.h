@@ -2,6 +2,7 @@
 #define AST_H_ 1
 
 #include <stdarg.h>
+#include <vector>
 
 // Dummy node just so everything compiles, create your own node/nodes
 //
@@ -17,7 +18,7 @@ struct node_;
 typedef struct node_ node;
 extern node *ast;
 
-extern unsigned int current_scope_id, max_scope_id;
+extern std::vector<int> scope_id_stack;
 
 typedef enum {
   UNKNOWN                = 0,
@@ -29,21 +30,22 @@ typedef enum {
   BINARY_EXPRESSION_NODE = (1 << 2) | (1 << 4),
   INT_NODE               = (1 << 2) | (1 << 5),
   FLOAT_NODE             = (1 << 2) | (1 << 6),
-  IDENT_NODE             = (1 << 2) | (1 << 7),
-  VAR_NODE               = (1 << 2) | (1 << 8),
-  FUNCTION_NODE          = (1 << 2) | (1 << 9),
-  CONSTRUCTOR_NODE       = (1 << 2) | (1 << 10),
+  BOOL_NODE              = (1 << 2) | (1 << 7),
+  IDENT_NODE             = (1 << 2) | (1 << 8),
+  VAR_NODE               = (1 << 2) | (1 << 9),
+  FUNCTION_NODE          = (1 << 2) | (1 << 10),
+  CONSTRUCTOR_NODE       = (1 << 2) | (1 << 11),
 
   STATEMENTS_NODE        = (1 << 1),
-  IF_STATEMENT_NODE      = (1 << 1) | (1 << 11),
-  ASSIGNMENT_NODE        = (1 << 1) | (1 << 12),
+  IF_STATEMENT_NODE      = (1 << 1) | (1 << 12),
+  ASSIGNMENT_NODE        = (1 << 1) | (1 << 13),
 
-  DECLARATIONS_NODE      = (1 << 13),
-  DECLARATION_NODE       = (1 << 14),
+  DECLARATIONS_NODE      = (1 << 14),
+  DECLARATION_NODE       = (1 << 15),
 
-  TYPE_NODE              = (1 << 15),
+  TYPE_NODE              = (1 << 16),
 
-  ARGUMENT_NODE         = (1 << 16),
+  ARGUMENT_NODE         = (1 << 17),
 } node_kind;
 
 typedef enum {
@@ -68,6 +70,7 @@ typedef enum {
 } binary_op;
 
 typedef enum {
+  TYPE_UNKNOWN          = 0,
   TYPE_INT              = (1 << 0),
   TYPE_BOOL             = (1 << 1),
   TYPE_FLOAT            = (1 << 2),
@@ -163,6 +166,10 @@ struct node_ {
         struct {
           float val;
         } float_expr;
+
+        struct {
+          bool val;
+        } bool_expr;
 
         struct {
           char *val;
