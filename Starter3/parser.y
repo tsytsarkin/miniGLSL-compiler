@@ -162,6 +162,10 @@ declarations
         }
         // The current declaration is the last one seen
         $1->declarations.last_declaration = $2;
+
+        // Increment the number of declarations
+        $1->declarations.num_declarations++;
+
         // Return the declarations object
         $$ = $1;
       }
@@ -183,6 +187,10 @@ statements
         }
         // The current statement is the last one seen
         $1->statements.last_statement = $2;
+
+        // Increment the number of statements
+        $1->statements.num_statements++;
+
         // Return the statements object
         $$ = $1;
       }
@@ -305,9 +313,15 @@ arguments
       {
         yTRACE("arguments -> arguments , expression \n")
         if ($1 != NULL) {
+          // Allocate a new argument
           node *arg_expr = ast_allocate(ARGUMENT_NODE, $3);
+          // Make the last argument point to the new argument
           $1->argument.last_argument->argument.next_argument = arg_expr;
+          // Make the new argument the last argument
           $1->argument.last_argument = arg_expr;
+
+          // Increment the number of arguments
+          $1->argument.num_arguments++;
         }
         $$ = $1;
       }

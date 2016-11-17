@@ -108,8 +108,7 @@ struct node_ {
     struct {
       node *first_declaration;
 
-      // TODO: add a variable to count the number of declarations
-
+      int num_declarations; // Only meaningful for the first argument
       node *last_declaration; // Only used during construction
     } declarations;
 
@@ -124,8 +123,7 @@ struct node_ {
     struct {
       node *first_statement;
 
-      // TODO: add a variable to count the number of statements
-
+      int num_statements; // Only meaningful for the first argument
       node *last_statement; // Only used during construction
     } statements;
 
@@ -202,10 +200,8 @@ struct node_ {
       node *expression;
       node *next_argument;
 
-      // TODO: add a variable to count the number of arguments
-
-      // Only used during construction, and only meaningful for the first argument
-      node *last_argument;
+      int num_arguments; // Only meaningful for the first argument
+      node *last_argument; // Only used during construction
     } argument;
   };
 };

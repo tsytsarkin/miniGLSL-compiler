@@ -41,6 +41,7 @@ node *ast_allocate(node_kind kind, ...) {
 
   case DECLARATIONS_NODE:
     n->declarations.first_declaration = NULL;
+    n->declarations.num_declarations = 0;
     n->declarations.last_declaration = NULL;
     break;
   case DECLARATION_NODE:
@@ -58,6 +59,7 @@ node *ast_allocate(node_kind kind, ...) {
 
   case STATEMENTS_NODE:
     n->statements.first_statement = NULL;
+    n->statements.num_statements = 0;
     n->statements.last_statement = NULL;
     break;
   case IF_STATEMENT_NODE:
@@ -142,6 +144,7 @@ node *ast_allocate(node_kind kind, ...) {
   case ARGUMENT_NODE:
     n->argument.expression = va_arg(args, node *);
     n->argument.next_argument = NULL;
+    n->argument.num_arguments = 1;
 
     // Points to the last argument seen. Only valid for the first argument
     // and only used during construction.
