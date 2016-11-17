@@ -1,7 +1,109 @@
 #include <cstdlib>
 #include "semantic.h"
 
+void semantic_preorder(node *n, void *data) {
+  switch (n->kind) {
+  case SCOPE_NODE:
+    break;
+
+  case DECLARATIONS_NODE:
+    break;
+  case DECLARATION_NODE:
+    break;
+
+  case STATEMENTS_NODE:
+    break;
+  case IF_STATEMENT_NODE:
+    break;
+  case ASSIGNMENT_NODE:
+    break;
+
+  case EXPRESSION_NODE:
+    // EXPRESSION_NODE is an abstract node
+    break;
+  case UNARY_EXPRESSION_NODE:
+    break;
+  case BINARY_EXPRESSION_NODE:
+    break;
+  case INT_NODE:
+    break;
+  case FLOAT_NODE:
+    break;
+  case BOOL_NODE:
+    break;
+  case IDENT_NODE:
+    break;
+  case VAR_NODE:
+    break;
+  case FUNCTION_NODE:
+    break;
+  case CONSTRUCTOR_NODE:
+    break;
+
+  case TYPE_NODE:
+    break;
+
+  case ARGUMENT_NODE:
+    break;
+
+  default: break;
+
+  }
+}
+
+void semantic_postorder(node *n, void *data) {
+  switch (n->kind) {
+  case SCOPE_NODE:
+    break;
+
+  case DECLARATIONS_NODE:
+    break;
+  case DECLARATION_NODE:
+    break;
+
+  case STATEMENTS_NODE:
+    break;
+  case IF_STATEMENT_NODE:
+    break;
+  case ASSIGNMENT_NODE:
+    break;
+
+  case EXPRESSION_NODE:
+    // EXPRESSION_NODE is an abstract node
+    break;
+  case UNARY_EXPRESSION_NODE:
+    break;
+  case BINARY_EXPRESSION_NODE:
+    break;
+  case INT_NODE:
+    break;
+  case FLOAT_NODE:
+    break;
+  case BOOL_NODE:
+    break;
+  case IDENT_NODE:
+    break;
+  case VAR_NODE:
+    break;
+  case FUNCTION_NODE:
+    break;
+  case CONSTRUCTOR_NODE:
+    break;
+
+  case TYPE_NODE:
+    break;
+
+  case ARGUMENT_NODE:
+    break;
+
+  default: break;
+
+  }
+}
+
 int semantic_check(node *ast) {
+  // Perform semantic analysis
+  ast_visit(ast, semantic_preorder, semantic_postorder, NULL);
   return 0; // failed checks
 }
 
