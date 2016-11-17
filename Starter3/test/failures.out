@@ -34,7 +34,7 @@ int/negative
 >   1: {
 >   2:     int i = -12345;
 >   3: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (UNARY 12345 ) ) ) (STATEMENTS ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (UNARY int - 12345 ) ) ) (STATEMENTS ) ) 
 > Failed to compile
 -------------
 -------------
@@ -44,7 +44,7 @@ precedence/exponent
 >   2:     i = i + 4^5;
 >   3:     i = 4^5 + i;
 >   4: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i i 4 5 ) ) (ASSIGN unknown i 4 5 ) i ) ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (BINARY unknown + i (BINARY unknown ^ 4 5 ) ) (ASSIGN unknown i (BINARY unknown + (BINARY unknown ^ 4 5 ) i ) ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -53,7 +53,7 @@ precedence/minus
 >   1: {
 >   2:     i = -1 -2;
 >   3: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (UNARY 1 ) 2 ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (BINARY unknown - (UNARY int - 1 ) 2 ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -63,7 +63,7 @@ precedence/multiply_add
 >   2:     i = 5 + 6 * 7;
 >   3:     i = 6 * 7 + 5;
 >   4: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i 5 6 7 ) ) (ASSIGN unknown i 6 7 ) 5 ) ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (BINARY unknown + 5 (BINARY unknown * 6 7 ) ) (ASSIGN unknown i (BINARY unknown + (BINARY unknown * 6 7 ) 5 ) ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -73,7 +73,7 @@ precedence/and_or
 >   2:     b = i && j || k;
 >   3:     b = k || i && j;
 >   4: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown b i j ) k ) (ASSIGN unknown b k i j ) ) ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown b (BINARY unknown || (BINARY unknown && i j ) k ) (ASSIGN unknown b (BINARY unknown || k (BINARY unknown && i j ) ) ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -82,7 +82,7 @@ precedence/not
 >   1: {
 >   2:     i = !i;
 >   3: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (UNARY i ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (UNARY unknown ! i ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -91,7 +91,7 @@ precedence/add_subtract
 >   1: {
 >   2:     i = 5 + 6 - 7;
 >   3: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i 5 6 ) 7 ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (BINARY unknown - (BINARY unknown + 5 6 ) 7 ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -103,7 +103,7 @@ comparisons/less_equal
 >   4:     bool k;
 >   5:     k = i <= j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown <= i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -115,7 +115,7 @@ comparisons/less
 >   4:     bool k;
 >   5:     k = i < j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown < i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -127,7 +127,7 @@ comparisons/greater
 >   4:     bool k;
 >   5:     k = i > j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int 1 (DECLARATION j int 9 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int 1 (DECLARATION j int 9 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown > i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -137,7 +137,7 @@ comparisons/not
 >   2:     bool i = true;
 >   3:     i = !i;
 >   4: }
-> (SCOPE (DECLARATIONS (DECLARATION i bool true) ) (STATEMENTS (ASSIGN bool i (UNARY i ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i bool true) ) (STATEMENTS (ASSIGN bool i (UNARY bool ! i ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -148,7 +148,7 @@ comparisons/or
 >   3:     bool j = false;
 >   4:     i = i || j;
 >   5: }
-> (SCOPE (DECLARATIONS (DECLARATION i bool true(DECLARATION j bool false) ) ) (STATEMENTS (ASSIGN bool i i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i bool true(DECLARATION j bool false) ) ) (STATEMENTS (ASSIGN bool i (BINARY unknown || i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -160,7 +160,7 @@ comparisons/greater_equal
 >   4:     bool k;
 >   5:     k = (i >= j);
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 5 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 5 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown >= i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -183,7 +183,7 @@ comparisons/and
 >   4:     bool k;
 >   5:     k = i && j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i bool true(DECLARATION j bool false(DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i bool true(DECLARATION j bool false(DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown && i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -195,7 +195,7 @@ comparisons/not_equal
 >   4:     bool k;
 >   5:     k = i != j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown != i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -207,7 +207,7 @@ comparisons/equal_equal
 >   4:     bool k;
 >   5:     k = i == j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k (BINARY unknown == i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -451,7 +451,7 @@ float/negative
 >   1: {
 >   2:     float f = -12345.54321;
 >   3: }
-> (SCOPE (DECLARATIONS (DECLARATION f float (UNARY 12345.542969 ) ) ) (STATEMENTS ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION f float (UNARY float - 12345.542969 ) ) ) (STATEMENTS ) ) 
 > Failed to compile
 -------------
 -------------
@@ -471,7 +471,7 @@ operators/divide
 >   3:     int j;
 >   4:     i = i / j;
 >   5: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int ) ) ) (STATEMENTS (ASSIGN int i i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int ) ) ) (STATEMENTS (ASSIGN int i (BINARY unknown / i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -483,7 +483,7 @@ operators/plus
 >   4:     int k;
 >   5:     k = i + j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k (BINARY unknown + i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -495,7 +495,7 @@ operators/exponent
 >   4:     int k;
 >   5:     k = i ^ j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k (BINARY unknown ^ i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -507,7 +507,7 @@ operators/minus
 >   4:     int k; 
 >   5:     k = i - j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k (BINARY unknown - i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -519,7 +519,7 @@ operators/multiply
 >   4:     int k;
 >   5:     k = i * j;
 >   6: }
-> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k (BINARY unknown * i j ) ) ) ) 
 > Failed to compile
 -------------
 -------------
@@ -625,7 +625,7 @@ cond_statement/if
 >   3:     if (true) c = d;
 >   4:     if (a == b) {c = !d;}
 >   5: }
-> (SCOPE (DECLARATIONS ) (STATEMENTS (IF a (ASSIGN unknown b c ) (IF true(ASSIGN unknown c d ) (IF a b ) (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown c (UNARY d ) ) ) ) ) ) ) ) ) 
+> (SCOPE (DECLARATIONS ) (STATEMENTS (IF a (ASSIGN unknown b c ) (IF true(ASSIGN unknown c d ) (IF (BINARY unknown == a b ) (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown c (UNARY unknown ! d ) ) ) ) ) ) ) ) ) 
 > Failed to compile
 -------------
 -------------

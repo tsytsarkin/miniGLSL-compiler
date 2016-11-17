@@ -1,0 +1,3 @@
+  1: { ivec3 x; y = -x; }
+(SCOPE (DECLARATIONS (DECLARATION x ivec3 ) ) (STATEMENTS (ASSIGN unknown y (UNARY ivec3 - x ) ) ) ) 
+Failed to compile

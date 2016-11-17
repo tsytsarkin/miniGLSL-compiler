@@ -10,6 +10,29 @@ symbol_type get_binary_expr_type(node *binary_node) {
 }
 
 symbol_type get_unary_expr_type(node *unary_node) {
+  symbol_type type = unary_node->expression.unary.right->expression.expr_type;
+  symbol_type base_type = get_base_type(type);
+
+  switch (unary_node->expression.unary.op) {
+  case OP_UMINUS:
+    // Unary minus is an arithmetic operator, so only allow
+    // base types of int and float
+    if (base_type == TYPE_INT || base_type == TYPE_FLOAT) {
+      // Return the original type (preserving scalar/vector)
+      return type;
+    }
+    break;
+  case OP_NOT:
+    // Unary not is a logical operator, so only allow a boolean
+    // base type
+    if (base_type == TYPE_BOOL) {
+      // Return the original type (preserving scalar/vector)
+      return type;
+    }
+    break;
+  default: break;
+  }
+  // Fall through to an unknown type
   return TYPE_UNKNOWN;
 }
 
