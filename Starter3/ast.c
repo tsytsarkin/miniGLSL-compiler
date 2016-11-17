@@ -195,6 +195,63 @@ void print_type_name(symbol_type type) {
   }
 }
 
+void print_unary_op_name(unary_op op) {
+  switch (op) {
+  case OP_UMINUS:
+    printf("-");
+    break;
+  case OP_NOT:
+    printf("!");
+    break;
+  default: break;
+  }
+}
+
+void print_binary_op_name(binary_op op) {
+  switch (op) {
+  case OP_AND:
+    printf("&&");
+    break;
+  case OP_OR:
+    printf("||");
+    break;
+  case OP_EQ:
+    printf("==");
+    break;
+  case OP_NEQ:
+    printf("!=");
+    break;
+  case OP_LT:
+    printf("<");
+    break;
+  case OP_LEQ:
+    printf("<=");
+    break;
+  case OP_GT:
+    printf(">");
+    break;
+  case OP_GEQ:
+    printf(">=");
+    break;
+  case OP_PLUS:
+    printf("+");
+    break;
+  case OP_MINUS:
+    printf("-");
+    break;
+  case OP_MUL:
+    printf("*");
+    break;
+  case OP_DIV:
+    printf("/");
+    break;
+  case OP_XOR:
+    printf("^");
+    break;
+  default: break;
+  }
+}
+
 void print_preorder(node *n, void *data) {
   std::vector<int> *scope_id_stack = (std::vector<int> *) data;
 
@@ -228,10 +285,17 @@ void print_preorder(node *n, void *data) {
     break;
   case UNARY_EXPRESSION_NODE:
     printf("(UNARY ");
-    // TODO: Put the type of an expression in the AST (and populate it partially during build time (constants) and during semantic analysis)
+    print_type_name(get_unary_expr_type(n));
+    printf(" ");
+    print_unary_op_name(n->expression.unary.op);
+    printf(" ");
     break;
   case BINARY_EXPRESSION_NODE:
-    // TODO: Put the type of an expression in the AST (and populate it partially during build time (constants) and during semantic analysis)
+    printf("(BINARY ");
+    print_type_name(get_binary_expr_type(n));
+    printf(" ");
+    print_binary_op_name(n->expression.binary.op);
+    printf(" ");
     break;
   case INT_NODE:
     printf("%d ", n->expression.int_expr.val);
