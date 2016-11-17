@@ -32,13 +32,27 @@ if [[ $1 == '-o' ]]; then
   OVERWRITE=1
   # Take all arguments after the first if they aren't empty
   if [[ ${@:2} != "" ]]; then
-    TESTS="${@:2}"
+    REGEX_TESTS="${@:2}"
   fi
 else
   # Take all arguments if they aren't empty
   if [[ $@ != "" ]]; then
-    TESTS="$@"
+    REGEX_TESTS="$@"
   fi
+fi
+
+if [[ $REGEX_TESTS != "" ]]; then
+  # Clear all tests but keep them in the variable ALL_TESTS
+  ALL_TESTS="$TESTS"
+  TESTS=""
+  for REGEX_TEST in $REGEX_TESTS; do
+    for TEST in $ALL_TESTS; do
+      # Test each regex against each test and if it matches, add it to TESTS
+      if [[ $TEST =~ $REGEX_TEST.* ]]; then
+        TESTS="$TESTS $TEST"
+      fi
+    done
+  done
 fi
 
 # Return the number of failed cases
