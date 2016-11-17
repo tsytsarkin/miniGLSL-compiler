@@ -1,0 +1,6 @@
+{
+    int i = 1;
+    int j = 9;
+    bool k;
+    k = i > j;
+}

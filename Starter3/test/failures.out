@@ -1,0 +1,645 @@
+-------------
+int/starts_with_0
+0a1,5
+> 
+> LEXICAL ERROR, LINE 2: Octal numbers are not allowed.
+>   1: {
+>   2:     int i = 01234;
+>   3: }
+-------------
+-------------
+int/overflow
+0a1,5
+> 
+> LEXICAL ERROR, LINE 2: Integer literal is out of range (case 2).
+>   1: {
+>   2:     int i = 2097152;
+>   3: }
+-------------
+-------------
+int/valid
+0a1,8
+>   1: {
+>   2:     int i = 1234;
+>   3:     int j = 0;
+>   4:     int k = 1;
+>   5:     int l = 2097151;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int 1234 (DECLARATION j int 0 (DECLARATION k int 1 (DECLARATION l int 2097151 ) ) ) ) ) (STATEMENTS ) ) 
+> Failed to compile
+-------------
+-------------
+int/negative
+0a1,5
+>   1: {
+>   2:     int i = -12345;
+>   3: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (UNARY 12345 ) ) ) (STATEMENTS ) ) 
+> Failed to compile
+-------------
+-------------
+precedence/exponent
+0a1,6
+>   1: {
+>   2:     i = i + 4^5;
+>   3:     i = 4^5 + i;
+>   4: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i i 4 5 ) ) (ASSIGN unknown i 4 5 ) i ) ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+precedence/minus
+0a1,5
+>   1: {
+>   2:     i = -1 -2;
+>   3: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (UNARY 1 ) 2 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+precedence/multiply_add
+0a1,6
+>   1: {
+>   2:     i = 5 + 6 * 7;
+>   3:     i = 6 * 7 + 5;
+>   4: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i 5 6 7 ) ) (ASSIGN unknown i 6 7 ) 5 ) ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+precedence/and_or
+0a1,6
+>   1: {
+>   2:     b = i && j || k;
+>   3:     b = k || i && j;
+>   4: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown b i j ) k ) (ASSIGN unknown b k i j ) ) ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+precedence/not
+0a1,5
+>   1: {
+>   2:     i = !i;
+>   3: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i (UNARY i ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+precedence/add_subtract
+0a1,5
+>   1: {
+>   2:     i = 5 + 6 - 7;
+>   3: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i 5 6 ) 7 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/less_equal
+0a1,8
+>   1: {
+>   2:     int i = 5;
+>   3:     int j = 6;
+>   4:     bool k;
+>   5:     k = i <= j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/less
+0a1,8
+>   1: {
+>   2:     int i = 5;
+>   3:     int j = 6;
+>   4:     bool k;
+>   5:     k = i < j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/greater
+0a1,8
+>   1: {
+>   2:     int i = 1;
+>   3:     int j = 9;
+>   4:     bool k;
+>   5:     k = i > j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int 1 (DECLARATION j int 9 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/not
+0a1,6
+>   1: {
+>   2:     bool i = true;
+>   3:     i = !i;
+>   4: }
+> (SCOPE (DECLARATIONS (DECLARATION i bool true) ) (STATEMENTS (ASSIGN bool i (UNARY i ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/or
+0a1,7
+>   1: {
+>   2:     bool i = true;
+>   3:     bool j = false;
+>   4:     i = i || j;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i bool true(DECLARATION j bool false) ) ) (STATEMENTS (ASSIGN bool i i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/greater_equal
+0a1,8
+>   1: {
+>   2:     int i = 5;
+>   3:     int j = 5;
+>   4:     bool k;
+>   5:     k = (i >= j);
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 5 (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/equal
+0a1,7
+>   1: {
+>   2:     int i;
+>   3:     int j = 6;
+>   4:     i = j;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int 6 ) ) ) (STATEMENTS (ASSIGN int i j ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/and
+0a1,8
+>   1: {
+>   2:     bool i = true;
+>   3:     bool j = false;
+>   4:     bool k;
+>   5:     k = i && j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i bool true(DECLARATION j bool false(DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/not_equal
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     bool k;
+>   5:     k = i != j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+comparisons/equal_equal
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     bool k;
+>   5:     k = i == j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k bool ) ) ) ) (STATEMENTS (ASSIGN bool k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+invalid/double_assign
+0a1,5
+> 
+> PARSER ERROR, LINE 2: syntax error, unexpected '='
+>   1: {
+>   2:     int a = b = 3;
+>   3: }
+-------------
+-------------
+invalid/double_declaration
+0a1,5
+> 
+> PARSER ERROR, LINE 2: syntax error, unexpected ',', expecting ';' or '='
+>   1: {
+>   2:     int num1, num2;
+>   3: }
+-------------
+-------------
+comment/valid
+0a1,10
+> 
+> PARSER ERROR, LINE 9: syntax error, unexpected $end, expecting '{'
+>   1: /*This is a comment!!!*/
+>   2: 
+>   3: /*I can do funky stuff like put * and put / but it doesn't end until I put */
+>   4: 
+>   5: /*I can also put the comment on
+>   6: multiple lines!*/
+>   7: 
+>   8: /*There should be no tokens generated by scanning this file*/
+-------------
+-------------
+comment/invalid
+0a1,6
+> 
+> LEXICAL ERROR, LINE 1: Unmatched /*
+>   1: /*This is not a valid comment since it doesn't terminate
+>   2: 
+>   3: 
+>   4: 
+-------------
+-------------
+types/bvec4
+0a1,7
+>   1: {
+>   2:     bvec4 i;
+>   3:     bvec4 j = bvec4(true, false, true, false);
+>   4:     j[1] = true;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i bvec4 (DECLARATION j bvec4 (CALL bvec4 truefalsetruefalse) ) ) ) (STATEMENTS (ASSIGN bool (INDEX bool j 1 ) true) ) ) 
+> Failed to compile
+-------------
+-------------
+types/bool
+0a1,6
+>   1: {
+>   2:     bool i;
+>   3:     i = false;
+>   4: }
+> (SCOPE (DECLARATIONS (DECLARATION i bool ) ) (STATEMENTS (ASSIGN bool i false) ) ) 
+> Failed to compile
+-------------
+-------------
+types/vec2
+0a1,7
+>   1: {
+>   2:     vec2 i;
+>   3:     vec2 j = vec2(1.23, 2.45);
+>   4:     j[0] = 3.456;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i vec2 (DECLARATION j vec2 (CALL vec2 1.230000 2.450000 ) ) ) ) (STATEMENTS (ASSIGN float (INDEX float j 0 ) 3.456000 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/ivec2
+0a1,7
+>   1: {
+>   2:     ivec2 i;
+>   3:     ivec2 j = ivec2(1, 3);
+>   4:     j[0] = 4;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i ivec2 (DECLARATION j ivec2 (CALL ivec2 1 3 ) ) ) ) (STATEMENTS (ASSIGN int (INDEX int j 0 ) 4 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/ivec3
+0a1,7
+>   1: {
+>   2:     ivec3 i;
+>   3:     ivec3 j = ivec3(1, 2, 3);
+>   4:     j[2] = 5;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i ivec3 (DECLARATION j ivec3 (CALL ivec3 1 2 3 ) ) ) ) (STATEMENTS (ASSIGN int (INDEX int j 2 ) 5 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/vec3
+0a1,7
+>   1: {
+>   2:     vec3 i;
+>   3:     vec3 j = vec3(1.23, 2.34, 3.45);
+>   4:     j[2] = 3.5;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i vec3 (DECLARATION j vec3 (CALL vec3 1.230000 2.340000 3.450000 ) ) ) ) (STATEMENTS (ASSIGN float (INDEX float j 2 ) 3.500000 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/int
+0a1,7
+>   1: {
+>   2:     int i;
+>   3:     int j = 123;
+>   4:     j = 93;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int 123 ) ) ) (STATEMENTS (ASSIGN int j 93 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/bvec2
+0a1,7
+>   1: {
+>   2:     bvec2 i;
+>   3:     bvec2 j = bvec2(true,false);
+>   4:     j[0] = false;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i bvec2 (DECLARATION j bvec2 (CALL bvec2 truefalse) ) ) ) (STATEMENTS (ASSIGN bool (INDEX bool j 0 ) false) ) ) 
+> Failed to compile
+-------------
+-------------
+types/bvec3
+0a1,7
+>   1: {
+>   2:     bvec3 i;
+>   3:     bvec3 j = bvec3(true, false, true);
+>   4:     j[2] = false;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i bvec3 (DECLARATION j bvec3 (CALL bvec3 truefalsetrue) ) ) ) (STATEMENTS (ASSIGN bool (INDEX bool j 2 ) false) ) ) 
+> Failed to compile
+-------------
+-------------
+types/ivec4
+0a1,7
+>   1: {
+>   2:     ivec4 i;
+>   3:     ivec4 j = ivec4(1, 2, 3, 4);
+>   4:     j[3] = 0;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i ivec4 (DECLARATION j ivec4 (CALL ivec4 1 2 3 4 ) ) ) ) (STATEMENTS (ASSIGN int (INDEX int j 3 ) 0 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/vec4
+0a1,7
+>   1: {
+>   2:     vec4 i;
+>   3:     vec4 j = vec4(1.23, 2.34, 3.45, 4.56);
+>   4:     j[3] = 6.44;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i vec4 (DECLARATION j vec4 (CALL vec4 1.230000 2.340000 3.450000 4.560000 ) ) ) ) (STATEMENTS (ASSIGN float (INDEX float j 3 ) 6.440000 ) ) ) 
+> Failed to compile
+-------------
+-------------
+types/float
+0a1,7
+>   1: {
+>   2:     float i;
+>   3:     float j = 1.34234;
+>   4:     j = 123.0;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i float (DECLARATION j float 1.342340 ) ) ) (STATEMENTS (ASSIGN float j 123.000000 ) ) ) 
+> Failed to compile
+-------------
+-------------
+identifier/valid
+0a1,9
+>   1: {
+>   2:     int this_is_an_identifier1234;
+>   3:     float _also1_an2_identifier3;
+>   4:     vec2 abcdefghijklmnopqrstuvwxyz_;
+>   5:     ivec3 ABCDEFGHIJKLMNOPQRSTUVWXYZ_;
+>   6:     bvec4 _0123456789_;
+>   7: }
+> (SCOPE (DECLARATIONS (DECLARATION this_is_an_identifier1234 int (DECLARATION _also1_an2_identifier3 float (DECLARATION abcdefghijklmnopqrstuvwxyz_ vec2 (DECLARATION ABCDEFGHIJKLMNOPQRSTUVWXYZ_ ivec3 (DECLARATION _0123456789_ bvec4 ) ) ) ) ) ) (STATEMENTS ) ) 
+> Failed to compile
+-------------
+-------------
+identifier/max_length
+0a1,6
+> 
+> LEXICAL ERROR, LINE 3: Identifier is too long.
+>   1: {
+>   2:     int abcdefghijklmnopqrstuvwxyz012345;
+>   3:     float abcdefghijklmnopqrstuvwxyz0123456;
+>   4: }
+-------------
+-------------
+identifier/starts_with_num
+0a1,5
+> 
+> LEXICAL ERROR, LINE 2: Integers and identifiers/keywords must be separated by whitespace.
+>   1: {
+>   2:      int 0identifier;
+>   3: }
+-------------
+-------------
+float/valid
+0a1,8
+>   1: {
+>   2:     float f = 1234.1234;
+>   3:     f = 1234.;
+>   4:     f = 1234.0;
+>   5:     f = .1;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION f float 1234.123413 ) ) (STATEMENTS (ASSIGN float f 1234.000000 (ASSIGN float f 1234.000000 (ASSIGN float f 0.100000 ) ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+float/starts_with_0
+0a1,5
+> 
+> LEXICAL ERROR, LINE 2: Octal numbers are not allowed.
+>   1: {
+>   2:     float f = 01234.0;
+>   3: }
+-------------
+-------------
+float/overflow
+0a1,5
+> 
+> LEXICAL ERROR, LINE 2: Floating point literal is out of range (case 2).
+>   1: {
+>   2:     float d = 32763923382392339339949373334934934983907.01;
+>   3: }
+-------------
+-------------
+float/negative
+0a1,5
+>   1: {
+>   2:     float f = -12345.54321;
+>   3: }
+> (SCOPE (DECLARATIONS (DECLARATION f float (UNARY 12345.542969 ) ) ) (STATEMENTS ) ) 
+> Failed to compile
+-------------
+-------------
+float/invalid_0
+0a1,5
+> 
+> LEXICAL ERROR, LINE 2: Integers and identifiers/keywords must be separated by whitespace.
+>   1: {
+>   2:     float f = 1e;
+>   3: }
+-------------
+-------------
+operators/divide
+0a1,7
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     i = i / j;
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int ) ) ) (STATEMENTS (ASSIGN int i i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+operators/plus
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     int k;
+>   5:     k = i + j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+operators/exponent
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     int k;
+>   5:     k = i ^ j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+operators/minus
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     int k; 
+>   5:     k = i - j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+operators/multiply
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     int j;
+>   4:     int k;
+>   5:     k = i * j;
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION j int (DECLARATION k int ) ) ) ) (STATEMENTS (ASSIGN int k i j ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/rsq_float
+0a1,7
+>   1: {
+>   2:     float f;
+>   3:     float result;
+>   4:     result = rsq(f);
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION f float (DECLARATION result float ) ) ) (STATEMENTS (ASSIGN float result (CALL rsqf ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/dp3_vec4
+0a1,8
+>   1: {
+>   2:     float f;
+>   3:     vec4 v1;
+>   4:     vec4 v2;
+>   5:     f = dp3(v1, v2);
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION f float (DECLARATION v1 vec4 (DECLARATION v2 vec4 ) ) ) ) (STATEMENTS (ASSIGN float f (CALL dp3v1 v2 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/rsq_int
+0a1,7
+>   1: {
+>   2:     int i;
+>   3:     float result;
+>   4:     result = rsq(i);
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION result float ) ) ) (STATEMENTS (ASSIGN float result (CALL rsqi ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/lit
+0a1,7
+>   1: {
+>   2:     vec4 v1;
+>   3:     vec4 v2;
+>   4:     v2 = lit(v1);
+>   5: }
+> (SCOPE (DECLARATIONS (DECLARATION v1 vec4 (DECLARATION v2 vec4 ) ) ) (STATEMENTS (ASSIGN vec4 v2 (CALL litv1 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/dp3_vec3
+0a1,8
+>   1: {
+>   2:     float f;
+>   3:     vec3 v1;
+>   4:     vec3 v2;
+>   5:     f = dp3(v1, v2);
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION f float (DECLARATION v1 vec3 (DECLARATION v2 vec3 ) ) ) ) (STATEMENTS (ASSIGN float f (CALL dp3v1 v2 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/dp3_ivec3
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     ivec3 v1;
+>   4:     ivec3 v2;
+>   5:     i = dp3(v1, v2);
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION v1 ivec3 (DECLARATION v2 ivec3 ) ) ) ) (STATEMENTS (ASSIGN int i (CALL dp3v1 v2 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+functions/dp3_ivec4
+0a1,8
+>   1: {
+>   2:     int i;
+>   3:     ivec4 v1;
+>   4:     ivec4 v2;
+>   5:     i = dp3(v1, v2);
+>   6: }
+> (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION v1 ivec4 (DECLARATION v2 ivec4 ) ) ) ) (STATEMENTS (ASSIGN int i (CALL dp3v1 v2 ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+cond_statement/while
+0a1,10
+> 
+> PARSER ERROR, LINE 2: syntax error, unexpected '(', expecting '='
+>   1: {
+>   2:     while (true)
+>   3:         i = 9;
+>   4:     while (i == j){
+>   5:         b = b + 1;
+>   6:         c = 9 + 1;
+>   7:     }
+>   8: }
+-------------
+-------------
+cond_statement/if
+0a1,7
+>   1: {
+>   2:     if (a) b = c;
+>   3:     if (true) c = d;
+>   4:     if (a == b) {c = !d;}
+>   5: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (IF a (ASSIGN unknown b c ) (IF true(ASSIGN unknown c d ) (IF a b ) (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown c (UNARY d ) ) ) ) ) ) ) ) ) 
+> Failed to compile
+-------------
+-------------
+cond_statement/else
+0a1,11
+>   1: {
+>   2:     if (false) { 
+>   3:         i = 10;
+>   4:     } else {
+>   5:         i = 15;
+>   6:     }
+>   7: 
+>   8:     if (a) if (b) a = false; else b = false;
+>   9: }
+> (SCOPE (DECLARATIONS ) (STATEMENTS (IF false(SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i 10 ) ) ) (SCOPE (DECLARATIONS ) (STATEMENTS (ASSIGN unknown i 15 ) ) ) (IF a (IF b (ASSIGN unknown a false) (ASSIGN unknown b false) ) ) ) ) ) 
+> Failed to compile
+-------------

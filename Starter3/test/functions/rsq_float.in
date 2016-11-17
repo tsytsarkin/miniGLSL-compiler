@@ -1,0 +1,5 @@
+{
+    float f;
+    float result;
+    result = rsq(f);
+}

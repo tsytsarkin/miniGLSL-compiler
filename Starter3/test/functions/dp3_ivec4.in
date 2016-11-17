@@ -1,0 +1,6 @@
+{
+    int i;
+    ivec4 v1;
+    ivec4 v2;
+    i = dp3(v1, v2);
+}

@@ -1,0 +1,5 @@
+{
+    bool i = true;
+    bool j = false;
+    i = i || j;
+}

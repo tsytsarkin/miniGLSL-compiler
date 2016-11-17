@@ -1,0 +1,6 @@
+{
+    bool i = true;
+    bool j = false;
+    bool k;
+    k = i && j;
+}

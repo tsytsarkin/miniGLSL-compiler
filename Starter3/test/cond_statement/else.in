@@ -1,0 +1,9 @@
+{
+    if (false) { 
+        i = 10;
+    } else {
+        i = 15;
+    }
+
+    if (a) if (b) a = false; else b = false;
+}
