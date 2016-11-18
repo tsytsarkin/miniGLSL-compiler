@@ -1,3 +1,2 @@
   1: { vec3 x; y = -x; }
  (SCOPE (DECLARATIONS (DECLARATION x vec3)) (STATEMENTS (ASSIGN unknown y (UNARY vec3 - x))))
-Failed to compile

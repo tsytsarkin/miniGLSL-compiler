@@ -1,3 +1,2 @@
   1: { vec4 x; y = !x; }
  (SCOPE (DECLARATIONS (DECLARATION x vec4)) (STATEMENTS (ASSIGN unknown y (UNARY unknown ! x))))
-Failed to compile

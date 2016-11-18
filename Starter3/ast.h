@@ -106,6 +106,7 @@ typedef enum {
 
 struct node_ {
   node_kind kind;
+  node *parent;
 
   union {
     struct {

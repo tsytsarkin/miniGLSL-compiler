@@ -1,3 +1,2 @@
   1: { float x; y = -x; }
  (SCOPE (DECLARATIONS (DECLARATION x float)) (STATEMENTS (ASSIGN unknown y (UNARY float - x))))
-Failed to compile

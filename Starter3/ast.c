@@ -16,6 +16,12 @@ node *ast = NULL;
 std::vector<int> scope_id_stack;
 
 /****** BUILDING ******/
+void set_parent(node *parent, node *child) {
+  if (child != NULL) {
+    child->parent = parent;
+  }
+}
+
 node *ast_allocate(node_kind kind, ...) {
   va_list args;
 
@@ -23,6 +29,7 @@ node *ast_allocate(node_kind kind, ...) {
   node *n = (node *) malloc(sizeof(node));
   memset(n, 0, sizeof *n);
   n->kind = kind;
+  n->parent = NULL;
 
   va_start(args, kind);
 
@@ -37,6 +44,10 @@ node *ast_allocate(node_kind kind, ...) {
     // When we are creating a scope node, we have already built all of its children
     // so its id should be the current scope id
     n->scope.scope_id = scope_id_stack.back();
+
+    // Make this node the parent of its children
+    set_parent(n, n->scope.declarations);
+    set_parent(n, n->scope.statements);
     break;
 
   case DECLARATIONS_NODE:
@@ -55,6 +66,11 @@ node *ast_allocate(node_kind kind, ...) {
     symbol = n->declaration.identifier->expression.ident.val;
     sym_info.type = n->declaration.type->type.type;
     set_symbol_info(scope_id_stack.back(), symbol, sym_info);
+
+    // Make this node the parent of its children
+    set_parent(n, n->declaration.type);
+    set_parent(n, n->declaration.identifier);
+    set_parent(n, n->declaration.assignment_expr);
     break;
 
   case STATEMENTS_NODE:
@@ -67,11 +83,20 @@ node *ast_allocate(node_kind kind, ...) {
     n->statement.if_else_statement.if_statement = va_arg(args, node *);
     n->statement.if_else_statement.else_statement = va_arg(args, node *);
     n->statement.next_statement = NULL;
+
+    // Make this node the parent of its children
+    set_parent(n, n->statement.if_else_statement.condition);
+    set_parent(n, n->statement.if_else_statement.if_statement);
+    set_parent(n, n->statement.if_else_statement.else_statement);
     break;
   case ASSIGNMENT_NODE:
     n->statement.assignment.variable = va_arg(args, node *);
     n->statement.assignment.expression = va_arg(args, node *);
     n->statement.next_statement = NULL;
+
+    // Make this node the parent of its children
+    set_parent(n, n->statement.assignment.variable);
+    set_parent(n, n->statement.assignment.expression);
     break;
 
   case EXPRESSION_NODE:
@@ -82,6 +107,9 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.unary.right = va_arg(args, node *);
 
     n->expression.expr_type = get_unary_expr_type(n);
+
+    // Make this node the parent of its children
+    set_parent(n, n->expression.unary.right);
     break;
   case BINARY_EXPRESSION_NODE:
     n->expression.binary.op = (binary_op) va_arg(args, int);
@@ -89,18 +117,28 @@ node *ast_allocate(node_kind kind, ...) {
     n->expression.binary.right = va_arg(args, node *);
 
     n->expression.expr_type = get_binary_expr_type(n);
+
+    // Make this node the parent of its children
+    set_parent(n, n->expression.binary.left);
+    set_parent(n, n->expression.binary.right);
     break;
   case INT_NODE:
     n->expression.int_expr.val = va_arg(args, int);
     n->expression.expr_type = TYPE_INT;
+
+    // This node doesn't have any children
     break;
   case FLOAT_NODE:
     n->expression.float_expr.val = va_arg(args, double);
     n->expression.expr_type = TYPE_FLOAT;
+
+    // This node doesn't have any children
     break;
   case BOOL_NODE:
     n->expression.bool_expr.val = (bool) va_arg(args, int);
     n->expression.expr_type = TYPE_BOOL;
+
+    // This node doesn't have any children
     break;
   case IDENT_NODE:
     n->expression.ident.val = va_arg(args, char *);
@@ -110,6 +148,8 @@ node *ast_allocate(node_kind kind, ...) {
     // This is done so that we can find as many errors as possible.
     sym_info = get_symbol_info(scope_id_stack, n->expression.ident.val);
     n->expression.expr_type = sym_info.type;
+
+    // This node doesn't have any children
     break;
   case VAR_NODE:
     n->expression.variable.identifier = va_arg(args, node *);
@@ -122,6 +162,10 @@ node *ast_allocate(node_kind kind, ...) {
       // Get the base type since we are indexing
       n->expression.expr_type = get_base_type(n->expression.variable.identifier->expression.expr_type);
     }
+
+    // Make this node the parent of its children
+    set_parent(n, n->expression.variable.identifier);
+    set_parent(n, n->expression.variable.index);
     break;
   case FUNCTION_NODE:
     n->expression.function.func_id = (function_id) va_arg(args, int);
@@ -129,12 +173,19 @@ node *ast_allocate(node_kind kind, ...) {
 
     // Look up the return type of the function
     n->expression.expr_type = get_function_return_type(n);
+
+    // Make this node the parent of its children
+    set_parent(n, n->expression.function.arguments);
     break;
   case CONSTRUCTOR_NODE:
     n->expression.constructor.type = va_arg(args, node *);
     n->expression.constructor.arguments = va_arg(args, node *);
 
     n->expression.expr_type = n->expression.constructor.type->type.type;
+
+    // Make this node the parent of its children
+    set_parent(n, n->expression.constructor.type);
+    set_parent(n, n->expression.constructor.arguments);
     break;
 
   case TYPE_NODE:
@@ -149,6 +200,9 @@ node *ast_allocate(node_kind kind, ...) {
     // Points to the last argument seen. Only valid for the first argument
     // and only used during construction.
     n->argument.last_argument = n;
+
+    // Make this node the parent of its children
+    set_parent(n, n->argument.expression);
     break;
 
   default: break;

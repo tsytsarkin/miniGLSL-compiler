@@ -166,6 +166,9 @@ declarations
         // Increment the number of declarations
         $1->declarations.num_declarations++;
 
+        // Make the declarations node the parent of all its declaration nodes
+        $2->parent = $1;
+
         // Return the declarations object
         $$ = $1;
       }
@@ -190,6 +193,9 @@ statements
 
         // Increment the number of statements
         $1->statements.num_statements++;
+
+        // Make the statements node the parent of all its statement nodes
+        $2->parent = $1;
 
         // Return the statements object
         $$ = $1;
@@ -312,17 +318,22 @@ arguments
   : arguments ',' expression
       {
         yTRACE("arguments -> arguments , expression \n")
-        if ($1 != NULL) {
-          // Allocate a new argument
-          node *arg_expr = ast_allocate(ARGUMENT_NODE, $3);
-          // Make the last argument point to the new argument
-          $1->argument.last_argument->argument.next_argument = arg_expr;
-          // Make the new argument the last argument
-          $1->argument.last_argument = arg_expr;
 
-          // Increment the number of arguments
-          $1->argument.num_arguments++;
-        }
+        // Allocate a new argument
+        node *arg_expr = ast_allocate(ARGUMENT_NODE, $3);
+
+        // Make the last argument point to the new argument
+        $1->argument.last_argument->argument.next_argument = arg_expr;
+
+        // Make the last argument the parent of the new argument
+        arg_expr->parent = $1->argument.last_argument;
+
+        // Make the new argument the last argument
+        $1->argument.last_argument = arg_expr;
+
+        // Increment the number of arguments
+        $1->argument.num_arguments++;
+
         $$ = $1;
       }
   | expression

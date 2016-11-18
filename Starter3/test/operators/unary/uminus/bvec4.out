@@ -1,3 +1,2 @@
   1: { bvec4 x; y = -x; }
  (SCOPE (DECLARATIONS (DECLARATION x bvec4)) (STATEMENTS (ASSIGN unknown y (UNARY unknown - x))))
-Failed to compile
