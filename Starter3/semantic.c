@@ -1,7 +1,13 @@
 #include <cstdlib>
 #include "semantic.h"
 
+typedef struct {
+  bool error_occurred;
+} visit_data;
+
 void semantic_preorder(node *n, void *data) {
+  visit_data *vd = (visit_data *) data;
+
   switch (n->kind) {
   case SCOPE_NODE:
     break;
@@ -47,11 +53,12 @@ void semantic_preorder(node *n, void *data) {
     break;
 
   default: break;
-
   }
 }
 
 void semantic_postorder(node *n, void *data) {
+  visit_data *vd = (visit_data *) data;
+
   switch (n->kind) {
   case SCOPE_NODE:
     break;
@@ -64,6 +71,11 @@ void semantic_postorder(node *n, void *data) {
   case STATEMENTS_NODE:
     break;
   case IF_STATEMENT_NODE:
+    // An if condition must be a boolean
+    if (n->statement.if_else_statement.condition->expression.expr_type != TYPE_BOOL) {
+      // TODO: log invalid condition
+      vd->error_occurred = true;
+    }
     break;
   case ASSIGNMENT_NODE:
     break;
@@ -97,14 +109,15 @@ void semantic_postorder(node *n, void *data) {
     break;
 
   default: break;
-
   }
 }
 
 int semantic_check(node *ast) {
   // Perform semantic analysis
-  ast_visit(ast, semantic_preorder, semantic_postorder, NULL);
-  return 0; // failed checks
+  visit_data vd;
+  ast_visit(ast, semantic_preorder, semantic_postorder, &vd);
+  // Return 0 if error occurred
+  return !vd.error_occurred;
 }
 
 /****** SEMANTIC HELPER FUNCTIONS ******/
@@ -123,6 +136,10 @@ symbol_type get_binary_expr_type(node *binary_node) {
 
   binary_op op = binary_node->expression.binary.op;
 
+  // TODO: In alot of the cases below we can just log something and fall
+  // through to the return statement at the bottom of the function. This
+  // would remove alot of extra code and make it more readable
+
   // For a binary op, base types must match
   if (r_base_type != l_base_type) {
     // TODO: log error (type mismatch)
@@ -136,35 +153,31 @@ symbol_type get_binary_expr_type(node *binary_node) {
 
   switch (op) {
   case OP_AND: case OP_OR:
-    if (r_type != l_type) {
-      // TODO: log error, type mismatch
-      return TYPE_UNKNOWN;
-    }
-    if (r_base_type == TYPE_BOOL) {
+    // The types must be logical and equal
+    if (r_type == l_type && r_base_type == TYPE_BOOL) {
       return r_type;
     } else {
-      // TODO: log error (not a boolean type)
+      // TODO: log error (not a logical type)
       return TYPE_UNKNOWN;
     }
     break;
   case OP_PLUS: case OP_MINUS:
-    if (r_type != l_type) {
-      // TODO: log error (type mismatch)
-      return TYPE_UNKNOWN;
-    }
-    if (r_base_type != TYPE_BOOL) {
+    // The types must be equal and arithmetic
+    if (r_type == l_type && r_base_type != TYPE_BOOL) {
       return r_type;
+    } else {
+      // TODO: log error (not an arithmetic type)
+      return TYPE_UNKNOWN;
     }
     break;
   case OP_DIV: case OP_XOR:
-    if (r_type != l_type) {
-      // TODO: log error. Type mismatch
+    // The types must be equal, non-vector and arithmetic
+    if (r_type == l_type && !r_is_vec && !l_is_vec && r_base_type != TYPE_BOOL) {
+      return r_type;
+    } else {
+      // TODO: log error. Unsupported type
       return TYPE_UNKNOWN;
     }
-    if (r_type == TYPE_INT || r_type == TYPE_FLOAT)
-      return r_type;
-    // TODO: log error. Unsupported type
-    return TYPE_UNKNOWN;
     break;
   case OP_MUL:
     if (r_base_type == TYPE_BOOL) {
@@ -186,18 +199,17 @@ symbol_type get_binary_expr_type(node *binary_node) {
       return r_base_type;
     }
   case OP_LT: case OP_LEQ: case OP_GT: case OP_GEQ:
-    if (r_is_vec || l_is_vec) {
-      // TODO: log error. unsupported type
+    // The types must be equal, non-vector and arithmetic
+    if (r_type == l_type && !r_is_vec && !l_is_vec && r_base_type != TYPE_BOOL) {
+        return r_type;
+    } else {
+      // TODO: log error. type mismatch
       return TYPE_UNKNOWN;
     }
-    if (r_type == l_type && (r_type == TYPE_INT || r_type == TYPE_FLOAT)) {
-        return r_type;
-    }
-    // TODO: log error. type mismatch
-    return TYPE_UNKNOWN;
   case OP_EQ: case OP_NEQ:
-    if (r_type == l_type) {
-      return r_type;
+    // The types for OP_EQ and OP_NEQ must be equal and arithmetic
+    if (r_type == l_type && r_base_type != TYPE_BOOL) {
+      return TYPE_BOOL;
     }
     // TODO: log error. type mismatch
     return TYPE_UNKNOWN;
