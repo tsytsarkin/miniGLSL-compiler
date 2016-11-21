@@ -1,0 +1,32 @@
+{
+    vec4 va;
+    vec4 vb;
+    int i;
+    float f;
+    bool b;
+    vec2 v2;
+    vec3 v3;
+    ivec2 iv2;
+    ivec3 iv3;
+    ivec4 iv4;
+    bvec2 bv2;
+    bvec3 bv3;
+    bvec4 bv4;
+
+    vb = lit(va);
+
+    vb = lit(i);
+    vb = lit(f);
+    vb = lit(b);
+    vb = lit(v2);
+    vb = lit(v3);
+    vb = lit(iv2);
+    vb = lit(iv3);
+    vb = lit(iv4);
+    vb = lit(bv2);
+    vb = lit(bv3);
+    vb = lit(bv4);
+
+    vb = lit();
+    vb = lit(va, va);
+}

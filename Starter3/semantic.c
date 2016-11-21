@@ -252,45 +252,83 @@ symbol_type validate_unary_expr_node(node *unary_node, bool log_errors) {
 
 symbol_type validate_function_node(node *func_node, bool log_errors) {
   node *args = func_node->expression.function.arguments;
-  node *first_expr = args->argument.expression, *second_expr;
-  int num_args = args->argument.num_arguments;
-  symbol_type first_type, second_type, expected_second_type = TYPE_UNKNOWN;
+  int num_args = args != NULL ? args->argument.num_arguments : 0;
+
+  node *first_expr = num_args >= 1 ? args->argument.expression : NULL,
+       *second_expr = num_args >= 2 ? args->argument.next_argument->argument.expression : NULL;
+
+  symbol_type first_type = first_expr != NULL ? first_expr->expression.expr_type : TYPE_UNKNOWN,
+              second_type = second_expr != NULL ? second_expr->expression.expr_type : TYPE_UNKNOWN;
 
   switch (func_node->expression.function.func_id) {
   case FUNC_DP3:
-    if (num_args == 2) {
-      second_expr = args->argument.next_argument->argument.expression;
-      first_type = first_expr->expression.expr_type;
-      second_type = second_expr->expression.expr_type;
+    if (num_args > 2) {
+      if (log_errors) {
+        SEM_ERROR(func_node, "Too many arguments provided for dp3");
+      }
+    } else if (num_args < 2) {
+      if (log_errors) {
+        SEM_ERROR(func_node, "Too few arguments provided for dp3");
+      }
+    } else {
       switch (first_type) {
-      case TYPE_VEC3:
-      case TYPE_VEC4:
-      case TYPE_IVEC3:
-      case TYPE_IVEC4:
-        expected_second_type = first_type;
+      case TYPE_VEC3: case TYPE_VEC4: case TYPE_IVEC3: case TYPE_IVEC4:
+        if (second_type != first_type) {
+          if (log_errors) {
+            SEM_ERROR(second_expr,
+                      "Argument 2 of dp3 has type %s but expected %s",
+                      get_type_name(second_type),
+                      get_type_name(first_type));
+          }
+        }
         break;
       default:
-        SEM_ERROR(first_expr,
-                  "Argument 1 of dp3 has type %s but expected one of vec3, vec4, ivec3, ivec4",
-                  get_type_name(first_type));
+        if (log_errors) {
+          SEM_ERROR(first_expr,
+                    "Argument 1 of dp3 has type %s but expected one of vec3, vec4, ivec3, ivec4",
+                    get_type_name(first_type));
+        }
         break;
       }
-      // If we know the expected type of the second argument and it doesn't match
-      if (expected_second_type != TYPE_UNKNOWN && second_type != expected_second_type) {
-        SEM_ERROR(second_expr,
-                  "Argument 2 of dp3 has type %s but expected %s",
-                  get_type_name(second_type),
-                  get_type_name(expected_second_type));
-      }
-    } else if (num_args > 2) {
-      SEM_ERROR(func_node, "Too many arguments provided for function dp3");
-    } else if (num_args < 2) {
-      SEM_ERROR(func_node, "Too few arguments provided for function dp3");
     }
     break;
   case FUNC_RSQ:
+    if (num_args > 1) {
+      if (log_errors) {
+        SEM_ERROR(func_node, "Too many arguments provided for rsq");
+      }
+    } else if (num_args < 1) {
+      if (log_errors) {
+        SEM_ERROR(func_node, "Too few arguments provided for rsq");
+      }
+    } else {
+      if (first_type != TYPE_INT && first_type != TYPE_FLOAT) {
+        if (log_errors) {
+          SEM_ERROR(first_expr,
+                    "Argument 1 of rsq has type %s but expected one of int, float",
+                    get_type_name(first_type));
+        }
+      }
+    }
     break;
   case FUNC_LIT:
+    if (num_args > 1) {
+      if (log_errors) {
+        SEM_ERROR(func_node, "Too many arguments provided for lit");
+      }
+    } else if (num_args < 1) {
+      if (log_errors) {
+        SEM_ERROR(func_node, "Too few arguments provided for lit");
+      }
+    } else {
+      if (first_type != TYPE_VEC4) {
+        if (log_errors) {
+          SEM_ERROR(first_expr,
+                    "Argument 1 of lit has type %s but expected vec4",
+                    get_type_name(first_type));
+        }
+      }
+    }
     break;
   }
 
@@ -308,10 +346,11 @@ symbol_type get_unary_expr_type(node *unary_node) {
 
 symbol_type get_function_return_type(node *func_node) {
   node *args = func_node->expression.function.arguments;
+
   switch (func_node->expression.function.func_id) {
   case FUNC_DP3:
     // Look at the first argument to determine the return type.
-    if (args->argument.expression != NULL) {
+    if (args != NULL > 0) {
       switch (args->argument.expression->expression.expr_type) {
       // If the first argument is TYPE_VEC[43], return TYPE_FLOAT
       case TYPE_VEC4: case TYPE_VEC3:

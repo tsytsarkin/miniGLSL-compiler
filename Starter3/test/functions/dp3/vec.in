@@ -9,4 +9,7 @@
   f = dp3(v1, v3); /* Error, argument 2 should be vec3 */
   f = dp3(v3, v1); /* Error, argument 2 should be vec4 */
   f = dp3(f, f);   /* Error, argument 1 has invalid type */
+
+  f = dp3();
+  f = dp3(f, f, f);
 }

@@ -1,0 +1,22 @@
+SEMANTIC ERROR (line 9, column 17): Argument 2 of dp3 has type ivec4 but expected ivec3
+SEMANTIC ERROR (line 10, column 17): Argument 2 of dp3 has type ivec3 but expected ivec4
+SEMANTIC ERROR (line 11, column 12): Argument 1 of dp3 has type float but expected one of vec3, vec4, ivec3, ivec4
+SEMANTIC ERROR (line 13, column 11): Too few arguments provided for dp3
+SEMANTIC ERROR (line 14, column 18): Too many arguments provided for dp3
+  1: {
+  2:   ivec3 v1;
+  3:   ivec3 v2;
+  4:   ivec4 v3;
+  5:   ivec4 v4;
+  6:   float i;
+  7:   i = dp3(v1, v2);
+  8:   i = dp3(v3, v4);
+  9:   i = dp3(v1, v3); /* Error, argument 2 should be ivec3 */
+ 10:   i = dp3(v3, v1); /* Error, argument 2 should be ivec4 */
+ 11:   i = dp3(i, i);   /* Error, argument 1 has invalid type */
+ 12: 
+ 13:   i = dp3();
+ 14:   i = dp3(i, i, i);
+ 15: }
+ (SCOPE (DECLARATIONS (DECLARATION v1 ivec3 (DECLARATION v2 ivec3 (DECLARATION v3 ivec4 (DECLARATION v4 ivec4 (DECLARATION i float)))))) (STATEMENTS (ASSIGN float i (CALL dp3 v1 v2) (ASSIGN float i (CALL dp3 v3 v4) (ASSIGN float i (CALL dp3 v1 v3) (ASSIGN float i (CALL dp3 v3 v1) (ASSIGN float i (CALL dp3 i i) (ASSIGN float i (CALL dp3) (ASSIGN float i (CALL dp3 i i i))))))))))
+Failed to compile

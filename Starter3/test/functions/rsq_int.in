@@ -1,5 +1,0 @@
-{
-    int i;
-    float result;
-    result = rsq(i);
-}

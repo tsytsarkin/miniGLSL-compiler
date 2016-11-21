@@ -1,0 +1,51 @@
+SEMANTIC ERROR (line 24, column 15): Argument 1 of rsq has type bool but expected one of int, float
+SEMANTIC ERROR (line 25, column 16): Argument 1 of rsq has type vec2 but expected one of int, float
+SEMANTIC ERROR (line 26, column 16): Argument 1 of rsq has type vec3 but expected one of int, float
+SEMANTIC ERROR (line 27, column 16): Argument 1 of rsq has type vec4 but expected one of int, float
+SEMANTIC ERROR (line 28, column 17): Argument 1 of rsq has type ivec2 but expected one of int, float
+SEMANTIC ERROR (line 29, column 17): Argument 1 of rsq has type ivec3 but expected one of int, float
+SEMANTIC ERROR (line 30, column 17): Argument 1 of rsq has type ivec4 but expected one of int, float
+SEMANTIC ERROR (line 31, column 17): Argument 1 of rsq has type bvec2 but expected one of int, float
+SEMANTIC ERROR (line 32, column 17): Argument 1 of rsq has type bvec3 but expected one of int, float
+SEMANTIC ERROR (line 33, column 17): Argument 1 of rsq has type bvec4 but expected one of int, float
+SEMANTIC ERROR (line 35, column 14): Too few arguments provided for rsq
+SEMANTIC ERROR (line 36, column 20): Too many arguments provided for rsq
+  1: {
+  2:     int ia;
+  3:     int ib;
+  4:     float fc;
+  5:     float fd;
+  6: 
+  7:     bool b;
+  8:     vec2 v2;
+  9:     vec3 v3;
+ 10:     vec4 v4;
+ 11:     ivec2 iv2;
+ 12:     ivec3 iv3;
+ 13:     ivec4 iv4;
+ 14:     bvec2 bv2;
+ 15:     bvec3 bv3;
+ 16:     bvec4 bv4;
+ 17: 
+ 18:     ib = rsq(ia);
+ 19:     fd = rsq(fc);
+ 20: 
+ 21:     ia = rsq(fc);
+ 22:     fc = rsq(ia);
+ 23: 
+ 24:     ib = rsq(b);
+ 25:     ib = rsq(v2);
+ 26:     ib = rsq(v3);
+ 27:     ib = rsq(v4);
+ 28:     ib = rsq(iv2);
+ 29:     ib = rsq(iv3);
+ 30:     ib = rsq(iv4);
+ 31:     ib = rsq(bv2);
+ 32:     ib = rsq(bv3);
+ 33:     ib = rsq(bv4);
+ 34: 
+ 35:     ib = rsq();
+ 36:     ib = rsq(ia, ia);
+ 37: }
+ (SCOPE (DECLARATIONS (DECLARATION ia int (DECLARATION ib int (DECLARATION fc float (DECLARATION fd float (DECLARATION b bool (DECLARATION v2 vec2 (DECLARATION v3 vec3 (DECLARATION v4 vec4 (DECLARATION iv2 ivec2 (DECLARATION iv3 ivec3 (DECLARATION iv4 ivec4 (DECLARATION bv2 bvec2 (DECLARATION bv3 bvec3 (DECLARATION bv4 bvec4))))))))))))))) (STATEMENTS (ASSIGN int ib (CALL rsq ia) (ASSIGN float fd (CALL rsq fc) (ASSIGN int ia (CALL rsq fc) (ASSIGN float fc (CALL rsq ia) (ASSIGN int ib (CALL rsq b) (ASSIGN int ib (CALL rsq v2) (ASSIGN int ib (CALL rsq v3) (ASSIGN int ib (CALL rsq v4) (ASSIGN int ib (CALL rsq iv2) (ASSIGN int ib (CALL rsq iv3) (ASSIGN int ib (CALL rsq iv4) (ASSIGN int ib (CALL rsq bv2) (ASSIGN int ib (CALL rsq bv3) (ASSIGN int ib (CALL rsq bv4) (ASSIGN int ib (CALL rsq) (ASSIGN int ib (CALL rsq ia ia)))))))))))))))))))
+Failed to compile

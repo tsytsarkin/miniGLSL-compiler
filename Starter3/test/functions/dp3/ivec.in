@@ -9,4 +9,7 @@
   i = dp3(v1, v3); /* Error, argument 2 should be ivec3 */
   i = dp3(v3, v1); /* Error, argument 2 should be ivec4 */
   i = dp3(i, i);   /* Error, argument 1 has invalid type */
+
+  i = dp3();
+  i = dp3(i, i, i);
 }
