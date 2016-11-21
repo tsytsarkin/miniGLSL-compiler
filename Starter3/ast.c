@@ -15,6 +15,8 @@ node *ast = NULL;
 
 std::vector<int> scope_id_stack;
 
+extern int yyline, yycolumn;
+
 /****** BUILDING ******/
 void set_parent(node *parent, node *child) {
   if (child != NULL) {
@@ -30,6 +32,9 @@ node *ast_allocate(node_kind kind, ...) {
   memset(n, 0, sizeof *n);
   n->kind = kind;
   n->parent = NULL;
+
+  n->line = yyline;
+  n->column = yycolumn - 1;
 
   va_start(args, kind);
 
@@ -392,7 +397,6 @@ void print_preorder(node *n, void *data) {
 
 void print_postorder(node *n, void *data) {
   std::vector<int> *scope_id_stack = (std::vector<int> *) data;
-
   switch (n->kind) {
   case SCOPE_NODE:
     printf(")");

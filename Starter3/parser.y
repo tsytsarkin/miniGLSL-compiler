@@ -110,9 +110,11 @@ enum {
 %type <as_ast> statement
 %type <as_ast> expression
 %type <as_ast> variable
+%type <as_ast> index
 %type <as_ast> arguments_opt
 %type <as_ast> arguments
 %type <as_ast> type
+%type <as_ast> identifier
 
 %start    program
 
@@ -205,12 +207,12 @@ statements
   ;
 
 declaration
-  : type ID ';'
-      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, ast_allocate(IDENT_NODE, $2), NULL); }
-  | type ID '=' expression ';'
-      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, ast_allocate(IDENT_NODE, $2), $4); }
-  | CONST type ID '=' expression ';'
-      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $2, ast_allocate(IDENT_NODE, $3), $5); }
+  : type identifier ';'
+      { yTRACE("declaration -> type ID ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, $2, NULL); }
+  | type identifier '=' expression ';'
+      { yTRACE("declaration -> type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, false, $1, $2, $4); }
+  | CONST type identifier '=' expression ';'
+      { yTRACE("declaration -> CONST type ID = expression ;\n") $$ = ast_allocate(DECLARATION_NODE, true, $2, $3, $5); }
   ;
 
 statement
@@ -301,10 +303,15 @@ expression
   ;
 
 variable
-  : ID
-      { yTRACE("variable -> ID \n") $$ = ast_allocate(VAR_NODE, ast_allocate(IDENT_NODE, $1), NULL); }
-  | ID '[' INT_C ']' %prec '['
-      { yTRACE("variable -> ID [ INT_C ] \n") $$ = ast_allocate(VAR_NODE, ast_allocate(IDENT_NODE, $1), ast_allocate(INT_NODE, $3)); }
+  : identifier
+      { yTRACE("variable -> ID \n") $$ = ast_allocate(VAR_NODE, $1, NULL); }
+  | identifier '[' index ']' %prec '['
+      { yTRACE("variable -> ID [ INT_C ] \n") $$ = ast_allocate(VAR_NODE, $1, $3); }
+  ;
+
+index
+  : INT_C
+    { $$ = ast_allocate(INT_NODE, $1); }
   ;
 
 arguments_opt
@@ -338,6 +345,11 @@ arguments
       }
   | expression
       { yTRACE("arguments -> expression \n") $$ = ast_allocate(ARGUMENT_NODE, $1); }
+  ;
+
+identifier
+  : ID
+    { $$ = ast_allocate(IDENT_NODE, $1); }
   ;
 
 %%

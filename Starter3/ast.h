@@ -108,6 +108,8 @@ struct node_ {
   node_kind kind;
   node *parent;
 
+  int line, column;
+
   union {
     struct {
       node *declarations;

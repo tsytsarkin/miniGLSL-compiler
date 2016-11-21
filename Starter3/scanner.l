@@ -28,56 +28,56 @@ int ParseComment(void);
 int ParseInt(void);
 int ParseFloat(void);
 int ParseIdent(void);
-int yyline = 1;
+int yyline = 1, yycolumn = 1;
 
 %}
 %option noyywrap
 
 %%
 
-"/*"                          { if(!ParseComment()) { yyterminate(); } }
+"/*"                          { yycolumn += yyleng; if(!ParseComment()) { yyterminate(); } }
 
-[ \t]                         { }
-\r?\n                         { yyline++; }
+[ \t]                         { yycolumn += yyleng; }
+\r?\n                         { yyline++; yycolumn = 1; }
 <<EOF>>                       { yyterminate(); }
 
-[+\-*/\^]                     { yOUT(yytext[0]); }
-[()[\]{}]                     { yOUT(yytext[0]); }
-[<>=!]                        { yOUT(yytext[0]); }
-";"                           { yOUT(yytext[0]); }
-","                           { yOUT(yytext[0]); }
-"&&"                          { yOUT(AND); }
-"||"                          { yOUT(OR); }
-"!="                          { yOUT(NEQ); }
-"<="                          { yOUT(LEQ); }
-">="                          { yOUT(GEQ); }
-"=="                          { yOUT(EQ); }
+[+\-*/\^]                     { yycolumn += yyleng; yOUT(yytext[0]); }
+[()[\]{}]                     { yycolumn += yyleng; yOUT(yytext[0]); }
+[<>=!]                        { yycolumn += yyleng; yOUT(yytext[0]); }
+";"                           { yycolumn += yyleng; yOUT(yytext[0]); }
+","                           { yycolumn += yyleng; yOUT(yytext[0]); }
+"&&"                          { yycolumn += yyleng; yOUT(AND); }
+"||"                          { yycolumn += yyleng; yOUT(OR); }
+"!="                          { yycolumn += yyleng; yOUT(NEQ); }
+"<="                          { yycolumn += yyleng; yOUT(LEQ); }
+">="                          { yycolumn += yyleng; yOUT(GEQ); }
+"=="                          { yycolumn += yyleng; yOUT(EQ); }
 
-const                         { yOUT(CONST); }
-bool                          { yOUT(BOOL_T); }
-int                           { yOUT(INT_T); }
-float                         { yOUT(FLOAT_T); }
-vec(2|3|4)                    { yylval.as_vec = yytext[3] - '0'; yOUT(VEC_T); }
-ivec(2|3|4)                   { yylval.as_vec = yytext[4] - '0'; yOUT(IVEC_T); }
-bvec(2|3|4)                   { yylval.as_vec = yytext[4] - '0'; yOUT(BVEC_T); }
+const                         { yycolumn += yyleng; yOUT(CONST); }
+bool                          { yycolumn += yyleng; yOUT(BOOL_T); }
+int                           { yycolumn += yyleng; yOUT(INT_T); }
+float                         { yycolumn += yyleng; yOUT(FLOAT_T); }
+vec(2|3|4)                    { yycolumn += yyleng; yylval.as_vec = yytext[3] - '0'; yOUT(VEC_T); }
+ivec(2|3|4)                   { yycolumn += yyleng; yylval.as_vec = yytext[4] - '0'; yOUT(IVEC_T); }
+bvec(2|3|4)                   { yycolumn += yyleng; yylval.as_vec = yytext[4] - '0'; yOUT(BVEC_T); }
 
-if                            { yOUT(IF); }
-else                          { yOUT(ELSE); }
+if                            { yycolumn += yyleng; yOUT(IF); }
+else                          { yycolumn += yyleng; yOUT(ELSE); }
 
-dp3                           { yylval.as_func = FUNC_DP3; yOUT(FUNC); }
-rsq                           { yylval.as_func = FUNC_RSQ; yOUT(FUNC); }
-lit                           { yylval.as_func = FUNC_LIT; yOUT(FUNC); }
+dp3                           { yycolumn += yyleng; yylval.as_func = FUNC_DP3; yOUT(FUNC); }
+rsq                           { yycolumn += yyleng; yylval.as_func = FUNC_RSQ; yOUT(FUNC); }
+lit                           { yycolumn += yyleng; yylval.as_func = FUNC_LIT; yOUT(FUNC); }
 
-true                          { yOUT(TRUE_C); }
-false                         { yOUT(FALSE_C); }
+true                          { yycolumn += yyleng; yOUT(TRUE_C); }
+false                         { yycolumn += yyleng; yOUT(FALSE_C); }
 
-0                             { yylval.as_int = 0; yOUT(INT_C); }                  
-[1-9][0-9]*                   { if(ParseInt()) { yOUT(INT_C); } yyterminate(); }
+0                             { yycolumn += yyleng; yylval.as_int = 0; yOUT(INT_C); }
+[1-9][0-9]*                   { yycolumn += yyleng; if(ParseInt()) { yOUT(INT_C); } yyterminate(); }
 
-(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
-\.[0-9]+                      { if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
+(0|([1-9][0-9]*))\.[0-9]*     { yycolumn += yyleng; if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
+\.[0-9]+                      { yycolumn += yyleng; if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
 
-[A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yOUT(ID); } yyterminate(); }
+[A-Za-z_][A-Za-z0-9_]*        { yycolumn += yyleng; if(ParseIdent()) { yOUT(ID); } yyterminate(); }
 
 0[0-9]+                       { yERROR("Octal numbers are not allowed.");  yyterminate(); }
 [0-9]+[a-zA-Z_]+              { yERROR("Integers and identifiers/keywords must be separated by whitespace.");  yyterminate(); }
@@ -108,8 +108,10 @@ int ParseComment(void) {
     }
     c1 = c2;
     c2 = yyinput();
+    yycolumn++;
     if ('\n' == c1 && EOF != c2) {
       yyline++;
+      yycolumn = 1;
     }
   }
   return 1;
