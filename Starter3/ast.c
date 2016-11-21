@@ -254,7 +254,7 @@ void print_preorder(node *n, void *data) {
     break;
   case ASSIGNMENT_NODE:
     PRINT_AST(" (ASSIGN ");
-    get_type_name(n->statement.assignment.variable->expression.expr_type);
+    PRINT_AST("%s", get_type_name(n->statement.assignment.variable->expression.expr_type));
     break;
 
   case EXPRESSION_NODE:
@@ -262,15 +262,15 @@ void print_preorder(node *n, void *data) {
     break;
   case UNARY_EXPRESSION_NODE:
     PRINT_AST(" (UNARY ");
-    get_type_name(get_unary_expr_type(n));
+    PRINT_AST("%s", get_type_name(get_unary_expr_type(n)));
     PRINT_AST(" ");
-    get_unary_op_name(n->expression.unary.op);
+    PRINT_AST("%s", get_unary_op_name(n->expression.unary.op));
     break;
   case BINARY_EXPRESSION_NODE:
     PRINT_AST(" (BINARY ");
-    get_type_name(get_binary_expr_type(n));
+    PRINT_AST("%s", get_type_name(get_binary_expr_type(n)));
     PRINT_AST(" ");
-    get_binary_op_name(n->expression.binary.op);
+    PRINT_AST("%s", get_binary_op_name(n->expression.binary.op));
     break;
   case INT_NODE:
     PRINT_AST(" %d", n->expression.int_expr.val);
@@ -288,12 +288,12 @@ void print_preorder(node *n, void *data) {
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
       PRINT_AST(" (INDEX ");
-      get_type_name(n->expression.expr_type);
+      PRINT_AST("%s", get_type_name(n->expression.expr_type));
     }
     break;
   case FUNCTION_NODE:
     PRINT_AST(" (CALL ");
-    get_function_name(n->expression.function.func_id);
+    PRINT_AST("%s", get_function_name(n->expression.function.func_id));
     break;
   case CONSTRUCTOR_NODE:
     PRINT_AST(" (CALL");
@@ -301,7 +301,7 @@ void print_preorder(node *n, void *data) {
 
   case TYPE_NODE:
     PRINT_AST(" ");
-    get_type_name(n->type.type);
+    PRINT_AST("%s", get_type_name(n->type.type));
     break;
 
   case ARGUMENT_NODE:
@@ -496,9 +496,9 @@ const char *get_type_name(symbol_type type) {
   case TYPE_VEC2:    return "vec2";
   case TYPE_VEC3:    return "vec3";
   case TYPE_VEC4:    return "vec4";
-  case TYPE_IVEC2:   return "bvec2";
-  case TYPE_IVEC3:   return "bvec3";
-  case TYPE_IVEC4:   return "bvec4";
+  case TYPE_IVEC2:   return "ivec2";
+  case TYPE_IVEC3:   return "ivec3";
+  case TYPE_IVEC4:   return "ivec4";
   case TYPE_BVEC2:   return "bvec2";
   case TYPE_BVEC3:   return "bvec3";
   case TYPE_BVEC4:   return "bvec4";

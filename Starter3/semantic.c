@@ -3,7 +3,7 @@
 #include "common.h"
 
 #define SEM_ERROR(n, fmt, ...) { \
-  fprintf(errorFile, "Semantic Error (line %d, column %d): " fmt "\n", n->line, n->column, ##__VA_ARGS__); \
+  fprintf(errorFile, "SEMANTIC ERROR (line %d, column %d): " fmt "\n", n->line, n->column, ##__VA_ARGS__); \
   errorOccurred = true; \
 }
 
@@ -267,46 +267,25 @@ symbol_type validate_function_node(node *func_node, bool log_errors) {
       case TYPE_VEC4:
       case TYPE_IVEC3:
       case TYPE_IVEC4:
-        expected_second_type = TYPE_VEC3;
+        expected_second_type = first_type;
         break;
       default:
-        SEM_ERROR(first_expr, "Argument 1 of dp3 has invalid type");
+        SEM_ERROR(first_expr,
+                  "Argument 1 of dp3 has type %s but expected one of vec3, vec4, ivec3, ivec4",
+                  get_type_name(first_type));
         break;
       }
-      // If we know the expected type of the second argument
-      if (expected_second_type != TYPE_UNKNOWN) {
-        if (second_type != expected_second_type) {
-          switch (expected_second_type) {
-          // TODO: Log errors for these
-          case TYPE_VEC3:
-          case TYPE_VEC4:
-          case TYPE_IVEC3:
-          case TYPE_IVEC4:
-            expected_second_type = TYPE_VEC3;
-            break;
-          default:
-            SEM_ERROR(first_expr, "Argument 1 of dp3 has invalid type");
-            break;
-          }
-        }
+      // If we know the expected type of the second argument and it doesn't match
+      if (expected_second_type != TYPE_UNKNOWN && second_type != expected_second_type) {
+        SEM_ERROR(second_expr,
+                  "Argument 2 of dp3 has type %s but expected %s",
+                  get_type_name(second_type),
+                  get_type_name(expected_second_type));
       }
-      if (first_type == TYPE_VEC4) {
-        if (second_type != TYPE_VEC4) SEM_ERROR(second_expr, "Expected argument 2 of dp3 to be vec4");
-      } else if (first_type == TYPE_VEC3) {
-        if (second_type != TYPE_VEC3) SEM_ERROR(second_expr, "Expected argument 2 of dp3 to be vec3");
-      } else if (first_type == TYPE_IVEC4) {
-        if (second_type != TYPE_IVEC4) SEM_ERROR(second_expr, "Expected argument 2 of dp3 to be ivec4");
-      } else if (first_type == TYPE_IVEC3) {
-        if (second_type != TYPE_IVEC3) SEM_ERROR(second_expr, "Expected argument 2 of dp3 to be ivec3");
-      }else if (second_type == TYPE_VEC4) {
-        if (first_type != TYPE_VEC4) SEM_ERROR(first_expr, "Expected argument 1 of dp3 to be vec4");
-      } else if (second_type == TYPE_VEC3) {
-        if (first_type != TYPE_VEC3) SEM_ERROR(first_expr, "Expected argument 1 of dp3 to be vec3");
-      } else { SEM_ERROR(first_expr, "Expected both arguments of dp3 to be vec3 or vec4"); }
     } else if (num_args > 2) {
-      SEM_ERROR(func_node, "Too many arguments for function dp3");
+      SEM_ERROR(func_node, "Too many arguments provided for function dp3");
     } else if (num_args < 2) {
-      SEM_ERROR(func_node, "Too few arguments for function dp3");
+      SEM_ERROR(func_node, "Too few arguments provided for function dp3");
     }
     break;
   case FUNC_RSQ:

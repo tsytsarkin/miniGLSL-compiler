@@ -1,6 +1,0 @@
-{
-    float f;
-    vec4 v1;
-    vec4 v2;
-    f = dp3(v1, v2);
-}
