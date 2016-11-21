@@ -228,89 +228,7 @@ void ast_free(node *n) {
 }
 
 /****** PRINTING ******/
-// TODO: replace all printfs with fprintf(file...)
-void print_function_name(function_id func_id) {
-  switch (func_id) {
-  case FUNC_DP3: printf("dp3"); break;
-  case FUNC_RSQ: printf("rsq"); break;
-  case FUNC_LIT: printf("lit"); break;
-  }
-}
-
-void print_type_name(symbol_type type) {
-  if (type & TYPE_VEC) {
-    printf("vec%d", type - TYPE_VEC);
-  } else if (type & TYPE_IVEC) {
-    printf("ivec%d", type - TYPE_IVEC);
-  } else if (type & TYPE_BVEC) {
-    printf("bvec%d", type - TYPE_BVEC);
-  } else {
-    switch (type) {
-    case TYPE_INT:   printf("int"); break;
-    case TYPE_BOOL:  printf("bool"); break;
-    case TYPE_FLOAT: printf("float"); break;
-    case TYPE_UNKNOWN: printf("unknown"); break;
-    default: break;
-    }
-  }
-}
-
-void print_unary_op_name(unary_op op) {
-  switch (op) {
-  case OP_UMINUS:
-    printf("-");
-    break;
-  case OP_NOT:
-    printf("!");
-    break;
-  default: break;
-  }
-}
-
-void print_binary_op_name(binary_op op) {
-  switch (op) {
-  case OP_AND:
-    printf("&&");
-    break;
-  case OP_OR:
-    printf("||");
-    break;
-  case OP_EQ:
-    printf("==");
-    break;
-  case OP_NEQ:
-    printf("!=");
-    break;
-  case OP_LT:
-    printf("<");
-    break;
-  case OP_LEQ:
-    printf("<=");
-    break;
-  case OP_GT:
-    printf(">");
-    break;
-  case OP_GEQ:
-    printf(">=");
-    break;
-  case OP_PLUS:
-    printf("+");
-    break;
-  case OP_MINUS:
-    printf("-");
-    break;
-  case OP_MUL:
-    printf("*");
-    break;
-  case OP_DIV:
-    printf("/");
-    break;
-  case OP_XOR:
-    printf("^");
-    break;
-  default: break;
-  }
-}
+#define PRINT_AST(fmt, ...) { fprintf(dumpFile, fmt, ##__VA_ARGS__); }
 
 void print_preorder(node *n, void *data) {
   std::vector<int> *scope_id_stack = (std::vector<int> *) data;
@@ -318,72 +236,72 @@ void print_preorder(node *n, void *data) {
   switch (n->kind) {
   case SCOPE_NODE:
     scope_id_stack->push_back(n->scope.scope_id);
-    printf(" (SCOPE");
+    PRINT_AST(" (SCOPE");
     break;
 
   case DECLARATIONS_NODE:
-    printf(" (DECLARATIONS");
+    PRINT_AST(" (DECLARATIONS");
     break;
   case DECLARATION_NODE:
-    printf(" (DECLARATION");
+    PRINT_AST(" (DECLARATION");
     break;
 
   case STATEMENTS_NODE:
-    printf(" (STATEMENTS");
+    PRINT_AST(" (STATEMENTS");
     break;
   case IF_STATEMENT_NODE:
-    printf(" (IF");
+    PRINT_AST(" (IF");
     break;
   case ASSIGNMENT_NODE:
-    printf(" (ASSIGN ");
-    print_type_name(n->statement.assignment.variable->expression.expr_type);
+    PRINT_AST(" (ASSIGN ");
+    get_type_name(n->statement.assignment.variable->expression.expr_type);
     break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
-    printf(" (UNARY ");
-    print_type_name(get_unary_expr_type(n));
-    printf(" ");
-    print_unary_op_name(n->expression.unary.op);
+    PRINT_AST(" (UNARY ");
+    get_type_name(get_unary_expr_type(n));
+    PRINT_AST(" ");
+    get_unary_op_name(n->expression.unary.op);
     break;
   case BINARY_EXPRESSION_NODE:
-    printf(" (BINARY ");
-    print_type_name(get_binary_expr_type(n));
-    printf(" ");
-    print_binary_op_name(n->expression.binary.op);
+    PRINT_AST(" (BINARY ");
+    get_type_name(get_binary_expr_type(n));
+    PRINT_AST(" ");
+    get_binary_op_name(n->expression.binary.op);
     break;
   case INT_NODE:
-    printf(" %d", n->expression.int_expr.val);
+    PRINT_AST(" %d", n->expression.int_expr.val);
     break;
   case FLOAT_NODE:
-    printf(" %f", n->expression.float_expr.val);
+    PRINT_AST(" %f", n->expression.float_expr.val);
     break;
   case BOOL_NODE:
-    printf(" ");
-    printf(n->expression.bool_expr.val ? "true" : "false");
+    PRINT_AST(" ");
+    PRINT_AST(n->expression.bool_expr.val ? "true" : "false");
     break;
   case IDENT_NODE:
-    printf(" %s", n->expression.ident.val);
+    PRINT_AST(" %s", n->expression.ident.val);
     break;
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
-      printf(" (INDEX ");
-      print_type_name(n->expression.expr_type);
+      PRINT_AST(" (INDEX ");
+      get_type_name(n->expression.expr_type);
     }
     break;
   case FUNCTION_NODE:
-    printf(" (CALL ");
-    print_function_name(n->expression.function.func_id);
+    PRINT_AST(" (CALL ");
+    get_function_name(n->expression.function.func_id);
     break;
   case CONSTRUCTOR_NODE:
-    printf(" (CALL");
+    PRINT_AST(" (CALL");
     break;
 
   case TYPE_NODE:
-    printf(" ");
-    print_type_name(n->type.type);
+    PRINT_AST(" ");
+    get_type_name(n->type.type);
     break;
 
   case ARGUMENT_NODE:
@@ -399,35 +317,35 @@ void print_postorder(node *n, void *data) {
   std::vector<int> *scope_id_stack = (std::vector<int> *) data;
   switch (n->kind) {
   case SCOPE_NODE:
-    printf(")");
+    PRINT_AST(")");
     scope_id_stack->pop_back();
     break;
 
   case DECLARATIONS_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
   case DECLARATION_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
 
   case STATEMENTS_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
   case IF_STATEMENT_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
   case ASSIGNMENT_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
   case BINARY_EXPRESSION_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
   case INT_NODE:
     break;
@@ -439,14 +357,14 @@ void print_postorder(node *n, void *data) {
     break;
   case VAR_NODE:
     if (n->expression.variable.index != NULL) {
-      printf(")");
+      PRINT_AST(")");
     }
     break;
   case FUNCTION_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
   case CONSTRUCTOR_NODE:
-    printf(")");
+    PRINT_AST(")");
     break;
 
   case TYPE_NODE:
@@ -466,7 +384,7 @@ void ast_print(node *n) {
   scope_id_stack.push_back(0);
 
   ast_visit(n, print_preorder, print_postorder, &scope_id_stack);
-  printf("\n");
+  PRINT_AST("\n");
 }
 
 /****** VISITOR ******/
@@ -559,5 +477,60 @@ void ast_visit(node *n,
       postorder(n, data);
     }
   }
+}
+
+const char *get_function_name(function_id func_id) {
+  switch (func_id) {
+  case FUNC_DP3: return "dp3"; break;
+  case FUNC_RSQ: return "rsq"; break;
+  case FUNC_LIT: return "lit"; break;
+  }
+  return "unknown";
+}
+
+const char *get_type_name(symbol_type type) {
+  switch (type) {
+  case TYPE_INT:     return "int";
+  case TYPE_BOOL:    return "bool";
+  case TYPE_FLOAT:   return "float";
+  case TYPE_VEC2:    return "vec2";
+  case TYPE_VEC3:    return "vec3";
+  case TYPE_VEC4:    return "vec4";
+  case TYPE_IVEC2:   return "bvec2";
+  case TYPE_IVEC3:   return "bvec3";
+  case TYPE_IVEC4:   return "bvec4";
+  case TYPE_BVEC2:   return "bvec2";
+  case TYPE_BVEC3:   return "bvec3";
+  case TYPE_BVEC4:   return "bvec4";
+  default: break;
+  }
+  return "unknown";
+}
+
+const char *get_unary_op_name(unary_op op) {
+  switch (op) {
+  case OP_UMINUS: return "-";
+  case OP_NOT: return "!";
+  }
+  return "unknown";
+}
+
+const char *get_binary_op_name(binary_op op) {
+  switch (op) {
+  case OP_AND:    return "&&";
+  case OP_OR:     return "||";
+  case OP_EQ:     return "==";
+  case OP_NEQ:    return "!=";
+  case OP_LT:     return "<";
+  case OP_LEQ:    return "<=";
+  case OP_GT:     return ">";
+  case OP_GEQ:    return ">=";
+  case OP_PLUS:   return "+";
+  case OP_MINUS:  return "-";
+  case OP_MUL:    return "*";
+  case OP_DIV:    return "/";
+  case OP_XOR:    return "^";
+  }
+  return "unknown";
 }
 

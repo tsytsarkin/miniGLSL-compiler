@@ -228,4 +228,10 @@ void ast_visit(node *n,
                void (*postorder)(node *, void *),
                void *data);
 
+// Helper functions for getting the name of various things
+const char *get_function_name(function_id func_id);
+const char *get_type_name(symbol_type type);
+const char *get_unary_op_name(unary_op op);
+const char *get_binary_op_name(binary_op op);
+
 #endif /* AST_H_ */
