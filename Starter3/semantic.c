@@ -106,6 +106,7 @@ void semantic_postorder(node *n, void *data) {
     validate_function_node(n);
     break;
   case CONSTRUCTOR_NODE:
+    validate_constructor_node(n);
     break;
 
   case TYPE_NODE:
@@ -251,14 +252,16 @@ symbol_type validate_unary_expr_node(node *unary_node, bool log_errors) {
 }
 
 symbol_type validate_function_node(node *func_node, bool log_errors) {
-  node *args = func_node->expression.function.arguments;
-  int num_args = args != NULL ? args->argument.num_arguments : 0;
+  node *first_arg = func_node->expression.function.arguments,
+       *second_arg = first_arg != NULL ? first_arg->argument.next_argument : NULL;
 
-  node *first_expr = num_args >= 1 ? args->argument.expression : NULL,
-       *second_expr = num_args >= 2 ? args->argument.next_argument->argument.expression : NULL;
+  node *first_expr = first_arg != NULL ? first_arg->argument.expression : NULL,
+       *second_expr = second_arg != NULL ? second_arg->argument.expression : NULL;
 
   symbol_type first_type = first_expr != NULL ? first_expr->expression.expr_type : TYPE_UNKNOWN,
               second_type = second_expr != NULL ? second_expr->expression.expr_type : TYPE_UNKNOWN;
+
+  int num_args = first_arg != NULL ? first_arg->argument.num_arguments : 0;
 
   switch (func_node->expression.function.func_id) {
   case FUNC_DP3:
@@ -335,6 +338,68 @@ symbol_type validate_function_node(node *func_node, bool log_errors) {
   return get_function_return_type(func_node);
 }
 
+symbol_type validate_constructor_node(node *constructor_node, bool log_errors) {
+  symbol_type constructor_type = constructor_node->expression.constructor.type->type.type;
+  symbol_type expected_arg_type = get_base_type(constructor_type);
+
+  node *first_arg = constructor_node->expression.constructor.arguments;
+  int num_args = first_arg != NULL ? first_arg->argument.num_arguments : 0,
+      expected_num_args;
+
+  if (constructor_type & TYPE_ANY_VEC) {
+    // We know that the type is a vector, the dimension of the type is given
+    // by the lowest 3 bits of the type
+    expected_num_args = constructor_type & 0x7;
+  } else {
+    switch (constructor_type) {
+    case TYPE_INT: case TYPE_FLOAT: case TYPE_BOOL:
+      expected_num_args = 1;
+      break;
+    default:
+      // This should never happen.
+      if (log_errors) {
+        SEM_ERROR(constructor_node, "Unknown constructor type");
+      }
+      return constructor_type;
+    }
+  }
+
+  if (num_args > expected_num_args) {
+    if (log_errors) {
+      SEM_ERROR(constructor_node,
+                "Too many arguments provided for %s constructor",
+                get_type_name(constructor_type));
+    }
+  } else if (num_args < expected_num_args) {
+    if (log_errors) {
+      SEM_ERROR(constructor_node,
+                "Too few arguments provided for %s constructor",
+                get_type_name(constructor_type));
+    }
+  }
+
+  node *cur_arg;
+  int i;
+  for (i = 1, cur_arg = constructor_node->expression.constructor.arguments;
+       i <= expected_num_args && cur_arg != NULL;
+       i++, cur_arg = cur_arg->argument.next_argument) {
+    node *cur_expr = cur_arg->argument.expression;
+    symbol_type arg_type = cur_expr->expression.expr_type;
+    if (arg_type != expected_arg_type) {
+      if (log_errors) {
+        SEM_ERROR(cur_expr,
+                  "Argument %d of %s constructor has type %s but expected type %s",
+                  i,
+                  get_type_name(constructor_type),
+                  get_type_name(arg_type),
+                  get_type_name(expected_arg_type));
+      }
+    }
+  }
+
+  return constructor_type;  
+}
+
 /****** SEMANTIC TYPE FUNCTIONS ******/
 symbol_type get_binary_expr_type(node *binary_node) {
   return validate_binary_expr_node(binary_node, false);
@@ -345,13 +410,13 @@ symbol_type get_unary_expr_type(node *unary_node) {
 }
 
 symbol_type get_function_return_type(node *func_node) {
-  node *args = func_node->expression.function.arguments;
+  node *first_arg = func_node->expression.function.arguments;
 
   switch (func_node->expression.function.func_id) {
   case FUNC_DP3:
     // Look at the first argument to determine the return type.
-    if (args != NULL > 0) {
-      switch (args->argument.expression->expression.expr_type) {
+    if (first_arg != NULL) {
+      switch (first_arg->argument.expression->expression.expr_type) {
       // If the first argument is TYPE_VEC[43], return TYPE_FLOAT
       case TYPE_VEC4: case TYPE_VEC3:
         return TYPE_FLOAT;
