@@ -5,7 +5,7 @@
 #include "symbol.h"
 
 
-int semantic_check(node *ast);
+void semantic_check(node *ast);
 
 symbol_type get_binary_expr_type(node *binary_node);
 symbol_type get_unary_expr_type(node *unary_node);

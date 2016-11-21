@@ -1,8 +1,10 @@
 #include <cstdlib>
 #include "semantic.h"
+#include "common.h"
+
+#define SEM_ERROR(format, ...) { fprintf(errorFile, format, ##__VA_ARGS__); errorOccurred = true; }
 
 typedef struct {
-  bool error_occurred;
 } visit_data;
 
 void semantic_preorder(node *n, void *data) {
@@ -74,7 +76,7 @@ void semantic_postorder(node *n, void *data) {
     // An if condition must be a boolean
     if (n->statement.if_else_statement.condition->expression.expr_type != TYPE_BOOL) {
       // TODO: log invalid condition
-      vd->error_occurred = true;
+      errorOccurred = true;
     }
     break;
   case ASSIGNMENT_NODE:
@@ -112,16 +114,14 @@ void semantic_postorder(node *n, void *data) {
   }
 }
 
-int semantic_check(node *ast) {
+void semantic_check(node *ast) {
   // Perform semantic analysis
   visit_data vd;
   ast_visit(ast, semantic_preorder, semantic_postorder, &vd);
-  // Return 0 if error occurred
-  return !vd.error_occurred;
 }
 
-/****** SEMANTIC HELPER FUNCTIONS ******/
-symbol_type get_binary_expr_type(node *binary_node) {
+/****** SEMANTIC VALIDATION FUNCTIONS ******/
+symbol_type validate_binary_expr_node(node *binary_node, bool log_errors = true) {
   node *right = binary_node->expression.binary.right;
   node *left = binary_node->expression.binary.left;
 
@@ -219,7 +219,7 @@ symbol_type get_binary_expr_type(node *binary_node) {
   return TYPE_UNKNOWN;
 }
 
-symbol_type get_unary_expr_type(node *unary_node) {
+symbol_type validate_unary_expr_node(node *unary_node, bool log_errors = true) {
   symbol_type type = unary_node->expression.unary.right->expression.expr_type;
   symbol_type base_type = get_base_type(type);
 
@@ -246,6 +246,44 @@ symbol_type get_unary_expr_type(node *unary_node) {
   return TYPE_UNKNOWN;
 }
 
+symbol_type validate_function_node(node *func_node, bool log_errors = true) {
+  node *args = func_node->expression.function.arguments;
+  int num_args = args->argument.num_arguments;
+  symbol_type first_type, second_type;
+  switch (func_node->expression.function.func_id) {
+  case FUNC_DP3:
+    if (num_args == 2) {
+      first_type = args->argument.expression->expression.expr_type;
+      second_type = args->argument.next_argument->argument.expression->expression.expr_type;
+      if (first_type == TYPE_VEC4) { if (second_type != TYPE_VEC4) SEM_ERROR(""); }
+      else if (first_type == TYPE_VEC3) { if (second_type != TYPE_VEC3) SEM_ERROR(""); }
+      else if (second_type == TYPE_VEC4) { if (first_type != TYPE_VEC4) SEM_ERROR(""); }
+      else if (second_type == TYPE_VEC3) { if (first_type != TYPE_VEC3) SEM_ERROR(""); }
+      else { SEM_ERROR(""); }
+    } else if (num_args > 2) {
+      SEM_ERROR("Too many arguments for function dp3");
+    } else if (num_args < 2) {
+      SEM_ERROR("Too few arguments for function dp3");
+    }
+    break;
+  case FUNC_RSQ:
+    break;
+  case FUNC_LIT:
+    break;
+  }
+
+  return get_function_return_type(func_node);
+}
+
+/****** SEMANTIC TYPE FUNCTIONS ******/
+symbol_type get_binary_expr_type(node *binary_node) {
+  return validate_binary_expr_node(binary_node, false);
+}
+
+symbol_type get_unary_expr_type(node *unary_node) {
+  return validate_unary_expr_node(unary_node, false);
+}
+
 symbol_type get_function_return_type(node *func_node) {
   node *args = func_node->expression.function.arguments;
   switch (func_node->expression.function.func_id) {
@@ -266,10 +304,8 @@ symbol_type get_function_return_type(node *func_node) {
     break;
   case FUNC_RSQ:
     return TYPE_FLOAT;
-    break;
   case FUNC_LIT:
     return TYPE_VEC4;
-    break;
   }
   return TYPE_UNKNOWN;
 }

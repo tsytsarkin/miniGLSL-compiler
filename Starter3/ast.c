@@ -223,6 +223,7 @@ void ast_free(node *n) {
 }
 
 /****** PRINTING ******/
+// TODO: replace all printfs with fprintf(file...)
 void print_function_name(function_id func_id) {
   switch (func_id) {
   case FUNC_DP3: printf("dp3"); break;
