@@ -147,7 +147,9 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
 
   // For a binary op, base types must match
   if (r_base_type != l_base_type) {
-    // TODO: log error (type mismatch)
+    if (log_errors){
+        SEM_ERROR(binary_node, "Operands have incompatibale base types %s and %s", get_type_name(l_base_type), get_type_name(r_base_type));
+    }
     return TYPE_UNKNOWN;
   }
 
@@ -162,7 +164,9 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
     if (r_type == l_type && r_base_type == TYPE_BOOL) {
       return r_type;
     } else {
-      // TODO: log error (not a logical type)
+      if(log_errors){
+        SEM_ERROR(binary_node, "Both operands are expected to have same logical type");
+      };
       return TYPE_UNKNOWN;
     }
     break;
@@ -171,7 +175,9 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
     if (r_type == l_type && r_base_type != TYPE_BOOL) {
       return r_type;
     } else {
-      // TODO: log error (not an arithmetic type)
+      if(log_errors){
+        SEM_ERROR(binary_node, "Both operands are expected to have same arithmetic type");
+      };
       return TYPE_UNKNOWN;
     }
     break;
@@ -180,20 +186,27 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
     if (r_type == l_type && !r_is_vec && !l_is_vec && r_base_type != TYPE_BOOL) {
       return r_type;
     } else {
-      // TODO: log error. Unsupported type
+      if(log_errors){
+        SEM_ERROR(binary_node, "Operands have types %s and %s, expected both int or float", get_type_name(l_type), get_type_name(r_type));
+      }
       return TYPE_UNKNOWN;
     }
     break;
   case OP_MUL:
     if (r_base_type == TYPE_BOOL) {
-      // TODO: log error. Unsupported type
+      if(log_errors){
+        SEM_ERROR(binary_node, "Operand has base type %s, int or float is expected", get_type_name(r_base_type));
+      }
       return TYPE_UNKNOWN;
     }
     if (l_is_vec && r_is_vec) {
       if (r_type == l_type) {
         return r_base_type;
       } else {
-        // TODO: log error. trying to multiply 2 vectors with different size
+        // trying to multiply 2 vectors with different size
+        if(log_errors){
+          SEM_ERROR(binary_node, "Right operand type %s, expected %s", get_type_name(r_type), get_type_name(l_type));
+        }
         return TYPE_UNKNOWN;
       }
     } else if (l_is_vec && !r_is_vec) {
@@ -208,7 +221,9 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
     if (r_type == l_type && !r_is_vec && !l_is_vec && r_base_type != TYPE_BOOL) {
         return r_type;
     } else {
-      // TODO: log error. type mismatch
+      if(log_errors){
+        SEM_ERROR(binary_node, "Operands have types %s and %s, expected both int or float", get_type_name(l_type), get_type_name(r_type));
+      }
       return TYPE_UNKNOWN;
     }
   case OP_EQ: case OP_NEQ:
@@ -216,7 +231,12 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
     if (r_type == l_type && r_base_type != TYPE_BOOL) {
       return TYPE_BOOL;
     }
-    // TODO: log error. type mismatch
+    if(log_errors && r_type != l_type){
+        SEM_ERROR(binary_node, "Operands have types %s and %s, expected to have matching types", get_type_name(l_type), get_type_name(r_type));
+    }
+    if(log_errors && r_base_type == TYPE_BOOL){
+        SEM_ERROR(binary_node, "Base type %s, arithmetic type expected", get_type_name(r_base_type));
+    }
     return TYPE_UNKNOWN;
   default:
     break;
