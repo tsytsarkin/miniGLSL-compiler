@@ -1,0 +1,3 @@
+
+PARSER ERROR, LINE 1: syntax error, unexpected ID, expecting '='
+  1: { int a; ivec b; c = a * b;}

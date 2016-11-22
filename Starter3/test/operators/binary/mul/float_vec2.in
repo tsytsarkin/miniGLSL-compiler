@@ -1,0 +1,1 @@
+{ float a; vec2 b; c = a * b;}

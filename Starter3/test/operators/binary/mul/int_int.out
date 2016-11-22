@@ -1,0 +1,2 @@
+  1: { int a; int b; c = a * b;}
+ (SCOPE (DECLARATIONS (DECLARATION a int (DECLARATION b int))) (STATEMENTS (ASSIGN unknown c (BINARY int * a b))))
