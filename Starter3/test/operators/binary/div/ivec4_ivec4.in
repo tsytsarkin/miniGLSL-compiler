@@ -1,0 +1,1 @@
+{ ivec4 a; ivec4 b; c = a / b;}
