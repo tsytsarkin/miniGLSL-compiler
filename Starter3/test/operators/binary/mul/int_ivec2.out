@@ -1,3 +1,2 @@
-
-PARSER ERROR, LINE 1: syntax error, unexpected ID, expecting '='
-  1: { int a; ivec b; c = a * b;}
+  1: { int a; ivec2 b; c = a * b;}
+ (SCOPE (DECLARATIONS (DECLARATION a int (DECLARATION b ivec2))) (STATEMENTS (ASSIGN unknown c (BINARY ivec2 * a b))))
