@@ -1,0 +1,1 @@
+{ ivec3 a; ivec3 b; c = a != b; }

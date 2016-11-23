@@ -1,0 +1,2 @@
+  1: { ivec2 a; ivec2 b; c = a != b; }
+ (SCOPE (DECLARATIONS (DECLARATION a ivec2 (DECLARATION b ivec2))) (STATEMENTS (ASSIGN unknown c (BINARY bool != a b))))
