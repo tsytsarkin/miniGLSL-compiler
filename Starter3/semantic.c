@@ -219,7 +219,7 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
   case OP_LT: case OP_LEQ: case OP_GT: case OP_GEQ:
     // The types must be equal, non-vector and arithmetic
     if (r_type == l_type && !r_is_vec && !l_is_vec && r_base_type != TYPE_BOOL) {
-        return r_type;
+        return TYPE_BOOL;
     } else {
       if(log_errors){
         SEM_ERROR(binary_node, "Operands have types %s and %s, expected both int or float", get_type_name(l_type), get_type_name(r_type));
