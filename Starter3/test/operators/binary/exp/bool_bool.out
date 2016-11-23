@@ -1,0 +1,2 @@
+  1: { bool a; bool b; c = a ^ b;}
+ (SCOPE (DECLARATIONS (DECLARATION a bool (DECLARATION b bool))) (STATEMENTS (ASSIGN unknown c (BINARY unknown ^ a b))))
