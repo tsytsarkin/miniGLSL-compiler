@@ -227,8 +227,8 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return TYPE_UNKNOWN;
     }
   case OP_EQ: case OP_NEQ:
-    // The types for OP_EQ and OP_NEQ must be equal and arithmetic
-    if (r_type == l_type && r_base_type != TYPE_BOOL) {
+    // The types for OP_EQ and OP_NEQ must be equal
+    if (r_type == l_type) {
       return TYPE_BOOL;
     }
     if(log_errors && r_type != l_type){
