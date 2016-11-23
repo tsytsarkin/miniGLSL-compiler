@@ -1,0 +1,1 @@
+{ vec3 a; vec3 b; c = a == b; }

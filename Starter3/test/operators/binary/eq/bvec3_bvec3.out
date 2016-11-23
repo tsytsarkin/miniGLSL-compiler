@@ -1,0 +1,2 @@
+  1: { bvec3 a; bvec3 b; c = a == b; }
+ (SCOPE (DECLARATIONS (DECLARATION a bvec3 (DECLARATION b bvec3))) (STATEMENTS (ASSIGN unknown c (BINARY unknown == a b))))
