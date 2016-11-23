@@ -1,0 +1,1 @@
+{ bvec3 a; bvec3 b; c = a && b; }
