@@ -154,21 +154,14 @@ declarations
   : declarations declaration
       {
         yTRACE("declarations -> declarations declaration\n")
-        if ($1->declarations.first_declaration == NULL) {
-          // If this is the first declaration, initialize the list
-          $1->declarations.first_declaration = $2;
-        } else {
-          // Otherwise add to the end of the list
-          $1->declarations.last_declaration->declaration.next_declaration = $2;
+
+        if ($2 != NULL) {
+          // Add the declarations to the end of the declarations node
+          $1->declarations.declarations->push_back($2);
+
+          // Make the declarations node the parent of all its declaration nodes
+          $2->parent = $1;
         }
-        // The current declaration is the last one seen
-        $1->declarations.last_declaration = $2;
-
-        // Increment the number of declarations
-        $1->declarations.num_declarations++;
-
-        // Make the declarations node the parent of all its declaration nodes
-        $2->parent = $1;
 
         // Return the declarations object
         $$ = $1;
@@ -180,20 +173,11 @@ declarations
 statements
   : statements statement
       {
-        if ($2 != NULL) {
-          yTRACE("statements -> statements statement\n")
-          if ($1->statements.first_statement == NULL) {
-            // If this is the first statement, initialize the list
-            $1->statements.first_statement = $2;
-          } else {
-            // Otherwise add to the end of the list
-            $1->statements.last_statement->statement.next_statement = $2;
-          }
-          // The current statement is the last one seen
-          $1->statements.last_statement = $2;
+        yTRACE("statements -> statements statement\n")
 
-          // Increment the number of statements
-          $1->statements.num_statements++;
+        if ($2 != NULL) {
+          // Add the declarations to the end of the declarations node
+          $1->statements.statements->push_back($2);
 
           // Make the statements node the parent of all its statement nodes
           $2->parent = $1;

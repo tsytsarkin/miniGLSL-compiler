@@ -3,6 +3,7 @@
 
 #include <stdarg.h>
 #include <vector>
+#include <list>
 
 // Dummy node just so everything compiles, create your own node/nodes
 //
@@ -120,10 +121,7 @@ struct node_ {
     } scope;
 
     struct {
-      node *first_declaration;
-
-      int num_declarations; // Only meaningful for the first argument
-      node *last_declaration; // Only used during construction
+      std::list<node *> *declarations;
     } declarations;
 
     struct {
@@ -131,14 +129,10 @@ struct node_ {
       node *type;
       node *identifier;
       node *assignment_expr;
-      node *next_declaration;
     } declaration;
 
     struct {
-      node *first_statement;
-
-      int num_statements; // Only meaningful for the first argument
-      node *last_statement; // Only used during construction
+      std::list<node *> *statements;
     } statements;
 
     struct {
@@ -158,8 +152,6 @@ struct node_ {
           node *scope;
         } nested_scope;
       };
-
-      node *next_statement;
     } statement;
 
     struct {

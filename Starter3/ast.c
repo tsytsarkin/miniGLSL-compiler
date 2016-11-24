@@ -56,16 +56,13 @@ node *ast_allocate(node_kind kind, ...) {
     break;
 
   case DECLARATIONS_NODE:
-    n->declarations.first_declaration = NULL;
-    n->declarations.num_declarations = 0;
-    n->declarations.last_declaration = NULL;
+    n->declarations.declarations = new std::list<node *>();
     break;
   case DECLARATION_NODE:
     n->declaration.is_const = (bool) va_arg(args, int);
     n->declaration.type = va_arg(args, node *);
     n->declaration.identifier = va_arg(args, node *);
     n->declaration.assignment_expr = va_arg(args, node *);
-    n->declaration.next_declaration = NULL;
 
     // Add the symbol that we are declaring to the symbol table
     symbol = n->declaration.identifier->expression.ident.val;
@@ -79,15 +76,12 @@ node *ast_allocate(node_kind kind, ...) {
     break;
 
   case STATEMENTS_NODE:
-    n->statements.first_statement = NULL;
-    n->statements.num_statements = 0;
-    n->statements.last_statement = NULL;
+    n->statements.statements = new std::list<node *>();
     break;
   case IF_STATEMENT_NODE:
     n->statement.if_else_statement.condition = va_arg(args, node *);
     n->statement.if_else_statement.if_statement = va_arg(args, node *);
     n->statement.if_else_statement.else_statement = va_arg(args, node *);
-    n->statement.next_statement = NULL;
 
     // Make this node the parent of its children
     set_parent(n, n->statement.if_else_statement.condition);
@@ -97,7 +91,6 @@ node *ast_allocate(node_kind kind, ...) {
   case ASSIGNMENT_NODE:
     n->statement.assignment.variable = va_arg(args, node *);
     n->statement.assignment.expression = va_arg(args, node *);
-    n->statement.next_statement = NULL;
 
     // Make this node the parent of its children
     set_parent(n, n->statement.assignment.variable);
@@ -226,6 +219,19 @@ node *ast_allocate(node_kind kind, ...) {
 
 /****** FREEING ******/
 void free_postorder(node *n, void *data) {
+  switch (n->kind) {
+  case DECLARATIONS_NODE:
+    delete n->declarations.declarations;
+    break;
+  case STATEMENTS_NODE:
+    delete n->statements.statements;
+    break;
+  case IDENT_NODE:
+    free(n->expression.ident.val);
+    break;
+  default:
+    break;
+  }
   free(n);
 }
 
@@ -407,6 +413,8 @@ void ast_visit(node *n,
       preorder(n, data);
     }
 
+    std::list<node *>::iterator iter;
+
     switch (n->kind) {
     case SCOPE_NODE:
       ast_visit(n->scope.declarations, preorder, postorder, data);
@@ -414,7 +422,9 @@ void ast_visit(node *n,
       break;
 
     case DECLARATIONS_NODE:
-      ast_visit(n->declarations.first_declaration, preorder, postorder, data);
+      for (iter = n->declarations.declarations->begin(); iter != n->declarations.declarations->end(); iter++) {
+        ast_visit(*iter, preorder, postorder, data);
+      }
       break;
     case DECLARATION_NODE:
       ast_visit(n->declaration.identifier, preorder, postorder, data);
@@ -423,7 +433,9 @@ void ast_visit(node *n,
       break;
 
     case STATEMENTS_NODE:
-      ast_visit(n->statements.first_statement, preorder, postorder, data);
+      for (iter = n->statements.statements->begin(); iter != n->statements.statements->end(); iter++) {
+        ast_visit(*iter, preorder, postorder, data);
+      }
       break;
     case IF_STATEMENT_NODE:
       ast_visit(n->statement.if_else_statement.condition, preorder, postorder, data);
@@ -485,20 +497,6 @@ void ast_visit(node *n,
 
     if (postorder != NULL) {
       postorder(n, data);
-    }
-
-    // Visit multiple declarations or statements as if they were siblings.
-    // These nodes are actually children of each other but they should be traversed as
-    // siblings.
-    switch (n->kind) {
-    case DECLARATION_NODE:
-      ast_visit(n->declaration.next_declaration, preorder, postorder, data);
-      break;
-    case IF_STATEMENT_NODE: case ASSIGNMENT_NODE: case NESTED_SCOPE_NODE:
-      ast_visit(n->statement.next_statement, preorder, postorder, data);
-      break;
-    default:
-      break;
     }
   }
 }
