@@ -1,5 +1,0 @@
-{
-    if (a) b = c;
-    if (true) c = d;
-    if (a == b) {c = !d;}
-}

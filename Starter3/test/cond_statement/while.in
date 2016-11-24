@@ -1,8 +1,0 @@
-{
-    while (true)
-        i = 9;
-    while (i == j){
-        b = b + 1;
-        c = 9 + 1;
-    }
-}

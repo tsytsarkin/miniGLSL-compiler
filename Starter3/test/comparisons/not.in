@@ -1,4 +1,0 @@
-{
-    bool i = true;
-    i = !i;
-}

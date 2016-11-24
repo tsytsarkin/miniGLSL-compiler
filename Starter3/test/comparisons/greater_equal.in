@@ -1,6 +1,0 @@
-{
-    int i = 5;
-    int j = 5;
-    bool k;
-    k = (i >= j);
-}
