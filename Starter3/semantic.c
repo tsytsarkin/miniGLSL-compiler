@@ -80,7 +80,8 @@ void semantic_postorder(node *n, void *data) {
   case IF_STATEMENT_NODE:
     // An if condition must be a boolean
     if (n->statement.if_else_statement.condition->expression.expr_type != TYPE_BOOL) {
-      // TODO: log invalid condition
+      SEM_ERROR(n->statement.if_else_statement.condition,
+                "If statement condition must be a boolean value");
       errorOccurred = true;
     }
     break;

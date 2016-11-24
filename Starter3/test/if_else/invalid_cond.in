@@ -1,0 +1,27 @@
+{
+  int i;
+  float f;
+  bool b;
+  vec2 v2;
+  vec3 v3;
+  vec4 v4;
+  ivec2 iv2;
+  ivec3 iv3;
+  ivec4 iv4;
+  bvec2 bv2;
+  bvec3 bv3;
+  bvec4 bv4;
+
+  if (i) i = i + 1;
+  if (f) i = i + 1;
+  if (b) i = i + 1;
+  if (v2) i = i + 1;
+  if (v3) i = i + 1;
+  if (v4) i = i + 1;
+  if (iv2) i = i + 1;
+  if (iv3) i = i + 1;
+  if (iv4) i = i + 1;
+  if (bv2) i = i + 1;
+  if (bv3) i = i + 1;
+  if (bv4) i = i + 1;
+}

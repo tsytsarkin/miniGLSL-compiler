@@ -1,0 +1,40 @@
+SEMANTIC ERROR (line 15, column 8): If statement condition must be a boolean value
+SEMANTIC ERROR (line 16, column 8): If statement condition must be a boolean value
+SEMANTIC ERROR (line 18, column 9): If statement condition must be a boolean value
+SEMANTIC ERROR (line 19, column 9): If statement condition must be a boolean value
+SEMANTIC ERROR (line 20, column 9): If statement condition must be a boolean value
+SEMANTIC ERROR (line 21, column 10): If statement condition must be a boolean value
+SEMANTIC ERROR (line 22, column 10): If statement condition must be a boolean value
+SEMANTIC ERROR (line 23, column 10): If statement condition must be a boolean value
+SEMANTIC ERROR (line 24, column 10): If statement condition must be a boolean value
+SEMANTIC ERROR (line 25, column 10): If statement condition must be a boolean value
+SEMANTIC ERROR (line 26, column 10): If statement condition must be a boolean value
+  1: {
+  2:   int i;
+  3:   float f;
+  4:   bool b;
+  5:   vec2 v2;
+  6:   vec3 v3;
+  7:   vec4 v4;
+  8:   ivec2 iv2;
+  9:   ivec3 iv3;
+ 10:   ivec4 iv4;
+ 11:   bvec2 bv2;
+ 12:   bvec3 bv3;
+ 13:   bvec4 bv4;
+ 14: 
+ 15:   if (i) i = i + 1;
+ 16:   if (f) i = i + 1;
+ 17:   if (b) i = i + 1;
+ 18:   if (v2) i = i + 1;
+ 19:   if (v3) i = i + 1;
+ 20:   if (v4) i = i + 1;
+ 21:   if (iv2) i = i + 1;
+ 22:   if (iv3) i = i + 1;
+ 23:   if (iv4) i = i + 1;
+ 24:   if (bv2) i = i + 1;
+ 25:   if (bv3) i = i + 1;
+ 26:   if (bv4) i = i + 1;
+ 27: }
+ (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION f float) (DECLARATION b bool) (DECLARATION v2 vec2) (DECLARATION v3 vec3) (DECLARATION v4 vec4) (DECLARATION iv2 ivec2) (DECLARATION iv3 ivec3) (DECLARATION iv4 ivec4) (DECLARATION bv2 bvec2) (DECLARATION bv3 bvec3) (DECLARATION bv4 bvec4)) (STATEMENTS (IF i (ASSIGN int i (BINARY int + i 1))) (IF f (ASSIGN int i (BINARY int + i 1))) (IF b (ASSIGN int i (BINARY int + i 1))) (IF v2 (ASSIGN int i (BINARY int + i 1))) (IF v3 (ASSIGN int i (BINARY int + i 1))) (IF v4 (ASSIGN int i (BINARY int + i 1))) (IF iv2 (ASSIGN int i (BINARY int + i 1))) (IF iv3 (ASSIGN int i (BINARY int + i 1))) (IF iv4 (ASSIGN int i (BINARY int + i 1))) (IF bv2 (ASSIGN int i (BINARY int + i 1))) (IF bv3 (ASSIGN int i (BINARY int + i 1))) (IF bv4 (ASSIGN int i (BINARY int + i 1)))))
+Failed to compile
