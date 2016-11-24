@@ -72,11 +72,13 @@ precedence/and_or
 -------------
 -------------
 precedence/not
-0a1,4
+0a1,6
+> SEMANTIC ERROR (line 2, column 11): Operand of unary operator ! is of type unknown but expected a logical type
 >   1: {
 >   2:     i = !i;
 >   3: }
 >  (SCOPE (DECLARATIONS) (STATEMENTS (ASSIGN unknown i (UNARY unknown ! i))))
+> Failed to compile
 -------------
 -------------
 precedence/add_subtract
@@ -500,7 +502,8 @@ cond_statement/while
 -------------
 -------------
 cond_statement/if
-0a1,7
+0a1,8
+> SEMANTIC ERROR (line 4, column 24): Operand of unary operator ! is of type unknown but expected a logical type
 >   1: {
 >   2:     if (a) b = c;
 >   3:     if (true) c = d;

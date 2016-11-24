@@ -1,2 +1,4 @@
+SEMANTIC ERROR (line 1, column 18): Operand of unary operator - is of type bvec2 but expected an arithmetic type
   1: { bvec2 x; y = -x; }
  (SCOPE (DECLARATIONS (DECLARATION x bvec2)) (STATEMENTS (ASSIGN unknown y (UNARY unknown - x))))
+Failed to compile

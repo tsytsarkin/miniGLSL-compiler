@@ -89,8 +89,11 @@ void semantic_postorder(node *n, void *data) {
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
+    validate_unary_expr_node(n);
     break;
   case BINARY_EXPRESSION_NODE:
+    // TODO: Uncomment this and verify the binary operator tests fail in the right places
+    //validate_binary_expr_node(n);
     break;
   case INT_NODE:
     break;
@@ -148,10 +151,12 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
   // through to the return statement at the bottom of the function. This
   // would remove alot of extra code and make it more readable
 
+  // TODO: we can also print out the actual operator using get_binary_op_name()
+
   // For a binary op, base types must match
   if (r_base_type != l_base_type) {
     if (log_errors){
-        SEM_ERROR(binary_node, "Operands have incompatibale base types %s and %s", get_type_name(l_base_type), get_type_name(r_base_type));
+      SEM_ERROR(binary_node, "Operands have incompatible base types %s and %s", get_type_name(l_base_type), get_type_name(r_base_type));
     }
     return TYPE_UNKNOWN;
   }
@@ -258,6 +263,11 @@ symbol_type validate_unary_expr_node(node *unary_node, bool log_errors) {
     if (base_type == TYPE_INT || base_type == TYPE_FLOAT) {
       // Return the original type (preserving scalar/vector)
       return type;
+    } else if (log_errors) {
+      SEM_ERROR(unary_node,
+                "Operand of unary operator %s is of type %s but expected an arithmetic type",
+                get_unary_op_name(unary_node->expression.unary.op),
+                get_type_name(type));
     }
     break;
   case OP_NOT:
@@ -266,6 +276,11 @@ symbol_type validate_unary_expr_node(node *unary_node, bool log_errors) {
     if (base_type == TYPE_BOOL) {
       // Return the original type (preserving scalar/vector)
       return type;
+    } else if (log_errors) {
+      SEM_ERROR(unary_node,
+                "Operand of unary operator %s is of type %s but expected a logical type",
+                get_unary_op_name(unary_node->expression.unary.op),
+                get_type_name(type));
     }
     break;
   default: break;

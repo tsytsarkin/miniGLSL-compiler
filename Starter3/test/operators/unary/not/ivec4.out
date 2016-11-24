@@ -1,2 +1,4 @@
+SEMANTIC ERROR (line 1, column 18): Operand of unary operator ! is of type ivec4 but expected a logical type
   1: { ivec4 x; y = !x; }
  (SCOPE (DECLARATIONS (DECLARATION x ivec4)) (STATEMENTS (ASSIGN unknown y (UNARY unknown ! x))))
+Failed to compile
