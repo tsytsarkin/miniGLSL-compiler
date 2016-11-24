@@ -1,2 +1,4 @@
+SEMANTIC ERROR (line 1, column 28): Both operands are expected to have same arithmetic type
   1: { bool a; bool b; c = a + b;}
  (SCOPE (DECLARATIONS (DECLARATION a bool (DECLARATION b bool))) (STATEMENTS (ASSIGN unknown c (BINARY unknown + a b))))
+Failed to compile

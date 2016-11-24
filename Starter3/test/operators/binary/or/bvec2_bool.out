@@ -1,2 +1,4 @@
+SEMANTIC ERROR (line 1, column 30): Both operands are expected to have same logical type
   1: { bvec2 a; bool b; c = a || b; }
  (SCOPE (DECLARATIONS (DECLARATION a bvec2 (DECLARATION b bool))) (STATEMENTS (ASSIGN unknown c (BINARY unknown || a b))))
+Failed to compile

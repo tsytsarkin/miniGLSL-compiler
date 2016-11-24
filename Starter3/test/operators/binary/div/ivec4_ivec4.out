@@ -1,2 +1,4 @@
+SEMANTIC ERROR (line 1, column 30): Operands have types ivec4 and ivec4, expected both int or float
   1: { ivec4 a; ivec4 b; c = a / b;}
  (SCOPE (DECLARATIONS (DECLARATION a ivec4 (DECLARATION b ivec4))) (STATEMENTS (ASSIGN unknown c (BINARY unknown / a b))))
+Failed to compile

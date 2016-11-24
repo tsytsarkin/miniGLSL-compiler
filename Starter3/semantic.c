@@ -92,8 +92,7 @@ void semantic_postorder(node *n, void *data) {
     validate_unary_expr_node(n);
     break;
   case BINARY_EXPRESSION_NODE:
-    // TODO: Uncomment this and verify the binary operator tests fail in the right places
-    //validate_binary_expr_node(n);
+    validate_binary_expr_node(n);
     break;
   case INT_NODE:
     break;

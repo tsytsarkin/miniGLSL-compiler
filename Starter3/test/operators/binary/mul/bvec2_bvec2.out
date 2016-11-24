@@ -1,2 +1,4 @@
+SEMANTIC ERROR (line 1, column 30): Operand has base type bool, int or float is expected
   1: { bvec2 a; bvec2 b; c = a * b;}
  (SCOPE (DECLARATIONS (DECLARATION a bvec2 (DECLARATION b bvec2))) (STATEMENTS (ASSIGN unknown c (BINARY unknown * a b))))
+Failed to compile

@@ -37,12 +37,15 @@ int/negative
 -------------
 -------------
 precedence/exponent
-0a1,5
+0a1,8
+> SEMANTIC ERROR (line 2, column 16): Operands have incompatible base types unknown and int
+> SEMANTIC ERROR (line 3, column 16): Operands have incompatible base types int and unknown
 >   1: {
 >   2:     i = i + 4^5;
 >   3:     i = 4^5 + i;
 >   4: }
 >  (SCOPE (DECLARATIONS) (STATEMENTS (ASSIGN unknown i (BINARY unknown + i (BINARY int ^ 4 5)) (ASSIGN unknown i (BINARY unknown + (BINARY int ^ 4 5) i)))))
+> Failed to compile
 -------------
 -------------
 precedence/minus
