@@ -157,7 +157,6 @@ declarations
         if ($1->declarations.first_declaration == NULL) {
           // If this is the first declaration, initialize the list
           $1->declarations.first_declaration = $2;
-          $1->declarations.last_declaration = $2;
         } else {
           // Otherwise add to the end of the list
           $1->declarations.last_declaration->declaration.next_declaration = $2;
@@ -181,23 +180,24 @@ declarations
 statements
   : statements statement
       {
-        yTRACE("statements -> statements statement\n")
-        if ($1->statements.first_statement == NULL) {
-          // If this is the first statement, initialize the list
-          $1->statements.first_statement = $2;
+        if ($2 != NULL) {
+          yTRACE("statements -> statements statement\n")
+          if ($1->statements.first_statement == NULL) {
+            // If this is the first statement, initialize the list
+            $1->statements.first_statement = $2;
+          } else {
+            // Otherwise add to the end of the list
+            $1->statements.last_statement->statement.next_statement = $2;
+          }
+          // The current statement is the last one seen
           $1->statements.last_statement = $2;
-        } else {
-          // Otherwise add to the end of the list
-          $1->statements.last_statement->statement.next_statement = $2;
+
+          // Increment the number of statements
+          $1->statements.num_statements++;
+
+          // Make the statements node the parent of all its statement nodes
+          $2->parent = $1;
         }
-        // The current statement is the last one seen
-        $1->statements.last_statement = $2;
-
-        // Increment the number of statements
-        $1->statements.num_statements++;
-
-        // Make the statements node the parent of all its statement nodes
-        $2->parent = $1;
 
         // Return the statements object
         $$ = $1;
@@ -223,7 +223,7 @@ statement
   | IF '(' expression ')' statement ELSE statement
       { yTRACE("statement -> IF ( expression ) statement ELSE statement \n") $$ = ast_allocate(IF_STATEMENT_NODE, $3, $5, $7); }
   | scope
-      { yTRACE("statement -> scope \n") }
+      { yTRACE("statement -> scope \n") $$ = ast_allocate(NESTED_SCOPE_NODE, $1); }
   | ';'
       { yTRACE("statement -> ; \n") $$ = NULL; }
   ;

@@ -1,0 +1,9 @@
+  1: {
+  2:   int i;
+  3:   int j;
+  4: 
+  5:   i = j;
+  6:   ;;;
+  7:   j = i;
+  8: }
+ (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION j int)) (STATEMENTS (ASSIGN int i j) (ASSIGN int j i)))

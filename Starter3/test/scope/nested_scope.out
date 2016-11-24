@@ -1,0 +1,14 @@
+  1: {
+  2:   int i;
+  3:   int j;
+  4: 
+  5:   i = j;
+  6:   {
+  7:     float f;
+  8:     float g;
+  9:     f = g;
+ 10:   }
+ 11:   j = i;
+ 12:   f = g; /* Semantic Error */
+ 13: }
+ (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION j int)) (STATEMENTS (ASSIGN int i j) (SCOPE (DECLARATIONS (DECLARATION f float) (DECLARATION g float)) (STATEMENTS (ASSIGN float f g))) (ASSIGN int j i) (ASSIGN unknown f g)))

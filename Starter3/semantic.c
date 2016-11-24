@@ -28,6 +28,8 @@ void semantic_preorder(node *n, void *data) {
     break;
   case ASSIGNMENT_NODE:
     break;
+  case NESTED_SCOPE_NODE:
+    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -83,6 +85,8 @@ void semantic_postorder(node *n, void *data) {
     }
     break;
   case ASSIGNMENT_NODE:
+    break;
+  case NESTED_SCOPE_NODE:
     break;
 
   case EXPRESSION_NODE:

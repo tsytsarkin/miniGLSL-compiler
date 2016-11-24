@@ -1,0 +1,13 @@
+{
+  int i;
+  int j;
+
+  i = j;
+  {
+    float f;
+    float g;
+    f = g;
+  }
+  j = i;
+  f = g; /* Semantic Error */
+}

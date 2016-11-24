@@ -39,13 +39,14 @@ typedef enum {
   STATEMENTS_NODE        = (1 << 1),
   IF_STATEMENT_NODE      = (1 << 1) | (1 << 12),
   ASSIGNMENT_NODE        = (1 << 1) | (1 << 13),
+  NESTED_SCOPE_NODE      = (1 << 1) | (1 << 14),
 
-  DECLARATIONS_NODE      = (1 << 14),
-  DECLARATION_NODE       = (1 << 15),
+  DECLARATIONS_NODE      = (1 << 15),
+  DECLARATION_NODE       = (1 << 16),
 
-  TYPE_NODE              = (1 << 16),
+  TYPE_NODE              = (1 << 17),
 
-  ARGUMENT_NODE         = (1 << 17),
+  ARGUMENT_NODE         = (1 << 18),
 } node_kind;
 
 typedef enum {
@@ -152,6 +153,10 @@ struct node_ {
           node *variable;
           node *expression;
         } assignment;
+
+        struct {
+          node *scope;
+        } nested_scope;
       };
 
       node *next_statement;

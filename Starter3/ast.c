@@ -103,6 +103,12 @@ node *ast_allocate(node_kind kind, ...) {
     set_parent(n, n->statement.assignment.variable);
     set_parent(n, n->statement.assignment.expression);
     break;
+  case NESTED_SCOPE_NODE:
+    n->statement.nested_scope.scope = va_arg(args, node *);
+
+    // Make this node the parent of its children
+    set_parent(n, n->statement.nested_scope.scope);
+    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -256,6 +262,8 @@ void print_preorder(node *n, void *data) {
     PRINT_AST(" (ASSIGN ");
     PRINT_AST("%s", get_type_name(n->statement.assignment.variable->expression.expr_type));
     break;
+  case NESTED_SCOPE_NODE:
+    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -337,6 +345,8 @@ void print_postorder(node *n, void *data) {
   case ASSIGNMENT_NODE:
     PRINT_AST(")");
     break;
+  case NESTED_SCOPE_NODE:
+    break;
 
   case EXPRESSION_NODE:
     // EXPRESSION_NODE is an abstract node
@@ -410,7 +420,6 @@ void ast_visit(node *n,
       ast_visit(n->declaration.identifier, preorder, postorder, data);
       ast_visit(n->declaration.type, preorder, postorder, data);
       ast_visit(n->declaration.assignment_expr, preorder, postorder, data);
-      ast_visit(n->declaration.next_declaration, preorder, postorder, data);
       break;
 
     case STATEMENTS_NODE:
@@ -420,12 +429,13 @@ void ast_visit(node *n,
       ast_visit(n->statement.if_else_statement.condition, preorder, postorder, data);
       ast_visit(n->statement.if_else_statement.if_statement, preorder, postorder, data);
       ast_visit(n->statement.if_else_statement.else_statement, preorder, postorder, data);
-      ast_visit(n->statement.next_statement, preorder, postorder, data);
       break;
     case ASSIGNMENT_NODE:
       ast_visit(n->statement.assignment.variable, preorder, postorder, data);
       ast_visit(n->statement.assignment.expression, preorder, postorder, data);
-      ast_visit(n->statement.next_statement, preorder, postorder, data);
+      break;
+    case NESTED_SCOPE_NODE:
+      ast_visit(n->statement.nested_scope.scope, preorder, postorder, data);
       break;
 
     case EXPRESSION_NODE:
@@ -475,6 +485,20 @@ void ast_visit(node *n,
 
     if (postorder != NULL) {
       postorder(n, data);
+    }
+
+    // Visit multiple declarations or statements as if they were siblings.
+    // These nodes are actually children of each other but they should be traversed as
+    // siblings.
+    switch (n->kind) {
+    case DECLARATION_NODE:
+      ast_visit(n->declaration.next_declaration, preorder, postorder, data);
+      break;
+    case IF_STATEMENT_NODE: case ASSIGNMENT_NODE: case NESTED_SCOPE_NODE:
+      ast_visit(n->statement.next_statement, preorder, postorder, data);
+      break;
+    default:
+      break;
     }
   }
 }
