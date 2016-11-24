@@ -1,5 +1,6 @@
 {
     int i;
-    int j = 123;
+    int j = int(123);
     j = 93;
+    i = j;
 }

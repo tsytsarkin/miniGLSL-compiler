@@ -1,5 +1,6 @@
 {
-    ivec3 i;
+    int i;
     ivec3 j = ivec3(1, 2, 3);
     j[2] = 5;
+    i = j[1];
 }

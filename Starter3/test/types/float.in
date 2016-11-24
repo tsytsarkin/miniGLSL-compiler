@@ -1,5 +1,6 @@
 {
     float i;
-    float j = 1.34234;
+    float j = float(1.34234);
     j = 123.0;
+    i = j;
 }

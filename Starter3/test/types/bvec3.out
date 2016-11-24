@@ -1,6 +1,7 @@
   1: {
-  2:     bvec3 i;
+  2:     bool i;
   3:     bvec3 j = bvec3(true, false, true);
   4:     j[2] = false;
-  5: }
- (SCOPE (DECLARATIONS (DECLARATION i bvec3) (DECLARATION j bvec3 (CALL bvec3 true false true))) (STATEMENTS (ASSIGN bool (INDEX bool j 2) false)))
+  5:     i = j[1];
+  6: }
+ (SCOPE (DECLARATIONS (DECLARATION i bool) (DECLARATION j bvec3 (CALL bvec3 true false true))) (STATEMENTS (ASSIGN bool (INDEX bool j 2) false) (ASSIGN bool i (INDEX bool j 1))))

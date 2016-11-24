@@ -1,6 +1,7 @@
   1: {
   2:     float i;
-  3:     float j = 1.34234;
+  3:     float j = float(1.34234);
   4:     j = 123.0;
-  5: }
- (SCOPE (DECLARATIONS (DECLARATION i float) (DECLARATION j float 1.342340)) (STATEMENTS (ASSIGN float j 123.000000)))
+  5:     i = j;
+  6: }
+ (SCOPE (DECLARATIONS (DECLARATION i float) (DECLARATION j float (CALL float 1.342340))) (STATEMENTS (ASSIGN float j 123.000000) (ASSIGN float i j)))

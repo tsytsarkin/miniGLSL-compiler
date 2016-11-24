@@ -1,0 +1,32 @@
+{
+  int i;
+  float f;
+  bool b;
+  vec2 v2;
+  vec3 v3;
+  vec4 v4;
+  ivec2 iv2;
+  ivec3 iv3;
+  ivec4 iv4;
+  bvec2 bv2;
+  bvec3 bv3;
+  bvec4 bv4;
+
+  i = int(f); i = int(b); i = int(v2); i = int(v3); i = int(v4); i = int(iv2); i = int(iv3); i = int(iv4); i = int(bv2); i = int(bv3); i = int(bv4);
+
+  f = float(i); f = float(b); f = float(v2); f = float(v3); f = float(v4); f = float(iv2); f = float(iv3); f = float(iv4); f = float(bv2); f = float(bv3); f = float(bv4);
+
+  b = bool(i); b = bool(f); b = bool(v2); b = bool(v3); b = bool(v4); b = bool(iv2); b = bool(iv3); b = bool(iv4); b = bool(bv2); b = bool(bv3); b = bool(bv4);
+
+  v2 = vec2(i, f); v2 = vec2(b, v2); v2 = vec2(v3, v4); v2 = vec2(iv2, iv3); v2 = vec2(iv4, bv2); v2 = vec2(bv3, bv4);
+  v3 = vec3(i, f, b); v3 = vec3(v2, v3, v4); v3 = vec3(iv2, iv3, iv4); v3 = vec3(bv2, bv3, bv4);
+  v4 = vec4(i, f, b, v2); v4 = vec4(v3, v4, iv2, iv3); v4 = vec4(iv4, bv2, bv3, bv4);
+
+  iv2 = ivec2(i, f); iv2 = ivec2(b, v2); iv2 = ivec2(v3, v4); iv2 = ivec2(iv2, iv3); iv2 = ivec2(iv4, bv2); iv2 = ivec2(bv3, bv4);
+  iv3 = ivec3(i, f, b); iv3 = ivec3(v2, v3, v4); iv3 = ivec3(iv2, iv3, iv4); iv3 = ivec3(bv2, bv3, bv4);
+  iv4 = ivec4(i, f, b, v2); iv4 = ivec4(v3, v4, iv2, iv3); iv4 = ivec4(iv4, bv2, bv3, bv4);
+
+  bv2 = bvec2(i, f); bv2 = bvec2(b, v2); bv2 = bvec2(v3, v4); bv2 = bvec2(iv2, iv3); bv2 = bvec2(iv4, bv2); bv2 = bvec2(bv3, bv4);
+  bv3 = bvec3(i, f, b); bv3 = bvec3(v2, v3, v4); bv3 = bvec3(iv2, iv3, iv4); bv3 = bvec3(bv2, bv3, bv4);
+  bv4 = bvec4(i, f, b, v2); bv4 = bvec4(v3, v4, iv2, iv3); bv4 = bvec4(iv4, bv2, bv3, bv4);
+}

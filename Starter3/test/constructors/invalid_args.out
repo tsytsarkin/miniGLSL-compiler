@@ -1,0 +1,166 @@
+SEMANTIC ERROR (line 15, column 12): Argument 1 of int constructor has type float but expected type int
+SEMANTIC ERROR (line 15, column 24): Argument 1 of int constructor has type bool but expected type int
+SEMANTIC ERROR (line 15, column 37): Argument 1 of int constructor has type vec2 but expected type int
+SEMANTIC ERROR (line 15, column 50): Argument 1 of int constructor has type vec3 but expected type int
+SEMANTIC ERROR (line 15, column 63): Argument 1 of int constructor has type vec4 but expected type int
+SEMANTIC ERROR (line 15, column 77): Argument 1 of int constructor has type ivec2 but expected type int
+SEMANTIC ERROR (line 15, column 91): Argument 1 of int constructor has type ivec3 but expected type int
+SEMANTIC ERROR (line 15, column 105): Argument 1 of int constructor has type ivec4 but expected type int
+SEMANTIC ERROR (line 15, column 119): Argument 1 of int constructor has type bvec2 but expected type int
+SEMANTIC ERROR (line 15, column 133): Argument 1 of int constructor has type bvec3 but expected type int
+SEMANTIC ERROR (line 15, column 147): Argument 1 of int constructor has type bvec4 but expected type int
+SEMANTIC ERROR (line 17, column 14): Argument 1 of float constructor has type int but expected type float
+SEMANTIC ERROR (line 17, column 28): Argument 1 of float constructor has type bool but expected type float
+SEMANTIC ERROR (line 17, column 43): Argument 1 of float constructor has type vec2 but expected type float
+SEMANTIC ERROR (line 17, column 58): Argument 1 of float constructor has type vec3 but expected type float
+SEMANTIC ERROR (line 17, column 73): Argument 1 of float constructor has type vec4 but expected type float
+SEMANTIC ERROR (line 17, column 89): Argument 1 of float constructor has type ivec2 but expected type float
+SEMANTIC ERROR (line 17, column 105): Argument 1 of float constructor has type ivec3 but expected type float
+SEMANTIC ERROR (line 17, column 121): Argument 1 of float constructor has type ivec4 but expected type float
+SEMANTIC ERROR (line 17, column 137): Argument 1 of float constructor has type bvec2 but expected type float
+SEMANTIC ERROR (line 17, column 153): Argument 1 of float constructor has type bvec3 but expected type float
+SEMANTIC ERROR (line 17, column 169): Argument 1 of float constructor has type bvec4 but expected type float
+SEMANTIC ERROR (line 19, column 13): Argument 1 of bool constructor has type int but expected type bool
+SEMANTIC ERROR (line 19, column 26): Argument 1 of bool constructor has type float but expected type bool
+SEMANTIC ERROR (line 19, column 40): Argument 1 of bool constructor has type vec2 but expected type bool
+SEMANTIC ERROR (line 19, column 54): Argument 1 of bool constructor has type vec3 but expected type bool
+SEMANTIC ERROR (line 19, column 68): Argument 1 of bool constructor has type vec4 but expected type bool
+SEMANTIC ERROR (line 19, column 83): Argument 1 of bool constructor has type ivec2 but expected type bool
+SEMANTIC ERROR (line 19, column 98): Argument 1 of bool constructor has type ivec3 but expected type bool
+SEMANTIC ERROR (line 19, column 113): Argument 1 of bool constructor has type ivec4 but expected type bool
+SEMANTIC ERROR (line 19, column 128): Argument 1 of bool constructor has type bvec2 but expected type bool
+SEMANTIC ERROR (line 19, column 143): Argument 1 of bool constructor has type bvec3 but expected type bool
+SEMANTIC ERROR (line 19, column 158): Argument 1 of bool constructor has type bvec4 but expected type bool
+SEMANTIC ERROR (line 21, column 14): Argument 1 of vec2 constructor has type int but expected type float
+SEMANTIC ERROR (line 21, column 31): Argument 1 of vec2 constructor has type bool but expected type float
+SEMANTIC ERROR (line 21, column 35): Argument 2 of vec2 constructor has type vec2 but expected type float
+SEMANTIC ERROR (line 21, column 50): Argument 1 of vec2 constructor has type vec3 but expected type float
+SEMANTIC ERROR (line 21, column 54): Argument 2 of vec2 constructor has type vec4 but expected type float
+SEMANTIC ERROR (line 21, column 70): Argument 1 of vec2 constructor has type ivec2 but expected type float
+SEMANTIC ERROR (line 21, column 75): Argument 2 of vec2 constructor has type ivec3 but expected type float
+SEMANTIC ERROR (line 21, column 91): Argument 1 of vec2 constructor has type ivec4 but expected type float
+SEMANTIC ERROR (line 21, column 96): Argument 2 of vec2 constructor has type bvec2 but expected type float
+SEMANTIC ERROR (line 21, column 112): Argument 1 of vec2 constructor has type bvec3 but expected type float
+SEMANTIC ERROR (line 21, column 117): Argument 2 of vec2 constructor has type bvec4 but expected type float
+SEMANTIC ERROR (line 22, column 14): Argument 1 of vec3 constructor has type int but expected type float
+SEMANTIC ERROR (line 22, column 20): Argument 3 of vec3 constructor has type bool but expected type float
+SEMANTIC ERROR (line 22, column 35): Argument 1 of vec3 constructor has type vec2 but expected type float
+SEMANTIC ERROR (line 22, column 39): Argument 2 of vec3 constructor has type vec3 but expected type float
+SEMANTIC ERROR (line 22, column 43): Argument 3 of vec3 constructor has type vec4 but expected type float
+SEMANTIC ERROR (line 22, column 59): Argument 1 of vec3 constructor has type ivec2 but expected type float
+SEMANTIC ERROR (line 22, column 64): Argument 2 of vec3 constructor has type ivec3 but expected type float
+SEMANTIC ERROR (line 22, column 69): Argument 3 of vec3 constructor has type ivec4 but expected type float
+SEMANTIC ERROR (line 22, column 85): Argument 1 of vec3 constructor has type bvec2 but expected type float
+SEMANTIC ERROR (line 22, column 90): Argument 2 of vec3 constructor has type bvec3 but expected type float
+SEMANTIC ERROR (line 22, column 95): Argument 3 of vec3 constructor has type bvec4 but expected type float
+SEMANTIC ERROR (line 23, column 14): Argument 1 of vec4 constructor has type int but expected type float
+SEMANTIC ERROR (line 23, column 20): Argument 3 of vec4 constructor has type bool but expected type float
+SEMANTIC ERROR (line 23, column 24): Argument 4 of vec4 constructor has type vec2 but expected type float
+SEMANTIC ERROR (line 23, column 39): Argument 1 of vec4 constructor has type vec3 but expected type float
+SEMANTIC ERROR (line 23, column 43): Argument 2 of vec4 constructor has type vec4 but expected type float
+SEMANTIC ERROR (line 23, column 48): Argument 3 of vec4 constructor has type ivec2 but expected type float
+SEMANTIC ERROR (line 23, column 53): Argument 4 of vec4 constructor has type ivec3 but expected type float
+SEMANTIC ERROR (line 23, column 69): Argument 1 of vec4 constructor has type ivec4 but expected type float
+SEMANTIC ERROR (line 23, column 74): Argument 2 of vec4 constructor has type bvec2 but expected type float
+SEMANTIC ERROR (line 23, column 79): Argument 3 of vec4 constructor has type bvec3 but expected type float
+SEMANTIC ERROR (line 23, column 84): Argument 4 of vec4 constructor has type bvec4 but expected type float
+SEMANTIC ERROR (line 25, column 19): Argument 2 of ivec2 constructor has type float but expected type int
+SEMANTIC ERROR (line 25, column 35): Argument 1 of ivec2 constructor has type bool but expected type int
+SEMANTIC ERROR (line 25, column 39): Argument 2 of ivec2 constructor has type vec2 but expected type int
+SEMANTIC ERROR (line 25, column 56): Argument 1 of ivec2 constructor has type vec3 but expected type int
+SEMANTIC ERROR (line 25, column 60): Argument 2 of ivec2 constructor has type vec4 but expected type int
+SEMANTIC ERROR (line 25, column 78): Argument 1 of ivec2 constructor has type ivec2 but expected type int
+SEMANTIC ERROR (line 25, column 83): Argument 2 of ivec2 constructor has type ivec3 but expected type int
+SEMANTIC ERROR (line 25, column 101): Argument 1 of ivec2 constructor has type ivec4 but expected type int
+SEMANTIC ERROR (line 25, column 106): Argument 2 of ivec2 constructor has type bvec2 but expected type int
+SEMANTIC ERROR (line 25, column 124): Argument 1 of ivec2 constructor has type bvec3 but expected type int
+SEMANTIC ERROR (line 25, column 129): Argument 2 of ivec2 constructor has type bvec4 but expected type int
+SEMANTIC ERROR (line 26, column 19): Argument 2 of ivec3 constructor has type float but expected type int
+SEMANTIC ERROR (line 26, column 22): Argument 3 of ivec3 constructor has type bool but expected type int
+SEMANTIC ERROR (line 26, column 39): Argument 1 of ivec3 constructor has type vec2 but expected type int
+SEMANTIC ERROR (line 26, column 43): Argument 2 of ivec3 constructor has type vec3 but expected type int
+SEMANTIC ERROR (line 26, column 47): Argument 3 of ivec3 constructor has type vec4 but expected type int
+SEMANTIC ERROR (line 26, column 65): Argument 1 of ivec3 constructor has type ivec2 but expected type int
+SEMANTIC ERROR (line 26, column 70): Argument 2 of ivec3 constructor has type ivec3 but expected type int
+SEMANTIC ERROR (line 26, column 75): Argument 3 of ivec3 constructor has type ivec4 but expected type int
+SEMANTIC ERROR (line 26, column 93): Argument 1 of ivec3 constructor has type bvec2 but expected type int
+SEMANTIC ERROR (line 26, column 98): Argument 2 of ivec3 constructor has type bvec3 but expected type int
+SEMANTIC ERROR (line 26, column 103): Argument 3 of ivec3 constructor has type bvec4 but expected type int
+SEMANTIC ERROR (line 27, column 19): Argument 2 of ivec4 constructor has type float but expected type int
+SEMANTIC ERROR (line 27, column 22): Argument 3 of ivec4 constructor has type bool but expected type int
+SEMANTIC ERROR (line 27, column 26): Argument 4 of ivec4 constructor has type vec2 but expected type int
+SEMANTIC ERROR (line 27, column 43): Argument 1 of ivec4 constructor has type vec3 but expected type int
+SEMANTIC ERROR (line 27, column 47): Argument 2 of ivec4 constructor has type vec4 but expected type int
+SEMANTIC ERROR (line 27, column 52): Argument 3 of ivec4 constructor has type ivec2 but expected type int
+SEMANTIC ERROR (line 27, column 57): Argument 4 of ivec4 constructor has type ivec3 but expected type int
+SEMANTIC ERROR (line 27, column 75): Argument 1 of ivec4 constructor has type ivec4 but expected type int
+SEMANTIC ERROR (line 27, column 80): Argument 2 of ivec4 constructor has type bvec2 but expected type int
+SEMANTIC ERROR (line 27, column 85): Argument 3 of ivec4 constructor has type bvec3 but expected type int
+SEMANTIC ERROR (line 27, column 90): Argument 4 of ivec4 constructor has type bvec4 but expected type int
+SEMANTIC ERROR (line 29, column 16): Argument 1 of bvec2 constructor has type int but expected type bool
+SEMANTIC ERROR (line 29, column 19): Argument 2 of bvec2 constructor has type float but expected type bool
+SEMANTIC ERROR (line 29, column 39): Argument 2 of bvec2 constructor has type vec2 but expected type bool
+SEMANTIC ERROR (line 29, column 56): Argument 1 of bvec2 constructor has type vec3 but expected type bool
+SEMANTIC ERROR (line 29, column 60): Argument 2 of bvec2 constructor has type vec4 but expected type bool
+SEMANTIC ERROR (line 29, column 78): Argument 1 of bvec2 constructor has type ivec2 but expected type bool
+SEMANTIC ERROR (line 29, column 83): Argument 2 of bvec2 constructor has type ivec3 but expected type bool
+SEMANTIC ERROR (line 29, column 101): Argument 1 of bvec2 constructor has type ivec4 but expected type bool
+SEMANTIC ERROR (line 29, column 106): Argument 2 of bvec2 constructor has type bvec2 but expected type bool
+SEMANTIC ERROR (line 29, column 124): Argument 1 of bvec2 constructor has type bvec3 but expected type bool
+SEMANTIC ERROR (line 29, column 129): Argument 2 of bvec2 constructor has type bvec4 but expected type bool
+SEMANTIC ERROR (line 30, column 16): Argument 1 of bvec3 constructor has type int but expected type bool
+SEMANTIC ERROR (line 30, column 19): Argument 2 of bvec3 constructor has type float but expected type bool
+SEMANTIC ERROR (line 30, column 39): Argument 1 of bvec3 constructor has type vec2 but expected type bool
+SEMANTIC ERROR (line 30, column 43): Argument 2 of bvec3 constructor has type vec3 but expected type bool
+SEMANTIC ERROR (line 30, column 47): Argument 3 of bvec3 constructor has type vec4 but expected type bool
+SEMANTIC ERROR (line 30, column 65): Argument 1 of bvec3 constructor has type ivec2 but expected type bool
+SEMANTIC ERROR (line 30, column 70): Argument 2 of bvec3 constructor has type ivec3 but expected type bool
+SEMANTIC ERROR (line 30, column 75): Argument 3 of bvec3 constructor has type ivec4 but expected type bool
+SEMANTIC ERROR (line 30, column 93): Argument 1 of bvec3 constructor has type bvec2 but expected type bool
+SEMANTIC ERROR (line 30, column 98): Argument 2 of bvec3 constructor has type bvec3 but expected type bool
+SEMANTIC ERROR (line 30, column 103): Argument 3 of bvec3 constructor has type bvec4 but expected type bool
+SEMANTIC ERROR (line 31, column 16): Argument 1 of bvec4 constructor has type int but expected type bool
+SEMANTIC ERROR (line 31, column 19): Argument 2 of bvec4 constructor has type float but expected type bool
+SEMANTIC ERROR (line 31, column 26): Argument 4 of bvec4 constructor has type vec2 but expected type bool
+SEMANTIC ERROR (line 31, column 43): Argument 1 of bvec4 constructor has type vec3 but expected type bool
+SEMANTIC ERROR (line 31, column 47): Argument 2 of bvec4 constructor has type vec4 but expected type bool
+SEMANTIC ERROR (line 31, column 52): Argument 3 of bvec4 constructor has type ivec2 but expected type bool
+SEMANTIC ERROR (line 31, column 57): Argument 4 of bvec4 constructor has type ivec3 but expected type bool
+SEMANTIC ERROR (line 31, column 75): Argument 1 of bvec4 constructor has type ivec4 but expected type bool
+SEMANTIC ERROR (line 31, column 80): Argument 2 of bvec4 constructor has type bvec2 but expected type bool
+SEMANTIC ERROR (line 31, column 85): Argument 3 of bvec4 constructor has type bvec3 but expected type bool
+SEMANTIC ERROR (line 31, column 90): Argument 4 of bvec4 constructor has type bvec4 but expected type bool
+  1: {
+  2:   int i;
+  3:   float f;
+  4:   bool b;
+  5:   vec2 v2;
+  6:   vec3 v3;
+  7:   vec4 v4;
+  8:   ivec2 iv2;
+  9:   ivec3 iv3;
+ 10:   ivec4 iv4;
+ 11:   bvec2 bv2;
+ 12:   bvec3 bv3;
+ 13:   bvec4 bv4;
+ 14: 
+ 15:   i = int(f); i = int(b); i = int(v2); i = int(v3); i = int(v4); i = int(iv2); i = int(iv3); i = int(iv4); i = int(bv2); i = int(bv3); i = int(bv4);
+ 16: 
+ 17:   f = float(i); f = float(b); f = float(v2); f = float(v3); f = float(v4); f = float(iv2); f = float(iv3); f = float(iv4); f = float(bv2); f = float(bv3); f = float(bv4);
+ 18: 
+ 19:   b = bool(i); b = bool(f); b = bool(v2); b = bool(v3); b = bool(v4); b = bool(iv2); b = bool(iv3); b = bool(iv4); b = bool(bv2); b = bool(bv3); b = bool(bv4);
+ 20: 
+ 21:   v2 = vec2(i, f); v2 = vec2(b, v2); v2 = vec2(v3, v4); v2 = vec2(iv2, iv3); v2 = vec2(iv4, bv2); v2 = vec2(bv3, bv4);
+ 22:   v3 = vec3(i, f, b); v3 = vec3(v2, v3, v4); v3 = vec3(iv2, iv3, iv4); v3 = vec3(bv2, bv3, bv4);
+ 23:   v4 = vec4(i, f, b, v2); v4 = vec4(v3, v4, iv2, iv3); v4 = vec4(iv4, bv2, bv3, bv4);
+ 24: 
+ 25:   iv2 = ivec2(i, f); iv2 = ivec2(b, v2); iv2 = ivec2(v3, v4); iv2 = ivec2(iv2, iv3); iv2 = ivec2(iv4, bv2); iv2 = ivec2(bv3, bv4);
+ 26:   iv3 = ivec3(i, f, b); iv3 = ivec3(v2, v3, v4); iv3 = ivec3(iv2, iv3, iv4); iv3 = ivec3(bv2, bv3, bv4);
+ 27:   iv4 = ivec4(i, f, b, v2); iv4 = ivec4(v3, v4, iv2, iv3); iv4 = ivec4(iv4, bv2, bv3, bv4);
+ 28: 
+ 29:   bv2 = bvec2(i, f); bv2 = bvec2(b, v2); bv2 = bvec2(v3, v4); bv2 = bvec2(iv2, iv3); bv2 = bvec2(iv4, bv2); bv2 = bvec2(bv3, bv4);
+ 30:   bv3 = bvec3(i, f, b); bv3 = bvec3(v2, v3, v4); bv3 = bvec3(iv2, iv3, iv4); bv3 = bvec3(bv2, bv3, bv4);
+ 31:   bv4 = bvec4(i, f, b, v2); bv4 = bvec4(v3, v4, iv2, iv3); bv4 = bvec4(iv4, bv2, bv3, bv4);
+ 32: }
+ (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION f float) (DECLARATION b bool) (DECLARATION v2 vec2) (DECLARATION v3 vec3) (DECLARATION v4 vec4) (DECLARATION iv2 ivec2) (DECLARATION iv3 ivec3) (DECLARATION iv4 ivec4) (DECLARATION bv2 bvec2) (DECLARATION bv3 bvec3) (DECLARATION bv4 bvec4)) (STATEMENTS (ASSIGN int i (CALL int f)) (ASSIGN int i (CALL int b)) (ASSIGN int i (CALL int v2)) (ASSIGN int i (CALL int v3)) (ASSIGN int i (CALL int v4)) (ASSIGN int i (CALL int iv2)) (ASSIGN int i (CALL int iv3)) (ASSIGN int i (CALL int iv4)) (ASSIGN int i (CALL int bv2)) (ASSIGN int i (CALL int bv3)) (ASSIGN int i (CALL int bv4)) (ASSIGN float f (CALL float i)) (ASSIGN float f (CALL float b)) (ASSIGN float f (CALL float v2)) (ASSIGN float f (CALL float v3)) (ASSIGN float f (CALL float v4)) (ASSIGN float f (CALL float iv2)) (ASSIGN float f (CALL float iv3)) (ASSIGN float f (CALL float iv4)) (ASSIGN float f (CALL float bv2)) (ASSIGN float f (CALL float bv3)) (ASSIGN float f (CALL float bv4)) (ASSIGN bool b (CALL bool i)) (ASSIGN bool b (CALL bool f)) (ASSIGN bool b (CALL bool v2)) (ASSIGN bool b (CALL bool v3)) (ASSIGN bool b (CALL bool v4)) (ASSIGN bool b (CALL bool iv2)) (ASSIGN bool b (CALL bool iv3)) (ASSIGN bool b (CALL bool iv4)) (ASSIGN bool b (CALL bool bv2)) (ASSIGN bool b (CALL bool bv3)) (ASSIGN bool b (CALL bool bv4)) (ASSIGN vec2 v2 (CALL vec2 i f)) (ASSIGN vec2 v2 (CALL vec2 b v2)) (ASSIGN vec2 v2 (CALL vec2 v3 v4)) (ASSIGN vec2 v2 (CALL vec2 iv2 iv3)) (ASSIGN vec2 v2 (CALL vec2 iv4 bv2)) (ASSIGN vec2 v2 (CALL vec2 bv3 bv4)) (ASSIGN vec3 v3 (CALL vec3 i f b)) (ASSIGN vec3 v3 (CALL vec3 v2 v3 v4)) (ASSIGN vec3 v3 (CALL vec3 iv2 iv3 iv4)) (ASSIGN vec3 v3 (CALL vec3 bv2 bv3 bv4)) (ASSIGN vec4 v4 (CALL vec4 i f b v2)) (ASSIGN vec4 v4 (CALL vec4 v3 v4 iv2 iv3)) (ASSIGN vec4 v4 (CALL vec4 iv4 bv2 bv3 bv4)) (ASSIGN ivec2 iv2 (CALL ivec2 i f)) (ASSIGN ivec2 iv2 (CALL ivec2 b v2)) (ASSIGN ivec2 iv2 (CALL ivec2 v3 v4)) (ASSIGN ivec2 iv2 (CALL ivec2 iv2 iv3)) (ASSIGN ivec2 iv2 (CALL ivec2 iv4 bv2)) (ASSIGN ivec2 iv2 (CALL ivec2 bv3 bv4)) (ASSIGN ivec3 iv3 (CALL ivec3 i f b)) (ASSIGN ivec3 iv3 (CALL ivec3 v2 v3 v4)) (ASSIGN ivec3 iv3 (CALL ivec3 iv2 iv3 iv4)) (ASSIGN ivec3 iv3 (CALL ivec3 bv2 bv3 bv4)) (ASSIGN ivec4 iv4 (CALL ivec4 i f b v2)) (ASSIGN ivec4 iv4 (CALL ivec4 v3 v4 iv2 iv3)) (ASSIGN ivec4 iv4 (CALL ivec4 iv4 bv2 bv3 bv4)) (ASSIGN bvec2 bv2 (CALL bvec2 i f)) (ASSIGN bvec2 bv2 (CALL bvec2 b v2)) (ASSIGN bvec2 bv2 (CALL bvec2 v3 v4)) (ASSIGN bvec2 bv2 (CALL bvec2 iv2 iv3)) (ASSIGN bvec2 bv2 (CALL bvec2 iv4 bv2)) (ASSIGN bvec2 bv2 (CALL bvec2 bv3 bv4)) (ASSIGN bvec3 bv3 (CALL bvec3 i f b)) (ASSIGN bvec3 bv3 (CALL bvec3 v2 v3 v4)) (ASSIGN bvec3 bv3 (CALL bvec3 iv2 iv3 iv4)) (ASSIGN bvec3 bv3 (CALL bvec3 bv2 bv3 bv4)) (ASSIGN bvec4 bv4 (CALL bvec4 i f b v2)) (ASSIGN bvec4 bv4 (CALL bvec4 v3 v4 iv2 iv3)) (ASSIGN bvec4 bv4 (CALL bvec4 iv4 bv2 bv3 bv4))))
+Failed to compile

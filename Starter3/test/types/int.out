@@ -1,6 +1,7 @@
   1: {
   2:     int i;
-  3:     int j = 123;
+  3:     int j = int(123);
   4:     j = 93;
-  5: }
- (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION j int 123)) (STATEMENTS (ASSIGN int j 93)))
+  5:     i = j;
+  6: }
+ (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION j int (CALL int 123))) (STATEMENTS (ASSIGN int j 93) (ASSIGN int i j)))

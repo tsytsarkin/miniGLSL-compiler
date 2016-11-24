@@ -1,4 +1,6 @@
 {
     bool i;
-    i = false;
+    bool j = bool(true);
+    j = false;
+    i = j;
 }
