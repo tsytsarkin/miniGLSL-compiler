@@ -1,0 +1,91 @@
+SEMANTIC ERROR (line 15, column 10): Variable i of type int cannot be indexed as it is not a vector
+SEMANTIC ERROR (line 16, column 10): Variable f of type float cannot be indexed as it is not a vector
+SEMANTIC ERROR (line 17, column 10): Variable b of type bool cannot be indexed as it is not a vector
+SEMANTIC ERROR (line 39, column 12): Variable v2 of type vec2 indexed at 2 but only has dimension 2
+SEMANTIC ERROR (line 42, column 14): Variable iv2 of type ivec2 indexed at 2 but only has dimension 2
+SEMANTIC ERROR (line 45, column 14): Variable bv2 of type bvec2 indexed at 2 but only has dimension 2
+SEMANTIC ERROR (line 49, column 12): Variable v2 of type vec2 indexed at 3 but only has dimension 2
+SEMANTIC ERROR (line 50, column 12): Variable v3 of type vec3 indexed at 3 but only has dimension 3
+SEMANTIC ERROR (line 52, column 14): Variable iv2 of type ivec2 indexed at 3 but only has dimension 2
+SEMANTIC ERROR (line 53, column 14): Variable iv3 of type ivec3 indexed at 3 but only has dimension 3
+SEMANTIC ERROR (line 55, column 14): Variable bv2 of type bvec2 indexed at 3 but only has dimension 2
+SEMANTIC ERROR (line 56, column 14): Variable bv3 of type bvec3 indexed at 3 but only has dimension 3
+SEMANTIC ERROR (line 59, column 12): Variable v2 of type vec2 indexed at 4 but only has dimension 2
+SEMANTIC ERROR (line 60, column 12): Variable v3 of type vec3 indexed at 4 but only has dimension 3
+SEMANTIC ERROR (line 61, column 12): Variable v4 of type vec4 indexed at 4 but only has dimension 4
+SEMANTIC ERROR (line 62, column 14): Variable iv2 of type ivec2 indexed at 4 but only has dimension 2
+SEMANTIC ERROR (line 63, column 14): Variable iv3 of type ivec3 indexed at 4 but only has dimension 3
+SEMANTIC ERROR (line 64, column 14): Variable iv4 of type ivec4 indexed at 4 but only has dimension 4
+SEMANTIC ERROR (line 65, column 14): Variable bv2 of type bvec2 indexed at 4 but only has dimension 2
+SEMANTIC ERROR (line 66, column 14): Variable bv3 of type bvec3 indexed at 4 but only has dimension 3
+SEMANTIC ERROR (line 67, column 14): Variable bv4 of type bvec4 indexed at 4 but only has dimension 4
+  1: {
+  2:   int i;
+  3:   float f;
+  4:   bool b;
+  5:   vec2 v2;
+  6:   vec3 v3;
+  7:   vec4 v4;
+  8:   ivec2 iv2;
+  9:   ivec3 iv3;
+ 10:   ivec4 iv4;
+ 11:   bvec2 bv2;
+ 12:   bvec3 bv3;
+ 13:   bvec4 bv4;
+ 14: 
+ 15:   i = i[0];
+ 16:   f = f[0];
+ 17:   b = b[0];
+ 18: 
+ 19:   v2 = v2[0];
+ 20:   v3 = v3[0];
+ 21:   v4 = v4[0];
+ 22:   iv2 = iv2[0];
+ 23:   iv3 = iv3[0];
+ 24:   iv4 = iv4[0];
+ 25:   bv2 = bv2[0];
+ 26:   bv3 = bv3[0];
+ 27:   bv4 = bv4[0];
+ 28: 
+ 29:   v2 = v2[1];
+ 30:   v3 = v3[1];
+ 31:   v4 = v4[1];
+ 32:   iv2 = iv2[1];
+ 33:   iv3 = iv3[1];
+ 34:   iv4 = iv4[1];
+ 35:   bv2 = bv2[1];
+ 36:   bv3 = bv3[1];
+ 37:   bv4 = bv4[1];
+ 38: 
+ 39:   v2 = v2[2];
+ 40:   v3 = v3[2];
+ 41:   v4 = v4[2];
+ 42:   iv2 = iv2[2];
+ 43:   iv3 = iv3[2];
+ 44:   iv4 = iv4[2];
+ 45:   bv2 = bv2[2];
+ 46:   bv3 = bv3[2];
+ 47:   bv4 = bv4[2];
+ 48: 
+ 49:   v2 = v2[3];
+ 50:   v3 = v3[3];
+ 51:   v4 = v4[3];
+ 52:   iv2 = iv2[3];
+ 53:   iv3 = iv3[3];
+ 54:   iv4 = iv4[3];
+ 55:   bv2 = bv2[3];
+ 56:   bv3 = bv3[3];
+ 57:   bv4 = bv4[3];
+ 58: 
+ 59:   v2 = v2[4];
+ 60:   v3 = v3[4];
+ 61:   v4 = v4[4];
+ 62:   iv2 = iv2[4];
+ 63:   iv3 = iv3[4];
+ 64:   iv4 = iv4[4];
+ 65:   bv2 = bv2[4];
+ 66:   bv3 = bv3[4];
+ 67:   bv4 = bv4[4];
+ 68: }
+ (SCOPE (DECLARATIONS (DECLARATION i int (DECLARATION f float (DECLARATION b bool (DECLARATION v2 vec2 (DECLARATION v3 vec3 (DECLARATION v4 vec4 (DECLARATION iv2 ivec2 (DECLARATION iv3 ivec3 (DECLARATION iv4 ivec4 (DECLARATION bv2 bvec2 (DECLARATION bv3 bvec3 (DECLARATION bv4 bvec4))))))))))))) (STATEMENTS (ASSIGN int i (INDEX int i 0) (ASSIGN float f (INDEX float f 0) (ASSIGN bool b (INDEX bool b 0) (ASSIGN vec2 v2 (INDEX float v2 0) (ASSIGN vec3 v3 (INDEX float v3 0) (ASSIGN vec4 v4 (INDEX float v4 0) (ASSIGN ivec2 iv2 (INDEX int iv2 0) (ASSIGN ivec3 iv3 (INDEX int iv3 0) (ASSIGN ivec4 iv4 (INDEX int iv4 0) (ASSIGN bvec2 bv2 (INDEX bool bv2 0) (ASSIGN bvec3 bv3 (INDEX bool bv3 0) (ASSIGN bvec4 bv4 (INDEX bool bv4 0) (ASSIGN vec2 v2 (INDEX float v2 1) (ASSIGN vec3 v3 (INDEX float v3 1) (ASSIGN vec4 v4 (INDEX float v4 1) (ASSIGN ivec2 iv2 (INDEX int iv2 1) (ASSIGN ivec3 iv3 (INDEX int iv3 1) (ASSIGN ivec4 iv4 (INDEX int iv4 1) (ASSIGN bvec2 bv2 (INDEX bool bv2 1) (ASSIGN bvec3 bv3 (INDEX bool bv3 1) (ASSIGN bvec4 bv4 (INDEX bool bv4 1) (ASSIGN vec2 v2 (INDEX float v2 2) (ASSIGN vec3 v3 (INDEX float v3 2) (ASSIGN vec4 v4 (INDEX float v4 2) (ASSIGN ivec2 iv2 (INDEX int iv2 2) (ASSIGN ivec3 iv3 (INDEX int iv3 2) (ASSIGN ivec4 iv4 (INDEX int iv4 2) (ASSIGN bvec2 bv2 (INDEX bool bv2 2) (ASSIGN bvec3 bv3 (INDEX bool bv3 2) (ASSIGN bvec4 bv4 (INDEX bool bv4 2) (ASSIGN vec2 v2 (INDEX float v2 3) (ASSIGN vec3 v3 (INDEX float v3 3) (ASSIGN vec4 v4 (INDEX float v4 3) (ASSIGN ivec2 iv2 (INDEX int iv2 3) (ASSIGN ivec3 iv3 (INDEX int iv3 3) (ASSIGN ivec4 iv4 (INDEX int iv4 3) (ASSIGN bvec2 bv2 (INDEX bool bv2 3) (ASSIGN bvec3 bv3 (INDEX bool bv3 3) (ASSIGN bvec4 bv4 (INDEX bool bv4 3) (ASSIGN vec2 v2 (INDEX float v2 4) (ASSIGN vec3 v3 (INDEX float v3 4) (ASSIGN vec4 v4 (INDEX float v4 4) (ASSIGN ivec2 iv2 (INDEX int iv2 4) (ASSIGN ivec3 iv3 (INDEX int iv3 4) (ASSIGN ivec4 iv4 (INDEX int iv4 4) (ASSIGN bvec2 bv2 (INDEX bool bv2 4) (ASSIGN bvec3 bv3 (INDEX bool bv3 4) (ASSIGN bvec4 bv4 (INDEX bool bv4 4)))))))))))))))))))))))))))))))))))))))))))))))))))
+Failed to compile

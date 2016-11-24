@@ -101,6 +101,9 @@ void semantic_postorder(node *n, void *data) {
   case IDENT_NODE:
     break;
   case VAR_NODE:
+    if (n->expression.variable.index != NULL) {
+      validate_variable_index_node(n);
+    }
     break;
   case FUNCTION_NODE:
     validate_function_node(n);
@@ -418,6 +421,31 @@ symbol_type validate_constructor_node(node *constructor_node, bool log_errors) {
   }
 
   return constructor_type;  
+}
+
+void validate_variable_index_node(node *var_node, bool log_errors) {
+  node *ident = var_node->expression.variable.identifier;
+  node *index = var_node->expression.variable.index;
+
+  symbol_type var_type = ident->expression.expr_type;
+  int i = index->expression.int_expr.val;
+  if (var_type & TYPE_ANY_VEC) {
+    // The dimension of the vector is encoded in the lowest 3 bits of the type
+    int dim = var_type & 0x7;
+    if (i >= dim) {
+      SEM_ERROR(var_node,
+                "Variable %s of type %s indexed at %d but only has dimension %d",
+                ident->expression.ident.val,
+                get_type_name(var_type),
+                i,
+                dim);
+    }
+  } else {
+    SEM_ERROR(var_node,
+              "Variable %s of type %s cannot be indexed as it is not a vector",
+              ident->expression.ident.val,
+              get_type_name(var_type));
+  }
 }
 
 /****** SEMANTIC TYPE FUNCTIONS ******/

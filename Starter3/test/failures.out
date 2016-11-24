@@ -95,7 +95,7 @@ comparisons/less_equal
 >   4:     bool k;
 >   5:     k = i <= j;
 >   6: }
->  (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY int <= i j))))
+>  (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY bool <= i j))))
 -------------
 -------------
 comparisons/less
@@ -106,7 +106,7 @@ comparisons/less
 >   4:     bool k;
 >   5:     k = i < j;
 >   6: }
->  (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY int < i j))))
+>  (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 6 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY bool < i j))))
 -------------
 -------------
 comparisons/greater
@@ -117,7 +117,7 @@ comparisons/greater
 >   4:     bool k;
 >   5:     k = i > j;
 >   6: }
->  (SCOPE (DECLARATIONS (DECLARATION i int 1 (DECLARATION j int 9 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY int > i j))))
+>  (SCOPE (DECLARATIONS (DECLARATION i int 1 (DECLARATION j int 9 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY bool > i j))))
 -------------
 -------------
 comparisons/not
@@ -147,7 +147,7 @@ comparisons/greater_equal
 >   4:     bool k;
 >   5:     k = (i >= j);
 >   6: }
->  (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 5 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY int >= i j))))
+>  (SCOPE (DECLARATIONS (DECLARATION i int 5 (DECLARATION j int 5 (DECLARATION k bool)))) (STATEMENTS (ASSIGN bool k (BINARY bool >= i j))))
 -------------
 -------------
 comparisons/equal
