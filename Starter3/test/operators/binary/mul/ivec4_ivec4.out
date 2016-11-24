@@ -1,2 +1,2 @@
   1: { ivec4 a; ivec4 b; c = a * b;}
- (SCOPE (DECLARATIONS (DECLARATION a ivec4 (DECLARATION b ivec4))) (STATEMENTS (ASSIGN unknown c (BINARY int * a b))))
+ (SCOPE (DECLARATIONS (DECLARATION a ivec4) (DECLARATION b ivec4)) (STATEMENTS (ASSIGN unknown c (BINARY int * a b))))

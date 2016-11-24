@@ -1,4 +1,4 @@
 SEMANTIC ERROR (line 1, column 29): Operands have types bool and bool, expected both int or float
   1: { bool a; bool b; c = a >= b; }
- (SCOPE (DECLARATIONS (DECLARATION a bool (DECLARATION b bool))) (STATEMENTS (ASSIGN unknown c (BINARY unknown >= a b))))
+ (SCOPE (DECLARATIONS (DECLARATION a bool) (DECLARATION b bool)) (STATEMENTS (ASSIGN unknown c (BINARY unknown >= a b))))
 Failed to compile

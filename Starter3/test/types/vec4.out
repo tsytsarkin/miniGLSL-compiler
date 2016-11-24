@@ -1,0 +1,6 @@
+  1: {
+  2:     vec4 i;
+  3:     vec4 j = vec4(1.23, 2.34, 3.45, 4.56);
+  4:     j[3] = 6.44;
+  5: }
+ (SCOPE (DECLARATIONS (DECLARATION i vec4) (DECLARATION j vec4 (CALL vec4 1.230000 2.340000 3.450000 4.560000))) (STATEMENTS (ASSIGN float (INDEX float j 3) 6.440000)))

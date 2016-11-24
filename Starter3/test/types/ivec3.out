@@ -1,0 +1,6 @@
+  1: {
+  2:     ivec3 i;
+  3:     ivec3 j = ivec3(1, 2, 3);
+  4:     j[2] = 5;
+  5: }
+ (SCOPE (DECLARATIONS (DECLARATION i ivec3) (DECLARATION j ivec3 (CALL ivec3 1 2 3))) (STATEMENTS (ASSIGN int (INDEX int j 2) 5)))

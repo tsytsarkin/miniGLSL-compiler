@@ -1,4 +1,4 @@
 SEMANTIC ERROR (line 1, column 28): Operands have types vec2 and vec2, expected both int or float
   1: { vec2 a; vec2 b; c = a < b; }
- (SCOPE (DECLARATIONS (DECLARATION a vec2 (DECLARATION b vec2))) (STATEMENTS (ASSIGN unknown c (BINARY unknown < a b))))
+ (SCOPE (DECLARATIONS (DECLARATION a vec2) (DECLARATION b vec2)) (STATEMENTS (ASSIGN unknown c (BINARY unknown < a b))))
 Failed to compile

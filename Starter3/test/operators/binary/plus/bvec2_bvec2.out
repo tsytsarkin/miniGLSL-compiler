@@ -1,4 +1,4 @@
 SEMANTIC ERROR (line 1, column 30): Both operands are expected to have same arithmetic type
   1: { bvec2 a; bvec2 b; c = a + b;}
- (SCOPE (DECLARATIONS (DECLARATION a bvec2 (DECLARATION b bvec2))) (STATEMENTS (ASSIGN unknown c (BINARY unknown + a b))))
+ (SCOPE (DECLARATIONS (DECLARATION a bvec2) (DECLARATION b bvec2)) (STATEMENTS (ASSIGN unknown c (BINARY unknown + a b))))
 Failed to compile

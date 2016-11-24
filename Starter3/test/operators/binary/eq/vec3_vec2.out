@@ -1,4 +1,4 @@
 SEMANTIC ERROR (line 1, column 29): Operands have types vec3 and vec2, expected to have matching types
   1: { vec3 a; vec2 b; c = a == b; }
- (SCOPE (DECLARATIONS (DECLARATION a vec3 (DECLARATION b vec2))) (STATEMENTS (ASSIGN unknown c (BINARY unknown == a b))))
+ (SCOPE (DECLARATIONS (DECLARATION a vec3) (DECLARATION b vec2)) (STATEMENTS (ASSIGN unknown c (BINARY unknown == a b))))
 Failed to compile

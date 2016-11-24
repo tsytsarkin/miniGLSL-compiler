@@ -1,2 +1,2 @@
   1: { float a; float b; c = a * b;}
- (SCOPE (DECLARATIONS (DECLARATION a float (DECLARATION b float))) (STATEMENTS (ASSIGN unknown c (BINARY float * a b))))
+ (SCOPE (DECLARATIONS (DECLARATION a float) (DECLARATION b float)) (STATEMENTS (ASSIGN unknown c (BINARY float * a b))))

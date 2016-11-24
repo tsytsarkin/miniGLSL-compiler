@@ -1,0 +1,5 @@
+  1: {
+  2:     bool i;
+  3:     i = false;
+  4: }
+ (SCOPE (DECLARATIONS (DECLARATION i bool)) (STATEMENTS (ASSIGN bool i false)))

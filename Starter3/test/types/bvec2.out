@@ -1,0 +1,6 @@
+  1: {
+  2:     bvec2 i;
+  3:     bvec2 j = bvec2(true,false);
+  4:     j[0] = false;
+  5: }
+ (SCOPE (DECLARATIONS (DECLARATION i bvec2) (DECLARATION j bvec2 (CALL bvec2 true false))) (STATEMENTS (ASSIGN bool (INDEX bool j 0) false)))

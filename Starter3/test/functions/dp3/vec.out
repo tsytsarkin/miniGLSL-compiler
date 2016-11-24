@@ -18,5 +18,5 @@ SEMANTIC ERROR (line 14, column 18): Too many arguments provided for dp3
  13:   f = dp3();
  14:   f = dp3(f, f, f);
  15: }
- (SCOPE (DECLARATIONS (DECLARATION v1 vec3 (DECLARATION v2 vec3 (DECLARATION v3 vec4 (DECLARATION v4 vec4 (DECLARATION f float)))))) (STATEMENTS (ASSIGN float f (CALL dp3 v1 v2) (ASSIGN float f (CALL dp3 v3 v4) (ASSIGN float f (CALL dp3 v1 v3) (ASSIGN float f (CALL dp3 v3 v1) (ASSIGN float f (CALL dp3 f f) (ASSIGN float f (CALL dp3) (ASSIGN float f (CALL dp3 f f f))))))))))
+ (SCOPE (DECLARATIONS (DECLARATION v1 vec3) (DECLARATION v2 vec3) (DECLARATION v3 vec4) (DECLARATION v4 vec4) (DECLARATION f float)) (STATEMENTS (ASSIGN float f (CALL dp3 v1 v2)) (ASSIGN float f (CALL dp3 v3 v4)) (ASSIGN float f (CALL dp3 v1 v3)) (ASSIGN float f (CALL dp3 v3 v1)) (ASSIGN float f (CALL dp3 f f)) (ASSIGN float f (CALL dp3)) (ASSIGN float f (CALL dp3 f f f))))
 Failed to compile
