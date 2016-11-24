@@ -176,7 +176,7 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return r_type;
     } else {
       if(log_errors){
-        SEM_ERROR(binary_node, "Both operands are expected to have same logical type");
+        SEM_ERROR(binary_node, "Both operands are expected to have matching logical type");
       };
       return TYPE_UNKNOWN;
     }
@@ -187,7 +187,7 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return r_type;
     } else {
       if(log_errors){
-        SEM_ERROR(binary_node, "Both operands are expected to have same arithmetic type");
+        SEM_ERROR(binary_node, "Both operands are expected to have matching arithmetic type");
       };
       return TYPE_UNKNOWN;
     }
