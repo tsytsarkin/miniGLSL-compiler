@@ -41,5 +41,32 @@
     }
   }
 
-  /* TODO: verify each variable is uniform, attribute or result */
+  {
+    /* Const variables cannot be assigned attribute values */
+    const vec4 v4_1 = gl_TexCoord;
+    const vec4 v4_2 = gl_Color;
+    const vec4 v4_3 = gl_Secondary;
+    const vec4 v4_4 = gl_FogFragCoord;
+  }
+
+  {
+    /* Attribute and uniform values cannot be assigned to */
+    gl_TexCoord = v4;
+    gl_Color = v4;
+    gl_Secondary = v4;
+    gl_FogFragCoord = v4;
+    gl_Light_Half = v4;
+    gl_Light_Ambient = v4;
+    gl_Material_Shininess = v4;
+    env1 = v4;
+    env2 = v4;
+    env3 = v4;
+  }
+
+  {
+    /* Result values cannot be read from */
+    v4 = gl_FragColor;
+    b = gl_FragDepth;
+    v4 = gl_FragCoord;
+  }
 }

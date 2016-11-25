@@ -8,6 +8,7 @@
 }
 
 typedef struct {
+  std::vector<unsigned int> scope_id_stack;
 } visit_data;
 
 void semantic_preorder(node *n, void *data) {
@@ -15,6 +16,7 @@ void semantic_preorder(node *n, void *data) {
 
   switch (n->kind) {
   case SCOPE_NODE:
+    vd->scope_id_stack.push_back(n->scope.scope_id);
     break;
 
   case DECLARATIONS_NODE:
@@ -68,13 +70,14 @@ void semantic_postorder(node *n, void *data) {
 
   switch (n->kind) {
   case SCOPE_NODE:
+    vd->scope_id_stack.pop_back();
     break;
 
   case DECLARATIONS_NODE:
     break;
   case DECLARATION_NODE:
     if (n->declaration.assignment_expr != NULL) {
-      validate_declaration_assignment_node(n);
+      validate_declaration_assignment_node(vd->scope_id_stack, n);
     }
     break;
 
@@ -467,18 +470,25 @@ void validate_variable_index_node(node *var_node, bool log_errors) {
   }
 }
 
-void validate_declaration_assignment_node(node *decl_node, bool log_errors) {
-  // TODO: Evaluate constant expressions
+void validate_declaration_assignment_node(std::vector<unsigned int> &scope_id_stack,
+                                          node *decl_node,
+                                          bool log_errors) {
   node *ident = decl_node->declaration.identifier;
   node *expr = decl_node->declaration.assignment_expr;
 
   symbol_type var_type = ident->expression.expr_type;
   symbol_type expr_type = expr->expression.expr_type;
 
-  // If var_type or expr_type are unknown then the error should be
-  // reported somewhere else
-  if (var_type == TYPE_UNKNOWN || expr_type == TYPE_UNKNOWN) {
+  // If the expr_type is unknown then the error should be reported somewhere else
+  if (expr_type == TYPE_UNKNOWN) {
     return;
+  }
+
+  // Ensure that variables declared as const are assigned const values
+  if (decl_node->declaration.is_const && !is_const_expr(scope_id_stack, expr)) {
+    SEM_ERROR(decl_node,
+              "Const variable %s cannot be assigned a non-const value",
+              ident->expression.ident.val);
   }
 
   // If expr_type isn't the same as var_type and can't be widened to var_type
@@ -566,3 +576,24 @@ symbol_type get_base_type(symbol_type type) {
   }
 }
 
+bool is_const_expr(std::vector<unsigned int> &scope_id_stack, node *expr_node) {
+  // TODO: Evaluate constant expressions
+  switch (expr_node->kind) {
+  case UNARY_EXPRESSION_NODE:
+    break;
+  case BINARY_EXPRESSION_NODE:
+    break;
+  case INT_NODE: case FLOAT_NODE: case BOOL_NODE:
+    return true;
+  case IDENT_NODE:
+    return get_symbol_info(scope_id_stack, expr_node->expression.ident.val).constant;
+  case VAR_NODE:
+    return is_const_expr(scope_id_stack, expr_node->expression.variable.identifier);
+  case FUNCTION_NODE:
+    break;
+  case CONSTRUCTOR_NODE:
+    break;
+  default: break;
+  }
+  return false;
+}

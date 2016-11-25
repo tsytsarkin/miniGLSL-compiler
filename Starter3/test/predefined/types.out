@@ -11,6 +11,10 @@ SEMANTIC ERROR (line 37, column 45): Variable b_4 of type bool cannot be assigne
 SEMANTIC ERROR (line 38, column 28): Variable b_5 of type bool cannot be assigned a value of type vec4
 SEMANTIC ERROR (line 39, column 28): Variable b_6 of type bool cannot be assigned a value of type vec4
 SEMANTIC ERROR (line 40, column 28): Variable b_7 of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 46, column 34): Const variable v4_1 cannot be assigned a non-const value
+SEMANTIC ERROR (line 47, column 31): Const variable v4_2 cannot be assigned a non-const value
+SEMANTIC ERROR (line 48, column 35): Const variable v4_3 cannot be assigned a non-const value
+SEMANTIC ERROR (line 49, column 38): Const variable v4_4 cannot be assigned a non-const value
   1: {
   2:   bool b = false;
   3:   vec4 v4 = 0.0;
@@ -54,7 +58,34 @@ SEMANTIC ERROR (line 40, column 28): Variable b_7 of type bool cannot be assigne
  41:     }
  42:   }
  43: 
- 44:   /* TODO: verify each variable is uniform, attribute or result */
- 45: }
- (SCOPE (DECLARATIONS (DECLARATION b bool false) (DECLARATION v4 vec4 0.000000)) (STATEMENTS (ASSIGN vec4 gl_FragColor v4) (ASSIGN bool gl_FragDepth b) (ASSIGN vec4 gl_FragCoord v4) (ASSIGN vec4 v4 gl_TexCoord) (ASSIGN vec4 v4 gl_Color) (ASSIGN vec4 v4 gl_Secondary) (ASSIGN vec4 v4 gl_FogFragCoord) (SCOPE (DECLARATIONS (DECLARATION v4_2 vec4 gl_Light_Half) (DECLARATION v4_3 vec4 gl_Light_Ambient) (DECLARATION v4_4 vec4 gl_Material_Shininess) (DECLARATION v4_5 vec4 env1) (DECLARATION v4_6 vec4 env2) (DECLARATION v4_7 vec4 env3)) (STATEMENTS)) (SCOPE (DECLARATIONS (DECLARATION b bool false) (DECLARATION v4 vec4 0.000000)) (STATEMENTS (ASSIGN vec4 gl_FragColor b) (ASSIGN bool gl_FragDepth v4) (ASSIGN vec4 gl_FragCoord b) (ASSIGN bool b gl_TexCoord) (ASSIGN bool b gl_Color) (ASSIGN bool b gl_Secondary) (ASSIGN bool b gl_FogFragCoord) (SCOPE (DECLARATIONS (DECLARATION b_2 bool gl_Light_Half) (DECLARATION b_3 bool gl_Light_Ambient) (DECLARATION b_4 bool gl_Material_Shininess) (DECLARATION b_5 bool env1) (DECLARATION b_6 bool env2) (DECLARATION b_7 bool env3)) (STATEMENTS))))))
+ 44:   {
+ 45:     /* Const variables cannot be assigned attribute values */
+ 46:     const vec4 v4_1 = gl_TexCoord;
+ 47:     const vec4 v4_2 = gl_Color;
+ 48:     const vec4 v4_3 = gl_Secondary;
+ 49:     const vec4 v4_4 = gl_FogFragCoord;
+ 50:   }
+ 51: 
+ 52:   {
+ 53:     /* Attribute and uniform values cannot be assigned to */
+ 54:     gl_TexCoord = v4;
+ 55:     gl_Color = v4;
+ 56:     gl_Secondary = v4;
+ 57:     gl_FogFragCoord = v4;
+ 58:     gl_Light_Half = v4;
+ 59:     gl_Light_Ambient = v4;
+ 60:     gl_Material_Shininess = v4;
+ 61:     env1 = v4;
+ 62:     env2 = v4;
+ 63:     env3 = v4;
+ 64:   }
+ 65: 
+ 66:   {
+ 67:     /* Result values cannot be read from */
+ 68:     v4 = gl_FragColor;
+ 69:     b = gl_FragDepth;
+ 70:     v4 = gl_FragCoord;
+ 71:   }
+ 72: }
+ (SCOPE (DECLARATIONS (DECLARATION b bool false) (DECLARATION v4 vec4 0.000000)) (STATEMENTS (ASSIGN vec4 gl_FragColor v4) (ASSIGN bool gl_FragDepth b) (ASSIGN vec4 gl_FragCoord v4) (ASSIGN vec4 v4 gl_TexCoord) (ASSIGN vec4 v4 gl_Color) (ASSIGN vec4 v4 gl_Secondary) (ASSIGN vec4 v4 gl_FogFragCoord) (SCOPE (DECLARATIONS (DECLARATION v4_2 vec4 gl_Light_Half) (DECLARATION v4_3 vec4 gl_Light_Ambient) (DECLARATION v4_4 vec4 gl_Material_Shininess) (DECLARATION v4_5 vec4 env1) (DECLARATION v4_6 vec4 env2) (DECLARATION v4_7 vec4 env3)) (STATEMENTS)) (SCOPE (DECLARATIONS (DECLARATION b bool false) (DECLARATION v4 vec4 0.000000)) (STATEMENTS (ASSIGN vec4 gl_FragColor b) (ASSIGN bool gl_FragDepth v4) (ASSIGN vec4 gl_FragCoord b) (ASSIGN bool b gl_TexCoord) (ASSIGN bool b gl_Color) (ASSIGN bool b gl_Secondary) (ASSIGN bool b gl_FogFragCoord) (SCOPE (DECLARATIONS (DECLARATION b_2 bool gl_Light_Half) (DECLARATION b_3 bool gl_Light_Ambient) (DECLARATION b_4 bool gl_Material_Shininess) (DECLARATION b_5 bool env1) (DECLARATION b_6 bool env2) (DECLARATION b_7 bool env3)) (STATEMENTS)))) (SCOPE (DECLARATIONS (DECLARATION v4_1 vec4 gl_TexCoord) (DECLARATION v4_2 vec4 gl_Color) (DECLARATION v4_3 vec4 gl_Secondary) (DECLARATION v4_4 vec4 gl_FogFragCoord)) (STATEMENTS)) (SCOPE (DECLARATIONS) (STATEMENTS (ASSIGN vec4 gl_TexCoord v4) (ASSIGN vec4 gl_Color v4) (ASSIGN vec4 gl_Secondary v4) (ASSIGN vec4 gl_FogFragCoord v4) (ASSIGN vec4 gl_Light_Half v4) (ASSIGN vec4 gl_Light_Ambient v4) (ASSIGN vec4 gl_Material_Shininess v4) (ASSIGN vec4 env1 v4) (ASSIGN vec4 env2 v4) (ASSIGN vec4 env3 v4))) (SCOPE (DECLARATIONS) (STATEMENTS (ASSIGN vec4 v4 gl_FragColor) (ASSIGN bool b gl_FragDepth) (ASSIGN vec4 v4 gl_FragCoord)))))
 Failed to compile

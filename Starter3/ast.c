@@ -13,7 +13,7 @@
 
 node *ast = NULL;
 
-std::vector<int> scope_id_stack;
+std::vector<unsigned int> scope_id_stack;
 
 extern int yyline, yycolumn;
 
@@ -246,7 +246,7 @@ void ast_free(node *n) {
 #define PRINT_AST(fmt, ...) { fprintf(dumpFile, fmt, ##__VA_ARGS__); }
 
 void print_preorder(node *n, void *data) {
-  std::vector<int> *scope_id_stack = (std::vector<int> *) data;
+  std::vector<unsigned int> *scope_id_stack = (std::vector<unsigned int> *) data;
 
   switch (n->kind) {
   case SCOPE_NODE:
@@ -331,7 +331,7 @@ void print_preorder(node *n, void *data) {
 }
 
 void print_postorder(node *n, void *data) {
-  std::vector<int> *scope_id_stack = (std::vector<int> *) data;
+  std::vector<unsigned int> *scope_id_stack = (std::vector<unsigned int> *) data;
   switch (n->kind) {
   case SCOPE_NODE:
     PRINT_AST(")");
@@ -399,7 +399,7 @@ void print_postorder(node *n, void *data) {
 }
 
 void ast_print(node *n) {
-  std::vector<int> scope_id_stack;
+  std::vector<unsigned int> scope_id_stack;
   scope_id_stack.push_back(0);
 
   ast_visit(n, print_preorder, print_postorder, &scope_id_stack);

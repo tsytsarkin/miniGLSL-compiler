@@ -48,8 +48,8 @@ void init_symbol_table(std::map<std::string, symbol_info> &symbol_table){
   symbol_table.insert(std::pair<std::string, symbol_info>("env3", uniform));
 }
 
-symbol_info get_symbol_info(const std::vector<int> &scope_id_stack, char *symbol_name) {
-  std::vector<int>::const_reverse_iterator iter;
+symbol_info get_symbol_info(const std::vector<unsigned int> &scope_id_stack, char *symbol_name) {
+  std::vector<unsigned int>::const_reverse_iterator iter;
 
   // Traverse the scope id stack backwards
   for (iter = scope_id_stack.rbegin(); iter != scope_id_stack.rend(); iter++) {
