@@ -1,0 +1,67 @@
+SEMANTIC ERROR (line 31, column 38): Variable i of type int cannot be assigned a value of type bvec4
+SEMANTIC ERROR (line 32, column 32): Variable f of type float cannot be assigned a value of type bvec3
+SEMANTIC ERROR (line 33, column 25): Variable b of type bool cannot be assigned a value of type bvec2
+SEMANTIC ERROR (line 34, column 25): Variable v2 of type vec2 cannot be assigned a value of type ivec4
+SEMANTIC ERROR (line 35, column 22): Variable v3 of type vec3 cannot be assigned a value of type ivec3
+SEMANTIC ERROR (line 36, column 19): Variable v4 of type vec4 cannot be assigned a value of type ivec2
+SEMANTIC ERROR (line 37, column 33): Variable iv2 of type ivec2 cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 38, column 28): Variable iv3 of type ivec3 cannot be assigned a value of type vec3
+SEMANTIC ERROR (line 39, column 23): Variable iv4 of type ivec4 cannot be assigned a value of type vec2
+SEMANTIC ERROR (line 41, column 12): Variable bv3 of type bvec3 cannot be assigned a value of type float
+SEMANTIC ERROR (line 42, column 10): Variable bv4 of type bvec4 cannot be assigned a value of type int
+  1: {
+  2:   int i;
+  3:   float f;
+  4:   bool b;
+  5:   vec2 v2;
+  6:   vec3 v3;
+  7:   vec4 v4;
+  8:   ivec2 iv2;
+  9:   ivec3 iv3;
+ 10:   ivec4 iv4;
+ 11:   bvec2 bv2;
+ 12:   bvec3 bv3;
+ 13:   bvec4 bv4;
+ 14: 
+ 15:   int k;
+ 16:   k = j; /* j is of type unknown */
+ 17: 
+ 18:   i = 1;
+ 19:   f = 1.0;
+ 20:   b = false;
+ 21:   v2 = vec2(1.0, 2.0);
+ 22:   v3 = vec3(1.0, 2.0, 3.0);
+ 23:   v4 = vec4(1.0, 2.0, 3.0, 4.0);
+ 24:   iv2 = ivec2(1, 2);
+ 25:   iv3 = ivec3(1, 2, 3);
+ 26:   iv4 = ivec4(1, 2, 3, 4);
+ 27:   bv2 = bvec2(false, true);
+ 28:   bv3 = bvec3(false, true, false);
+ 29:   bv4 = bvec4(false, true, false, true);
+ 30: 
+ 31:   i = bvec4(false, true, false, true);
+ 32:   f = bvec3(false, true, false);
+ 33:   b = bvec2(false, true);
+ 34:   v2 = ivec4(1, 2, 3, 4);
+ 35:   v3 = ivec3(1, 2, 3);
+ 36:   v4 = ivec2(1, 2);
+ 37:   iv2 = vec4(1.0, 2.0, 3.0, 4.0);
+ 38:   iv3 = vec3(1.0, 2.0, 3.0);
+ 39:   iv4 = vec2(1.0, 2.0);
+ 40:   bv2 = false;
+ 41:   bv3 = 1.0;
+ 42:   bv4 = 1;
+ 43: 
+ 44:   /* Type widening */
+ 45:   v2 = 1.0;
+ 46:   v3 = 1.0;
+ 47:   v4 = 1.0;
+ 48:   iv2 = 1;
+ 49:   iv3 = 1;
+ 50:   iv4 = 1;
+ 51:   bv2 = false;
+ 52:   bv3 = false;
+ 53:   bv4 = false;
+ 54: }
+ (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION f float) (DECLARATION b bool) (DECLARATION v2 vec2) (DECLARATION v3 vec3) (DECLARATION v4 vec4) (DECLARATION iv2 ivec2) (DECLARATION iv3 ivec3) (DECLARATION iv4 ivec4) (DECLARATION bv2 bvec2) (DECLARATION bv3 bvec3) (DECLARATION bv4 bvec4) (DECLARATION k int)) (STATEMENTS (ASSIGN int k j) (ASSIGN int i 1) (ASSIGN float f 1.000000) (ASSIGN bool b false) (ASSIGN vec2 v2 (CALL vec2 1.000000 2.000000)) (ASSIGN vec3 v3 (CALL vec3 1.000000 2.000000 3.000000)) (ASSIGN vec4 v4 (CALL vec4 1.000000 2.000000 3.000000 4.000000)) (ASSIGN ivec2 iv2 (CALL ivec2 1 2)) (ASSIGN ivec3 iv3 (CALL ivec3 1 2 3)) (ASSIGN ivec4 iv4 (CALL ivec4 1 2 3 4)) (ASSIGN bvec2 bv2 (CALL bvec2 false true)) (ASSIGN bvec3 bv3 (CALL bvec3 false true false)) (ASSIGN bvec4 bv4 (CALL bvec4 false true false true)) (ASSIGN int i (CALL bvec4 false true false true)) (ASSIGN float f (CALL bvec3 false true false)) (ASSIGN bool b (CALL bvec2 false true)) (ASSIGN vec2 v2 (CALL ivec4 1 2 3 4)) (ASSIGN vec3 v3 (CALL ivec3 1 2 3)) (ASSIGN vec4 v4 (CALL ivec2 1 2)) (ASSIGN ivec2 iv2 (CALL vec4 1.000000 2.000000 3.000000 4.000000)) (ASSIGN ivec3 iv3 (CALL vec3 1.000000 2.000000 3.000000)) (ASSIGN ivec4 iv4 (CALL vec2 1.000000 2.000000)) (ASSIGN bvec2 bv2 false) (ASSIGN bvec3 bv3 1.000000) (ASSIGN bvec4 bv4 1) (ASSIGN vec2 v2 1.000000) (ASSIGN vec3 v3 1.000000) (ASSIGN vec4 v4 1.000000) (ASSIGN ivec2 iv2 1) (ASSIGN ivec3 iv3 1) (ASSIGN ivec4 iv4 1) (ASSIGN bvec2 bv2 false) (ASSIGN bvec3 bv3 false) (ASSIGN bvec4 bv4 false)))
+Failed to compile

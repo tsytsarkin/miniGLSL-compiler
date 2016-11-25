@@ -1,0 +1,40 @@
+{
+  int i = 1;
+  float f = 1.0;
+  bool b = false;
+  vec2 v2 = vec2(1.0, 2.0);
+  vec3 v3 = vec3(1.0, 2.0, 3.0);
+  vec4 v4 = vec4(1.0, 2.0, 3.0, 4.0);
+  ivec2 iv2 = ivec2(1, 2);
+  ivec3 iv3 = ivec3(1, 2, 3);
+  ivec4 iv4 = ivec4(1, 2, 3, 4);
+  bvec2 bv2 = bvec2(false, true);
+  bvec3 bv3 = bvec3(false, true, false);
+  bvec4 bv4 = bvec4(false, true, false, true);
+
+  int i_2 = bvec4(false, true, false, true);
+  float f_2 = bvec3(false, true, false);
+  bool b_2 = bvec2(false, true);
+  vec2 v2_2 = ivec4(1, 2, 3, 4);
+  vec3 v3_2 = ivec3(1, 2, 3);
+  vec4 v4_2 = ivec2(1, 2);
+  ivec2 iv2_2 = vec4(1.0, 2.0, 3.0, 4.0);
+  ivec3 iv3_2 = vec3(1.0, 2.0, 3.0);
+  ivec4 iv4_2 = vec2(1.0, 2.0);
+  bvec2 bv2_2 = false;
+  bvec3 bv3_2 = 1.0;
+  bvec4 bv4_2 = 1;
+
+  /* Type widening */
+  vec2 v2_3 = 1.0;
+  vec3 v3_3 = 1.0;
+  vec4 v4_3 = 1.0;
+  ivec2 iv2_3 = 1;
+  ivec3 iv3_3 = 1;
+  ivec4 iv4_3 = 1;
+  bvec2 bv2_3 = false;
+  bvec3 bv3_3 = false;
+  bvec4 bv4_3 = false;
+
+  int k = j; /* j is of type unknown */
+}
