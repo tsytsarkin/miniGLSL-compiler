@@ -15,6 +15,16 @@ SEMANTIC ERROR (line 46, column 34): Const variable v4_1 cannot be assigned a no
 SEMANTIC ERROR (line 47, column 31): Const variable v4_2 cannot be assigned a non-const value
 SEMANTIC ERROR (line 48, column 35): Const variable v4_3 cannot be assigned a non-const value
 SEMANTIC ERROR (line 49, column 38): Const variable v4_4 cannot be assigned a non-const value
+SEMANTIC ERROR (line 54, column 21): Read-only variable gl_TexCoord cannot be assigned to
+SEMANTIC ERROR (line 55, column 18): Read-only variable gl_Color cannot be assigned to
+SEMANTIC ERROR (line 56, column 22): Read-only variable gl_Secondary cannot be assigned to
+SEMANTIC ERROR (line 57, column 25): Read-only variable gl_FogFragCoord cannot be assigned to
+SEMANTIC ERROR (line 58, column 23): Read-only variable gl_Light_Half cannot be assigned to
+SEMANTIC ERROR (line 59, column 26): Read-only variable gl_Light_Ambient cannot be assigned to
+SEMANTIC ERROR (line 60, column 31): Read-only variable gl_Material_Shininess cannot be assigned to
+SEMANTIC ERROR (line 61, column 14): Read-only variable env1 cannot be assigned to
+SEMANTIC ERROR (line 62, column 14): Read-only variable env2 cannot be assigned to
+SEMANTIC ERROR (line 63, column 14): Read-only variable env3 cannot be assigned to
   1: {
   2:   bool b = false;
   3:   vec4 v4 = 0.0;

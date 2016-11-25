@@ -92,7 +92,7 @@ void semantic_postorder(node *n, void *data) {
     }
     break;
   case ASSIGNMENT_NODE:
-    validate_assignment_node(n);
+    validate_assignment_node(vd->scope_id_stack, n);
     break;
   case NESTED_SCOPE_NODE:
     break;
@@ -501,7 +501,9 @@ void validate_declaration_assignment_node(std::vector<unsigned int> &scope_id_st
   }
 }
 
-void validate_assignment_node(node *assign_node, bool log_errors) {
+void validate_assignment_node(std::vector<unsigned int> &scope_id_stack,
+                              node *assign_node,
+                              bool log_errors) {
   node *var = assign_node->statement.assignment.variable;
   node *expr = assign_node->statement.assignment.expression;
   node *ident = var->expression.variable.identifier;
@@ -516,6 +518,13 @@ void validate_assignment_node(node *assign_node, bool log_errors) {
   // reported somewhere else
   if (var_type == TYPE_UNKNOWN || expr_type == TYPE_UNKNOWN) {
     return;
+  }
+
+  // Ensure that variables declared as readonly cannot be assigned to
+  if (get_symbol_info(scope_id_stack, ident->expression.ident.val).read_only) {
+    SEM_ERROR(assign_node,
+              "Read-only variable %s cannot be assigned to",
+              ident->expression.ident.val);
   }
 
   // If expr_type isn't the same as var_type and can't be widened to var_type

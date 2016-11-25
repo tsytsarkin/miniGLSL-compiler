@@ -67,6 +67,9 @@ node *ast_allocate(node_kind kind, ...) {
     // Add the symbol that we are declaring to the symbol table
     symbol = n->declaration.identifier->expression.ident.val;
     sym_info.type = n->declaration.type->type.type;
+    sym_info.read_only = n->declaration.is_const;
+    sym_info.write_only = false;
+    sym_info.constant = n->declaration.is_const;
     set_symbol_info(scope_id_stack.back(), symbol, sym_info);
 
     // Make the IDENT_NODE have the same type as this node

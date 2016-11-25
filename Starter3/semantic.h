@@ -15,7 +15,9 @@ void validate_variable_index_node(node *var_node, bool log_errors = true);
 void validate_declaration_assignment_node(std::vector<unsigned int> &scope_id_stack,
                                           node *decl_node,
                                           bool log_errors = true);
-void validate_assignment_node(node *var_node, bool log_errors = true);
+void validate_assignment_node(std::vector<unsigned int> &scope_id_stack,
+                              node *assign_node,
+                              bool log_errors = true);
 
 symbol_type get_binary_expr_type(node *binary_node);
 symbol_type get_unary_expr_type(node *unary_node);
