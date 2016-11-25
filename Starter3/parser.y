@@ -137,6 +137,9 @@ scope
       // Create a symbol table for this scope
       symbol_tables.push_back(std::map<std::string, symbol_info>());
 
+      // Initialize new symbol table
+      init_symbol_table(symbol_tables[symbol_tables.size() - 1]);
+
       // The current stack is indexed by symbol_tables.size() - 1
       scope_id_stack.push_back(symbol_tables.size() - 1);
     }

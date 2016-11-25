@@ -9,6 +9,44 @@ void set_symbol_info(int scope_id, char *symbol_name, symbol_info sym_info) {
   symbol_tables[scope_id][symbol_name] = sym_info;
 }
 
+void init_symbol_table(std::map<std::string, symbol_info> &symbol_table){
+  // Add pre defined variables to the symbol table
+  // Create templates for different types
+  symbol_info attribute;
+  attribute.read_only = true;
+  attribute.write_only = false;
+  attribute.constant = false;
+  attribute.type = TYPE_VEC4;
+
+  symbol_info uniform;
+  uniform.read_only = true;
+  uniform.write_only = false;
+  uniform.constant = true;
+  uniform.type = TYPE_VEC4;
+
+  symbol_info result;
+  result.read_only = false;
+  result.write_only = true;
+  result.constant = false;
+  result.type = TYPE_VEC4;
+
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragColor", result));
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragCoord", result));
+  result.type = TYPE_BOOL;   
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragDepth", result));
+
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_TexCoord", attribute)); 
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_Color", attribute)); 
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_Secondary", attribute)); 
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_FogFragCoord", attribute)); 
+
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_Light_Half", uniform));
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_Light_Ambient", uniform));
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_Material_Shininess", uniform));
+  symbol_table.insert(std::pair<std::string, symbol_info>("env1", uniform));
+  symbol_table.insert(std::pair<std::string, symbol_info>("env2", uniform));
+  symbol_table.insert(std::pair<std::string, symbol_info>("env3", uniform));
+}
 symbol_info get_symbol_info(const std::vector<int> &scope_id_stack, char *symbol_name) {
   std::vector<int>::const_reverse_iterator iter;
 
