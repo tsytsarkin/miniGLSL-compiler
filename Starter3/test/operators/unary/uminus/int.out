@@ -1,2 +1,2 @@
-  1: { int x; y = -x; }
- (SCOPE (DECLARATIONS (DECLARATION x int)) (STATEMENTS (ASSIGN unknown y (UNARY int - x))))
+  1: { int y; int x; y = -x; }
+ (SCOPE (DECLARATIONS (DECLARATION y int) (DECLARATION x int)) (STATEMENTS (ASSIGN int y (UNARY int - x))))

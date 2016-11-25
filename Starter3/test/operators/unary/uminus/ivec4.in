@@ -1,1 +1,1 @@
-{ ivec4 x; y = -x; }
+{ ivec4 y; ivec4 x; y = -x; }

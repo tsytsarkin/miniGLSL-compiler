@@ -1,8 +1,6 @@
 {
-    int ia;
-    int ib;
-    float fc;
-    float fd;
+    int i;
+    float f;
 
     bool b;
     vec2 v2;
@@ -15,23 +13,23 @@
     bvec3 bv3;
     bvec4 bv4;
 
-    ib = rsq(ia);
-    fd = rsq(fc);
+    f = rsq(i);
+    f = rsq(f);
 
-    ia = rsq(fc);
-    fc = rsq(ia);
+    i = rsq(f);
+    i = rsq(i);
 
-    ib = rsq(b);
-    ib = rsq(v2);
-    ib = rsq(v3);
-    ib = rsq(v4);
-    ib = rsq(iv2);
-    ib = rsq(iv3);
-    ib = rsq(iv4);
-    ib = rsq(bv2);
-    ib = rsq(bv3);
-    ib = rsq(bv4);
+    f = rsq(b);
+    f = rsq(v2);
+    f = rsq(v3);
+    f = rsq(v4);
+    f = rsq(iv2);
+    f = rsq(iv3);
+    f = rsq(iv4);
+    f = rsq(bv2);
+    f = rsq(bv3);
+    f = rsq(bv4);
 
-    ib = rsq();
-    ib = rsq(ia, ia);
+    f = rsq();
+    f = rsq(i, i);
 }

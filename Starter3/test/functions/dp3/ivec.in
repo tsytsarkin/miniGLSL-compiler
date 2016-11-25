@@ -3,7 +3,7 @@
   ivec3 v2;
   ivec4 v3;
   ivec4 v4;
-  float i;
+  int i;
   i = dp3(v1, v2);
   i = dp3(v3, v4);
   i = dp3(v1, v3); /* Error, argument 2 should be ivec3 */

@@ -1,1 +1,1 @@
-{ vec4 x; y = -x; }
+{ vec4 y; vec4 x; y = -x; }

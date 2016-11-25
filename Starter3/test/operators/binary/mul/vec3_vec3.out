@@ -1,2 +1,2 @@
-  1: { vec3 a; vec3 b; c = a * b;}
- (SCOPE (DECLARATIONS (DECLARATION a vec3) (DECLARATION b vec3)) (STATEMENTS (ASSIGN unknown c (BINARY float * a b))))
+  1: { float c; vec3 a; vec3 b; c = a * b;}
+ (SCOPE (DECLARATIONS (DECLARATION c float) (DECLARATION a vec3) (DECLARATION b vec3)) (STATEMENTS (ASSIGN float c (BINARY float * a b))))

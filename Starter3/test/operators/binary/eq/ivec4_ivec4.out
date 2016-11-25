@@ -1,2 +1,2 @@
-  1: { ivec4 a; ivec4 b; c = a == b; }
- (SCOPE (DECLARATIONS (DECLARATION a ivec4) (DECLARATION b ivec4)) (STATEMENTS (ASSIGN unknown c (BINARY bool == a b))))
+  1: { bool c; ivec4 a; ivec4 b; c = a == b; }
+ (SCOPE (DECLARATIONS (DECLARATION c bool) (DECLARATION a ivec4) (DECLARATION b ivec4)) (STATEMENTS (ASSIGN bool c (BINARY bool == a b))))

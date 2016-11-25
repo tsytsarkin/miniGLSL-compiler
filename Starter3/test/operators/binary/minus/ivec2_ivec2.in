@@ -1,1 +1,1 @@
-{ ivec2 a; ivec2 b; c = a - b;}
+{ ivec2 c; ivec2 a; ivec2 b; c = a - b;}

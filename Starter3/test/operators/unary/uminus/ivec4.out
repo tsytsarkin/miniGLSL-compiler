@@ -1,2 +1,2 @@
-  1: { ivec4 x; y = -x; }
- (SCOPE (DECLARATIONS (DECLARATION x ivec4)) (STATEMENTS (ASSIGN unknown y (UNARY ivec4 - x))))
+  1: { ivec4 y; ivec4 x; y = -x; }
+ (SCOPE (DECLARATIONS (DECLARATION y ivec4) (DECLARATION x ivec4)) (STATEMENTS (ASSIGN ivec4 y (UNARY ivec4 - x))))

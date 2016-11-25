@@ -1,1 +1,1 @@
-{ bvec3 x; y = !x; }
+{ bvec3 y; bvec3 x; y = !x; }

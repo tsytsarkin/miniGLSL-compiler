@@ -1,1 +1,1 @@
-{ vec4 a; vec4 b; c = a * b;}
+{ float c; vec4 a; vec4 b; c = a * b;}

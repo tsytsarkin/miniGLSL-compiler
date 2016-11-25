@@ -1,2 +1,2 @@
-  1: { float a; float b; c = a / b;}
- (SCOPE (DECLARATIONS (DECLARATION a float) (DECLARATION b float)) (STATEMENTS (ASSIGN unknown c (BINARY float / a b))))
+  1: { float c; float a; float b; c = a / b;}
+ (SCOPE (DECLARATIONS (DECLARATION c float) (DECLARATION a float) (DECLARATION b float)) (STATEMENTS (ASSIGN float c (BINARY float / a b))))

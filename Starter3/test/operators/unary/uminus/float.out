@@ -1,2 +1,2 @@
-  1: { float x; y = -x; }
- (SCOPE (DECLARATIONS (DECLARATION x float)) (STATEMENTS (ASSIGN unknown y (UNARY float - x))))
+  1: { float y; float x; y = -x; }
+ (SCOPE (DECLARATIONS (DECLARATION y float) (DECLARATION x float)) (STATEMENTS (ASSIGN float y (UNARY float - x))))

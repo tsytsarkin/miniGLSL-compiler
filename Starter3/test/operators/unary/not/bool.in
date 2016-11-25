@@ -1,1 +1,1 @@
-{ bool x; y = !x; }
+{ bool y; bool x; y = !x; }

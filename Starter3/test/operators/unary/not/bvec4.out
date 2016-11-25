@@ -1,2 +1,2 @@
-  1: { bvec4 x; y = !x; }
- (SCOPE (DECLARATIONS (DECLARATION x bvec4)) (STATEMENTS (ASSIGN unknown y (UNARY bvec4 ! x))))
+  1: { bvec4 y; bvec4 x; y = !x; }
+ (SCOPE (DECLARATIONS (DECLARATION y bvec4) (DECLARATION x bvec4)) (STATEMENTS (ASSIGN bvec4 y (UNARY bvec4 ! x))))

@@ -1,1 +1,1 @@
-{ int a; ivec2 b; c = a * b;}
+{ ivec2 c; int a; ivec2 b; c = a * b;}

@@ -1,2 +1,2 @@
-  1: { bool x; y = !x; }
- (SCOPE (DECLARATIONS (DECLARATION x bool)) (STATEMENTS (ASSIGN unknown y (UNARY bool ! x))))
+  1: { bool y; bool x; y = !x; }
+ (SCOPE (DECLARATIONS (DECLARATION y bool) (DECLARATION x bool)) (STATEMENTS (ASSIGN bool y (UNARY bool ! x))))

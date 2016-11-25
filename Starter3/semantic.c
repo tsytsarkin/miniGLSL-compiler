@@ -86,6 +86,7 @@ void semantic_postorder(node *n, void *data) {
     }
     break;
   case ASSIGNMENT_NODE:
+    validate_assignment_node(n);
     break;
   case NESTED_SCOPE_NODE:
     break;
@@ -293,7 +294,7 @@ symbol_type validate_unary_expr_node(node *unary_node, bool log_errors) {
   return TYPE_UNKNOWN;
 }
 
-symbol_type validate_function_node(node *func_node, bool log_errors) {
+void validate_function_node(node *func_node, bool log_errors) {
   node *first_arg = func_node->expression.function.arguments,
        *second_arg = first_arg != NULL ? first_arg->argument.next_argument : NULL;
 
@@ -376,11 +377,9 @@ symbol_type validate_function_node(node *func_node, bool log_errors) {
     }
     break;
   }
-
-  return get_function_return_type(func_node);
 }
 
-symbol_type validate_constructor_node(node *constructor_node, bool log_errors) {
+void validate_constructor_node(node *constructor_node, bool log_errors) {
   symbol_type constructor_type = constructor_node->expression.constructor.type->type.type;
   symbol_type expected_arg_type = get_base_type(constructor_type);
 
@@ -402,7 +401,7 @@ symbol_type validate_constructor_node(node *constructor_node, bool log_errors) {
       if (log_errors) {
         SEM_ERROR(constructor_node, "Unknown constructor type");
       }
-      return constructor_type;
+      return;
     }
   }
 
@@ -438,8 +437,6 @@ symbol_type validate_constructor_node(node *constructor_node, bool log_errors) {
       }
     }
   }
-
-  return constructor_type;  
 }
 
 void validate_variable_index_node(node *var_node, bool log_errors) {
@@ -464,6 +461,30 @@ void validate_variable_index_node(node *var_node, bool log_errors) {
               "Variable %s of type %s cannot be indexed as it is not a vector",
               ident->expression.ident.val,
               get_type_name(var_type));
+  }
+}
+
+void validate_assignment_node(node *assign_node, bool log_errors) {
+  node *var = assign_node->statement.assignment.variable;
+  node *expr = assign_node->statement.assignment.expression;
+  node *ident = var->expression.variable.identifier;
+
+  symbol_type var_type = var->expression.expr_type;
+  symbol_type expr_type = expr->expression.expr_type;
+
+  // If var_type or expr_type are unknown then the error should be
+  // reported somewhere else
+  if (var_type == TYPE_UNKNOWN || expr_type == TYPE_UNKNOWN) {
+    return;
+  }
+
+  // If expr_type isn't the same as var_type and can't be widened to var_type
+  if (var_type != expr_type && get_base_type(var_type) != expr_type) {
+    SEM_ERROR(assign_node,
+              "Variable %s of type %s cannot be assigned a value of type %s",
+              ident->expression.ident.val,
+              get_type_name(var_type),
+              get_type_name(expr_type));
   }
 }
 

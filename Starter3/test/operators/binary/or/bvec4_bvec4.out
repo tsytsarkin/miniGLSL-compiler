@@ -1,2 +1,2 @@
-  1: { bvec4 a; bvec4 b; c = a || b; }
- (SCOPE (DECLARATIONS (DECLARATION a bvec4) (DECLARATION b bvec4)) (STATEMENTS (ASSIGN unknown c (BINARY bvec4 || a b))))
+  1: { bvec4 c; bvec4 a; bvec4 b; c = a || b; }
+ (SCOPE (DECLARATIONS (DECLARATION c bvec4) (DECLARATION a bvec4) (DECLARATION b bvec4)) (STATEMENTS (ASSIGN bvec4 c (BINARY bvec4 || a b))))

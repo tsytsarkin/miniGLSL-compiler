@@ -1,1 +1,1 @@
-{ bvec2 a; bvec2 b; c = a || b; }
+{ bvec2 c; bvec2 a; bvec2 b; c = a || b; }

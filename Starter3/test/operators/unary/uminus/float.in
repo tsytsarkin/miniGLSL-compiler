@@ -1,1 +1,1 @@
-{ float x; y = -x; }
+{ float y; float x; y = -x; }

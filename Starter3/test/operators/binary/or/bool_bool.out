@@ -1,2 +1,2 @@
-  1: { bool a; bool b; c = a || b; }
- (SCOPE (DECLARATIONS (DECLARATION a bool) (DECLARATION b bool)) (STATEMENTS (ASSIGN unknown c (BINARY bool || a b))))
+  1: { bool c; bool a; bool b; c = a || b; }
+ (SCOPE (DECLARATIONS (DECLARATION c bool) (DECLARATION a bool) (DECLARATION b bool)) (STATEMENTS (ASSIGN bool c (BINARY bool || a b))))

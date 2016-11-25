@@ -1,1 +1,1 @@
-{ int x; y = -x; }
+{ int y; int x; y = -x; }

@@ -1,1 +1,1 @@
-{ vec3 a; vec3 b; c = a == b; }
+{ bool c; vec3 a; vec3 b; c = a == b; }

@@ -1,2 +1,2 @@
-  1: { bvec3 a; bvec3 b; c = a && b; }
- (SCOPE (DECLARATIONS (DECLARATION a bvec3) (DECLARATION b bvec3)) (STATEMENTS (ASSIGN unknown c (BINARY bvec3 && a b))))
+  1: { bvec3 c; bvec3 a; bvec3 b; c = a && b; }
+ (SCOPE (DECLARATIONS (DECLARATION c bvec3) (DECLARATION a bvec3) (DECLARATION b bvec3)) (STATEMENTS (ASSIGN bvec3 c (BINARY bvec3 && a b))))

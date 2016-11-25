@@ -1,2 +1,2 @@
-  1: { vec3 a; vec3 b; c = a == b; }
- (SCOPE (DECLARATIONS (DECLARATION a vec3) (DECLARATION b vec3)) (STATEMENTS (ASSIGN unknown c (BINARY bool == a b))))
+  1: { bool c; vec3 a; vec3 b; c = a == b; }
+ (SCOPE (DECLARATIONS (DECLARATION c bool) (DECLARATION a vec3) (DECLARATION b vec3)) (STATEMENTS (ASSIGN bool c (BINARY bool == a b))))
