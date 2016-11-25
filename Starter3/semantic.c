@@ -73,6 +73,9 @@ void semantic_postorder(node *n, void *data) {
   case DECLARATIONS_NODE:
     break;
   case DECLARATION_NODE:
+    if (n->declaration.assignment_expr != NULL) {
+      validate_declaration_assignment_node(n);
+    }
     break;
 
   case STATEMENTS_NODE:
@@ -464,6 +467,30 @@ void validate_variable_index_node(node *var_node, bool log_errors) {
   }
 }
 
+void validate_declaration_assignment_node(node *decl_node, bool log_errors) {
+  // TODO: Evaluate constant expressions
+  node *ident = decl_node->declaration.identifier;
+  node *expr = decl_node->declaration.assignment_expr;
+
+  symbol_type var_type = ident->expression.expr_type;
+  symbol_type expr_type = expr->expression.expr_type;
+
+  // If var_type or expr_type are unknown then the error should be
+  // reported somewhere else
+  if (var_type == TYPE_UNKNOWN || expr_type == TYPE_UNKNOWN) {
+    return;
+  }
+
+  // If expr_type isn't the same as var_type and can't be widened to var_type
+  if (var_type != expr_type && get_base_type(var_type) != expr_type) {
+    SEM_ERROR(decl_node,
+              "Variable %s of type %s cannot be assigned a value of type %s",
+              ident->expression.ident.val,
+              get_type_name(var_type),
+              get_type_name(expr_type));
+  }
+}
+
 void validate_assignment_node(node *assign_node, bool log_errors) {
   node *var = assign_node->statement.assignment.variable;
   node *expr = assign_node->statement.assignment.expression;
@@ -471,6 +498,9 @@ void validate_assignment_node(node *assign_node, bool log_errors) {
 
   symbol_type var_type = var->expression.expr_type;
   symbol_type expr_type = expr->expression.expr_type;
+
+  // TODO: We should be making checks for TYPE_UNKNOWN everywhere so we don't log
+  // errors for unknown type. Or maybe we shouldn't, i dont know
 
   // If var_type or expr_type are unknown then the error should be
   // reported somewhere else

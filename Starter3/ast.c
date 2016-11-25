@@ -69,6 +69,9 @@ node *ast_allocate(node_kind kind, ...) {
     sym_info.type = n->declaration.type->type.type;
     set_symbol_info(scope_id_stack.back(), symbol, sym_info);
 
+    // Make the IDENT_NODE have the same type as this node
+    n->declaration.identifier->expression.expr_type = n->declaration.type->type.type;
+
     // Make this node the parent of its children
     set_parent(n, n->declaration.type);
     set_parent(n, n->declaration.identifier);
