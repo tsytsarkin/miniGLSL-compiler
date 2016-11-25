@@ -1,0 +1,45 @@
+{
+  bool b = false;
+  vec4 v4 = 0.0;
+  gl_FragColor = v4;
+  gl_FragDepth = b;
+  gl_FragCoord = v4;
+
+  v4 = gl_TexCoord;
+  v4 = gl_Color;
+  v4 = gl_Secondary;
+  v4 = gl_FogFragCoord;
+
+  {
+    const vec4 v4_2 = gl_Light_Half;
+    const vec4 v4_3 = gl_Light_Ambient;
+    const vec4 v4_4 = gl_Material_Shininess;
+    const vec4 v4_5 = env1;
+    const vec4 v4_6 = env2;
+    const vec4 v4_7 = env3;
+  }
+
+  {
+    bool b = false;
+    vec4 v4 = 0.0;
+    gl_FragColor = b;
+    gl_FragDepth = v4;
+    gl_FragCoord = b;
+
+    b = gl_TexCoord;
+    b = gl_Color;
+    b = gl_Secondary;
+    b = gl_FogFragCoord;
+
+    {
+      const bool b_2 = gl_Light_Half;
+      const bool b_3 = gl_Light_Ambient;
+      const bool b_4 = gl_Material_Shininess;
+      const bool b_5 = env1;
+      const bool b_6 = env2;
+      const bool b_7 = env3;
+    }
+  }
+
+  /* TODO: verify each variable is uniform, attribute or result */
+}

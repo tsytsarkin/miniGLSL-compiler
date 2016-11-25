@@ -1,0 +1,60 @@
+SEMANTIC ERROR (line 25, column 21): Variable gl_FragColor of type vec4 cannot be assigned a value of type bool
+SEMANTIC ERROR (line 26, column 22): Variable gl_FragDepth of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 27, column 21): Variable gl_FragCoord of type vec4 cannot be assigned a value of type bool
+SEMANTIC ERROR (line 29, column 20): Variable b of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 30, column 17): Variable b of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 31, column 21): Variable b of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 32, column 24): Variable b of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 35, column 37): Variable b_2 of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 36, column 40): Variable b_3 of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 37, column 45): Variable b_4 of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 38, column 28): Variable b_5 of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 39, column 28): Variable b_6 of type bool cannot be assigned a value of type vec4
+SEMANTIC ERROR (line 40, column 28): Variable b_7 of type bool cannot be assigned a value of type vec4
+  1: {
+  2:   bool b = false;
+  3:   vec4 v4 = 0.0;
+  4:   gl_FragColor = v4;
+  5:   gl_FragDepth = b;
+  6:   gl_FragCoord = v4;
+  7: 
+  8:   v4 = gl_TexCoord;
+  9:   v4 = gl_Color;
+ 10:   v4 = gl_Secondary;
+ 11:   v4 = gl_FogFragCoord;
+ 12: 
+ 13:   {
+ 14:     const vec4 v4_2 = gl_Light_Half;
+ 15:     const vec4 v4_3 = gl_Light_Ambient;
+ 16:     const vec4 v4_4 = gl_Material_Shininess;
+ 17:     const vec4 v4_5 = env1;
+ 18:     const vec4 v4_6 = env2;
+ 19:     const vec4 v4_7 = env3;
+ 20:   }
+ 21: 
+ 22:   {
+ 23:     bool b = false;
+ 24:     vec4 v4 = 0.0;
+ 25:     gl_FragColor = b;
+ 26:     gl_FragDepth = v4;
+ 27:     gl_FragCoord = b;
+ 28: 
+ 29:     b = gl_TexCoord;
+ 30:     b = gl_Color;
+ 31:     b = gl_Secondary;
+ 32:     b = gl_FogFragCoord;
+ 33: 
+ 34:     {
+ 35:       const bool b_2 = gl_Light_Half;
+ 36:       const bool b_3 = gl_Light_Ambient;
+ 37:       const bool b_4 = gl_Material_Shininess;
+ 38:       const bool b_5 = env1;
+ 39:       const bool b_6 = env2;
+ 40:       const bool b_7 = env3;
+ 41:     }
+ 42:   }
+ 43: 
+ 44:   /* TODO: verify each variable is uniform, attribute or result */
+ 45: }
+ (SCOPE (DECLARATIONS (DECLARATION b bool false) (DECLARATION v4 vec4 0.000000)) (STATEMENTS (ASSIGN vec4 gl_FragColor v4) (ASSIGN bool gl_FragDepth b) (ASSIGN vec4 gl_FragCoord v4) (ASSIGN vec4 v4 gl_TexCoord) (ASSIGN vec4 v4 gl_Color) (ASSIGN vec4 v4 gl_Secondary) (ASSIGN vec4 v4 gl_FogFragCoord) (SCOPE (DECLARATIONS (DECLARATION v4_2 vec4 gl_Light_Half) (DECLARATION v4_3 vec4 gl_Light_Ambient) (DECLARATION v4_4 vec4 gl_Material_Shininess) (DECLARATION v4_5 vec4 env1) (DECLARATION v4_6 vec4 env2) (DECLARATION v4_7 vec4 env3)) (STATEMENTS)) (SCOPE (DECLARATIONS (DECLARATION b bool false) (DECLARATION v4 vec4 0.000000)) (STATEMENTS (ASSIGN vec4 gl_FragColor b) (ASSIGN bool gl_FragDepth v4) (ASSIGN vec4 gl_FragCoord b) (ASSIGN bool b gl_TexCoord) (ASSIGN bool b gl_Color) (ASSIGN bool b gl_Secondary) (ASSIGN bool b gl_FogFragCoord) (SCOPE (DECLARATIONS (DECLARATION b_2 bool gl_Light_Half) (DECLARATION b_3 bool gl_Light_Ambient) (DECLARATION b_4 bool gl_Material_Shininess) (DECLARATION b_5 bool env1) (DECLARATION b_6 bool env2) (DECLARATION b_7 bool env3)) (STATEMENTS))))))
+Failed to compile
