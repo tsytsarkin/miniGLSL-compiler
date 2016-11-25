@@ -217,7 +217,7 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
     }
     if (l_is_vec && r_is_vec) {
       if (r_type == l_type) {
-        return r_base_type;
+        return r_type;
       } else {
         // trying to multiply 2 vectors with different size
         if(log_errors){

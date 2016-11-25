@@ -1,2 +1,2 @@
-  1: { float c; vec4 a; vec4 b; c = a * b;}
- (SCOPE (DECLARATIONS (DECLARATION c float) (DECLARATION a vec4) (DECLARATION b vec4)) (STATEMENTS (ASSIGN float c (BINARY float * a b))))
+  1: { vec4 c; vec4 a; vec4 b; c = a * b;}
+ (SCOPE (DECLARATIONS (DECLARATION c vec4) (DECLARATION a vec4) (DECLARATION b vec4)) (STATEMENTS (ASSIGN vec4 c (BINARY vec4 * a b))))
