@@ -32,6 +32,8 @@ void yyerror(const char* s);    /* what to do in case of error            */
 int yylex();                    /* procedure for calling lexical analyzer */
 extern int yyline;              /* variable holding current line number   */
 
+extern std::vector<unsigned int> scope_id_stack;
+
 enum {
   DP3 = 0,
   LIT = 1,

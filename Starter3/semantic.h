@@ -18,6 +18,9 @@ void validate_declaration_assignment_node(std::vector<unsigned int> &scope_id_st
 void validate_assignment_node(std::vector<unsigned int> &scope_id_stack,
                               node *assign_node,
                               bool log_errors = true);
+void validate_variable_node(std::vector<unsigned int> &scope_id_stack,
+                            node *var_node,
+                            bool log_errors = true);
 
 symbol_type get_binary_expr_type(node *binary_node);
 symbol_type get_unary_expr_type(node *unary_node);

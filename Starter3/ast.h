@@ -19,8 +19,6 @@ struct node_;
 typedef struct node_ node;
 extern node *ast;
 
-extern std::vector<unsigned int> scope_id_stack;
-
 typedef enum {
   UNKNOWN                = 0,
 

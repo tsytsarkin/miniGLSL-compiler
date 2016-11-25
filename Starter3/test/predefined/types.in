@@ -68,5 +68,9 @@
     v4 = gl_FragColor;
     b = gl_FragDepth;
     v4 = gl_FragCoord;
+
+    v4 = gl_FragColor + gl_FragCoord;
+    b = gl_FragDepth && gl_FragDepth;
+    v4 = gl_FragCoord + gl_FragColor;
   }
 }

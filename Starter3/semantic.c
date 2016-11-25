@@ -88,7 +88,6 @@ void semantic_postorder(node *n, void *data) {
     if (n->statement.if_else_statement.condition->expression.expr_type != TYPE_BOOL) {
       SEM_ERROR(n->statement.if_else_statement.condition,
                 "If statement condition must be a boolean value");
-      errorOccurred = true;
     }
     break;
   case ASSIGNMENT_NODE:
@@ -115,9 +114,7 @@ void semantic_postorder(node *n, void *data) {
   case IDENT_NODE:
     break;
   case VAR_NODE:
-    if (n->expression.variable.index != NULL) {
-      validate_variable_index_node(n);
-    }
+    validate_variable_node(vd->scope_id_stack, n);
     break;
   case FUNCTION_NODE:
     validate_function_node(n);
@@ -455,18 +452,22 @@ void validate_variable_index_node(node *var_node, bool log_errors) {
     // The dimension of the vector is encoded in the lowest 3 bits of the type
     int dim = var_type & 0x7;
     if (i >= dim) {
-      SEM_ERROR(var_node,
-                "Variable %s of type %s indexed at %d but only has dimension %d",
-                ident->expression.ident.val,
-                get_type_name(var_type),
-                i,
-                dim);
+      if (log_errors) {
+        SEM_ERROR(var_node,
+                  "Variable %s of type %s indexed at %d but only has dimension %d",
+                  ident->expression.ident.val,
+                  get_type_name(var_type),
+                  i,
+                  dim);
+      }
     }
   } else {
-    SEM_ERROR(var_node,
-              "Variable %s of type %s cannot be indexed as it is not a vector",
-              ident->expression.ident.val,
-              get_type_name(var_type));
+    if (log_errors) {
+      SEM_ERROR(var_node,
+                "Variable %s of type %s cannot be indexed as it is not a vector",
+                ident->expression.ident.val,
+                get_type_name(var_type));
+    }
   }
 }
 
@@ -486,18 +487,22 @@ void validate_declaration_assignment_node(std::vector<unsigned int> &scope_id_st
 
   // Ensure that variables declared as const are assigned const values
   if (decl_node->declaration.is_const && !is_const_expr(scope_id_stack, expr)) {
-    SEM_ERROR(decl_node,
-              "Const variable %s cannot be assigned a non-const value",
-              ident->expression.ident.val);
+    if (log_errors) {
+      SEM_ERROR(decl_node,
+                "Const variable %s cannot be assigned a non-const value",
+                ident->expression.ident.val);
+    }
   }
 
   // If expr_type isn't the same as var_type and can't be widened to var_type
   if (var_type != expr_type && get_base_type(var_type) != expr_type) {
-    SEM_ERROR(decl_node,
-              "Variable %s of type %s cannot be assigned a value of type %s",
-              ident->expression.ident.val,
-              get_type_name(var_type),
-              get_type_name(expr_type));
+    if (log_errors) {
+      SEM_ERROR(decl_node,
+                "Variable %s of type %s cannot be assigned a value of type %s",
+                ident->expression.ident.val,
+                get_type_name(var_type),
+                get_type_name(expr_type));
+    }
   }
 }
 
@@ -522,18 +527,49 @@ void validate_assignment_node(std::vector<unsigned int> &scope_id_stack,
 
   // Ensure that variables declared as readonly cannot be assigned to
   if (get_symbol_info(scope_id_stack, ident->expression.ident.val).read_only) {
-    SEM_ERROR(assign_node,
-              "Read-only variable %s cannot be assigned to",
-              ident->expression.ident.val);
+    if (log_errors) {
+      SEM_ERROR(assign_node,
+                "Read-only variable %s cannot be assigned to",
+                ident->expression.ident.val);
+    }
   }
 
   // If expr_type isn't the same as var_type and can't be widened to var_type
   if (var_type != expr_type && get_base_type(var_type) != expr_type) {
-    SEM_ERROR(assign_node,
-              "Variable %s of type %s cannot be assigned a value of type %s",
-              ident->expression.ident.val,
-              get_type_name(var_type),
-              get_type_name(expr_type));
+    if (log_errors) {
+      SEM_ERROR(assign_node,
+                "Variable %s of type %s cannot be assigned a value of type %s",
+                ident->expression.ident.val,
+                get_type_name(var_type),
+                get_type_name(expr_type));
+    }
+  }
+}
+
+void validate_variable_node(std::vector<unsigned int> &scope_id_stack,
+                            node *var_node,
+                            bool log_errors) {
+  // Validate the index of the variable, if there is one
+  if (var_node->expression.variable.index != NULL) {
+    validate_variable_index_node(var_node);
+  }
+
+  node *ident = var_node->expression.variable.identifier;
+  symbol_info sym_info = get_symbol_info(scope_id_stack, ident->expression.ident.val);
+
+  // If we have a write-only variable, it must appear on the LHS of an assignment node
+  if (sym_info.write_only &&
+      (var_node->parent->kind != ASSIGNMENT_NODE ||
+      var_node->parent->statement.assignment.expression == var_node)) {
+    // If the RHS of an ASSIGNMENT_NODE was exactly the var_node, then the parent would
+    // still be an ASSIGNMENT_NODE. We thus need the second condition to make sure that
+    // the VAR_NODE is appearing on the LHS. Because of lazy evaluation, we know that
+    // if the third condition is evaluated, the second must have been false.
+    if (log_errors) {
+      SEM_ERROR(var_node,
+                "Write-only variable %s cannot be read from",
+                ident->expression.ident.val);
+    }
   }
 }
 

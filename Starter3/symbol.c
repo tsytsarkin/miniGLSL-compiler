@@ -72,6 +72,9 @@ symbol_info get_symbol_info(const std::vector<unsigned int> &scope_id_stack, cha
 
   symbol_info dummy_symbol_info;
   dummy_symbol_info.type = TYPE_UNKNOWN;
+  dummy_symbol_info.read_only = false;
+  dummy_symbol_info.write_only = false;
+  dummy_symbol_info.constant = false;
 
   symbol_table[symbol_name] = dummy_symbol_info;
 
