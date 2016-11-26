@@ -477,12 +477,14 @@ void validate_declaration_node(std::vector<unsigned int> &scope_id_stack,
                                           bool log_errors) {
   node *ident = decl_node->declaration.identifier;
   char *symbol_name = ident->expression.ident.val;
-  symbol_info *sym_info = get_symbol_info(scope_id_stack, symbol_name);
-  if(sym_info->already_declared == true){
+  symbol_info sym_info = get_symbol_info(scope_id_stack, symbol_name);
+  if(sym_info.already_declared == true){
     // report error
-    SEM_ERROR(decl_node, "Variable %s has alreay been declared in this scope", symbol_name);
+    if(log_errors){
+      SEM_ERROR(decl_node, "Variable %s has alreay been declared in this scope", symbol_name);
+   }
   } else {
-    sym_info->already_declared = true;
+    sym_info.already_declared = true;
   }
 }
 
@@ -541,7 +543,7 @@ void validate_assignment_node(std::vector<unsigned int> &scope_id_stack,
   }
 
   // Ensure that variables declared as readonly cannot be assigned to
-  if (get_symbol_info(scope_id_stack, ident->expression.ident.val)->read_only) {
+  if (get_symbol_info(scope_id_stack, ident->expression.ident.val).read_only) {
     if (log_errors) {
       SEM_ERROR(assign_node,
                 "Read-only variable %s cannot be assigned to",
@@ -570,10 +572,10 @@ void validate_variable_node(std::vector<unsigned int> &scope_id_stack,
   }
 
   node *ident = var_node->expression.variable.identifier;
-  symbol_info* sym_info = get_symbol_info(scope_id_stack, ident->expression.ident.val);
+  symbol_info sym_info = get_symbol_info(scope_id_stack, ident->expression.ident.val);
 
   // If we have a write-only variable, it must appear on the LHS of an assignment node
-  if (sym_info->write_only &&
+  if (sym_info.write_only &&
       (var_node->parent->kind != ASSIGNMENT_NODE ||
       var_node->parent->statement.assignment.expression == var_node)) {
     // If the RHS of an ASSIGNMENT_NODE was exactly the var_node, then the parent would
@@ -646,7 +648,7 @@ bool is_const_expr(std::vector<unsigned int> &scope_id_stack, node *expr_node) {
   case INT_NODE: case FLOAT_NODE: case BOOL_NODE:
     return true;
   case IDENT_NODE:
-    return get_symbol_info(scope_id_stack, expr_node->expression.ident.val)->constant;
+    return get_symbol_info(scope_id_stack, expr_node->expression.ident.val).constant;
   case VAR_NODE:
     return is_const_expr(scope_id_stack, expr_node->expression.variable.identifier);
   case FUNCTION_NODE:
