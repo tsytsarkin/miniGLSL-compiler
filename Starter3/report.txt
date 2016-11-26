@@ -6,7 +6,10 @@ Breakdown of work:
   Braden
 
   Nikita
-
+    implemented semantic analisys for analysis for binary expressions.
+    wrote tests for semantic analisys for binary expressions.
+    implemented pre-defined variables
+    implemented check for redeclaration of a variable
 Summary:
 The first step we took to complete this lab was to build the AST. To do this,
 we designed the node structure to allow the type of node to describe its elements.
