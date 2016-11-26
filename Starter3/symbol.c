@@ -6,7 +6,13 @@
 std::vector<std::map<std::string, symbol_info> > symbol_tables;
 
 void set_symbol_info(int scope_id, char *symbol_name, symbol_info sym_info) {
-  symbol_tables[scope_id][symbol_name] = sym_info;
+  // check if symbol was not previously declared in this scope and only overwrite
+  // if it didn't exist already or if it was just a placeholder (TYPE_UNKNOWN)
+  std::map<std::string, symbol_info>::iterator iter = symbol_tables[scope_id].find(symbol_name);
+  if (iter == symbol_tables[scope_id].end() || iter->second.type == TYPE_UNKNOWN){
+    sym_info.already_declared = false;
+    symbol_tables[scope_id][symbol_name] = sym_info;
+  }
 }
 
 void init_symbol_table(std::map<std::string, symbol_info> &symbol_table){
@@ -48,17 +54,17 @@ void init_symbol_table(std::map<std::string, symbol_info> &symbol_table){
   symbol_table.insert(std::pair<std::string, symbol_info>("env3", uniform));
 }
 
-symbol_info get_symbol_info(const std::vector<unsigned int> &scope_id_stack, char *symbol_name) {
+symbol_info &get_symbol_info(const std::vector<unsigned int> &scope_id_stack, char *symbol_name) {
   std::vector<unsigned int>::const_reverse_iterator iter;
 
   // Traverse the scope id stack backwards
   for (iter = scope_id_stack.rbegin(); iter != scope_id_stack.rend(); iter++) {
 
     // Look at the symbol table for each scope
-    const std::map<std::string, symbol_info> &symbol_table = symbol_tables[*iter];
+    std::map<std::string, symbol_info> &symbol_table = symbol_tables[*iter];
 
     // Search for the symbol in the table
-    std::map<std::string, symbol_info>::const_iterator symbol_iter = symbol_table.find(symbol_name);
+    std::map<std::string, symbol_info>::iterator symbol_iter = symbol_table.find(symbol_name);
 
     // If the symbol was found, return it
     if (symbol_iter != symbol_table.end()) {
@@ -75,9 +81,10 @@ symbol_info get_symbol_info(const std::vector<unsigned int> &scope_id_stack, cha
   dummy_symbol_info.read_only = false;
   dummy_symbol_info.write_only = false;
   dummy_symbol_info.constant = false;
+  dummy_symbol_info.already_declared = false;
 
   symbol_table[symbol_name] = dummy_symbol_info;
 
-  return dummy_symbol_info;
+  return symbol_table[symbol_name];
 }
 
