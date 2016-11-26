@@ -6,5 +6,8 @@ Breakdown of work:
   Braden
 
   Nikita
-
+    implemented semantic analisys for analysis for binary expressions.
+    wrote tests for semantic analisys for binary expressions.
+    implemented pre-defined variables
+    implemented check for redeclaration of a variable
 Summary:
