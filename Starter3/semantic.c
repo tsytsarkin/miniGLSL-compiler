@@ -477,12 +477,12 @@ void validate_declaration_node(std::vector<unsigned int> &scope_id_stack,
                                           bool log_errors) {
   node *ident = decl_node->declaration.identifier;
   char *symbol_name = ident->expression.ident.val;
-  symbol_info sym_info = get_symbol_info(scope_id_stack, symbol_name);
+  symbol_info &sym_info = get_symbol_info(scope_id_stack, symbol_name);
   if(sym_info.already_declared == true){
     // report error
     if(log_errors){
       SEM_ERROR(decl_node, "Variable %s has alreay been declared in this scope", symbol_name);
-   }
+    }
   } else {
     sym_info.already_declared = true;
   }
