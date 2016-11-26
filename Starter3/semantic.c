@@ -593,6 +593,14 @@ void validate_variable_node(std::vector<unsigned int> &scope_id_stack,
   node *ident = var_node->expression.variable.identifier;
   symbol_info sym_info = get_symbol_info(scope_id_stack, ident->expression.ident.val);
 
+  if (sym_info.type == TYPE_UNKNOWN) {
+    if (log_errors) {
+      SEM_ERROR(var_node,
+                "Undeclared variable %s",
+                ident->expression.ident.val);
+    }
+  }
+
   // If we have a write-only variable, it must appear on the LHS of an assignment node
   if (sym_info.write_only &&
       (var_node->parent->kind != ASSIGNMENT_NODE ||

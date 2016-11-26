@@ -9,6 +9,7 @@ SEMANTIC ERROR (line 22, column 36): Variable iv3_2 of type ivec3 cannot be assi
 SEMANTIC ERROR (line 23, column 31): Variable iv4_2 of type ivec4 cannot be assigned a value of type vec2
 SEMANTIC ERROR (line 25, column 20): Variable bv3_2 of type bvec3 cannot be assigned a value of type float
 SEMANTIC ERROR (line 26, column 18): Variable bv4_2 of type bvec4 cannot be assigned a value of type int
+SEMANTIC ERROR (line 39, column 12): Undeclared variable j
   1: {
   2:   int i = 1;
   3:   float f = 1.0;

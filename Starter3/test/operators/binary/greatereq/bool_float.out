@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 22): Undeclared variable c
 SEMANTIC ERROR (line 1, column 30): Binary operator >= has operands with incompatible base types bool and float
   1: { bool a; float b; c = a >= b; }
  (SCOPE (DECLARATIONS (DECLARATION a bool) (DECLARATION b float)) (STATEMENTS (ASSIGN unknown c (BINARY unknown >= a b))))

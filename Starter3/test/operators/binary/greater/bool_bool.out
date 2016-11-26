@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 21): Undeclared variable c
 SEMANTIC ERROR (line 1, column 28): Binary operator > has operands with invalid types bool and bool, expected them to be equal, scalar, and arithmetic
   1: { bool a; bool b; c = a > b; }
  (SCOPE (DECLARATIONS (DECLARATION a bool) (DECLARATION b bool)) (STATEMENTS (ASSIGN unknown c (BINARY unknown > a b))))

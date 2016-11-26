@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 12): Undeclared variable y
 SEMANTIC ERROR (line 1, column 16): Operand of unary operator ! is of type int but expected a logical type
   1: { int x; y = !x; }
  (SCOPE (DECLARATIONS (DECLARATION x int)) (STATEMENTS (ASSIGN unknown y (UNARY unknown ! x))))

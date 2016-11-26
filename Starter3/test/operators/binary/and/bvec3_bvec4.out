@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 23): Undeclared variable c
 SEMANTIC ERROR (line 1, column 31): Binary operator && has operands with invalid types bvec3 and bvec4, expected them to be equal and logical
   1: { bvec3 a; bvec4 b; c = a && b; }
  (SCOPE (DECLARATIONS (DECLARATION a bvec3) (DECLARATION b bvec4)) (STATEMENTS (ASSIGN unknown c (BINARY unknown && a b))))

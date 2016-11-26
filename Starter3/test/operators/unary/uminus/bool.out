@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 13): Undeclared variable y
 SEMANTIC ERROR (line 1, column 17): Operand of unary operator - is of type bool but expected an arithmetic type
   1: { bool x; y = -x; }
  (SCOPE (DECLARATIONS (DECLARATION x bool)) (STATEMENTS (ASSIGN unknown y (UNARY unknown - x))))

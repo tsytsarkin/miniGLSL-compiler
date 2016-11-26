@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 23): Undeclared variable c
 SEMANTIC ERROR (line 1, column 30): Binary operator - has operands with invalid types bvec2 and bvec2, expected them to be equal and arithmetic
   1: { bvec2 a; bvec2 b; c = a - b;}
  (SCOPE (DECLARATIONS (DECLARATION a bvec2) (DECLARATION b bvec2)) (STATEMENTS (ASSIGN unknown c (BINARY unknown - a b))))

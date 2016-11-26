@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 16, column 8): Undeclared variable j
 SEMANTIC ERROR (line 31, column 38): Variable i of type int cannot be assigned a value of type bvec4
 SEMANTIC ERROR (line 32, column 32): Variable f of type float cannot be assigned a value of type bvec3
 SEMANTIC ERROR (line 33, column 25): Variable b of type bool cannot be assigned a value of type bvec2

@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 21): Undeclared variable c
 SEMANTIC ERROR (line 1, column 29): Binary operator <= has operands with invalid types vec2 and vec2, expected them to be equal, scalar, and arithmetic
   1: { vec2 a; vec2 b; c = a <= b; }
  (SCOPE (DECLARATIONS (DECLARATION a vec2) (DECLARATION b vec2)) (STATEMENTS (ASSIGN unknown c (BINARY unknown <= a b))))

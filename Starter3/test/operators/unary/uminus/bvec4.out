@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 14): Undeclared variable y
 SEMANTIC ERROR (line 1, column 18): Operand of unary operator - is of type bvec4 but expected an arithmetic type
   1: { bvec4 x; y = -x; }
  (SCOPE (DECLARATIONS (DECLARATION x bvec4)) (STATEMENTS (ASSIGN unknown y (UNARY unknown - x))))

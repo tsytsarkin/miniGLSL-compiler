@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 22): Undeclared variable c
 SEMANTIC ERROR (line 1, column 30): Binary operator || has operands with invalid types bvec2 and bool, expected them to be equal and logical
   1: { bvec2 a; bool b; c = a || b; }
  (SCOPE (DECLARATIONS (DECLARATION a bvec2) (DECLARATION b bool)) (STATEMENTS (ASSIGN unknown c (BINARY unknown || a b))))

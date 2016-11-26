@@ -1,3 +1,5 @@
+SEMANTIC ERROR (line 12, column 5): Undeclared variable f
+SEMANTIC ERROR (line 12, column 8): Undeclared variable g
   1: {
   2:   int i;
   3:   int j;
@@ -12,3 +14,4 @@
  12:   f = g; /* Semantic Error */
  13: }
  (SCOPE (DECLARATIONS (DECLARATION i int) (DECLARATION j int)) (STATEMENTS (ASSIGN int i j) (SCOPE (DECLARATIONS (DECLARATION f float) (DECLARATION g float)) (STATEMENTS (ASSIGN float f g))) (ASSIGN int j i) (ASSIGN unknown f g)))
+Failed to compile

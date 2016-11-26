@@ -1,3 +1,4 @@
+SEMANTIC ERROR (line 1, column 13): Undeclared variable y
 SEMANTIC ERROR (line 1, column 17): Operand of unary operator ! is of type vec3 but expected a logical type
   1: { vec3 x; y = !x; }
  (SCOPE (DECLARATIONS (DECLARATION x vec3)) (STATEMENTS (ASSIGN unknown y (UNARY unknown ! x))))
