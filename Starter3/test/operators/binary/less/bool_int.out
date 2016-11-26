@@ -1,4 +1,4 @@
-SEMANTIC ERROR (line 1, column 27): Operands have incompatible base types bool and int
+SEMANTIC ERROR (line 1, column 27): Binary operator < has operands with incompatible base types bool and int
   1: { bool a; int b; c = a < b; }
  (SCOPE (DECLARATIONS (DECLARATION a bool) (DECLARATION b int)) (STATEMENTS (ASSIGN unknown c (BINARY unknown < a b))))
 Failed to compile

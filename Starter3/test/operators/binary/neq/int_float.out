@@ -1,4 +1,4 @@
-SEMANTIC ERROR (line 1, column 29): Operands have incompatible base types int and float
+SEMANTIC ERROR (line 1, column 29): Binary operator != has operands with incompatible base types int and float
   1: { int a; float b; c = a != b; }
  (SCOPE (DECLARATIONS (DECLARATION a int) (DECLARATION b float)) (STATEMENTS (ASSIGN unknown c (BINARY unknown != a b))))
 Failed to compile

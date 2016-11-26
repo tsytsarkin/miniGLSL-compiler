@@ -164,7 +164,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
   // For a binary op, base types must match
   if (r_base_type != l_base_type) {
     if (log_errors){
-      SEM_ERROR(binary_node, "Operands have incompatible base types %s and %s", get_type_name(l_base_type), get_type_name(r_base_type));
+      SEM_ERROR(binary_node,
+                "Binary operator %s has operands with incompatible base types %s and %s",
+                get_binary_op_name(op),
+                get_type_name(l_base_type),
+                get_type_name(r_base_type));
     }
     return TYPE_UNKNOWN;
   }
@@ -181,7 +185,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return r_type;
     } else {
       if(log_errors){
-        SEM_ERROR(binary_node, "Both operands are expected to have matching logical type");
+        SEM_ERROR(binary_node,
+                  "Binary operator %s has operands with invalid types %s and %s, expected them to be equal and logical",
+                  get_binary_op_name(op),
+                  get_type_name(l_type),
+                  get_type_name(r_type));
       };
       return TYPE_UNKNOWN;
     }
@@ -192,7 +200,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return r_type;
     } else {
       if(log_errors){
-        SEM_ERROR(binary_node, "Both operands are expected to have matching arithmetic type");
+        SEM_ERROR(binary_node,
+                  "Binary operator %s has operands with invalid types %s and %s, expected them to be equal and arithmetic",
+                  get_binary_op_name(op),
+                  get_type_name(l_type),
+                  get_type_name(r_type));
       };
       return TYPE_UNKNOWN;
     }
@@ -203,7 +215,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return r_type;
     } else {
       if(log_errors){
-        SEM_ERROR(binary_node, "Operands have types %s and %s, expected both int or float", get_type_name(l_type), get_type_name(r_type));
+        SEM_ERROR(binary_node,
+                  "Binary operator %s has operands with invalid types %s and %s, expected them to be equal, scalar, and arithmetic",
+                  get_binary_op_name(op),
+                  get_type_name(l_type),
+                  get_type_name(r_type));
       }
       return TYPE_UNKNOWN;
     }
@@ -211,7 +227,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
   case OP_MUL:
     if (r_base_type == TYPE_BOOL) {
       if(log_errors){
-        SEM_ERROR(binary_node, "Operand has base type %s, int or float is expected", get_type_name(r_base_type));
+        SEM_ERROR(binary_node,
+                  "Binary operator %s has operands with invalid types %s and %s, expected them to be arithmetic",
+                  get_binary_op_name(op),
+                  get_type_name(l_type),
+                  get_type_name(r_type));
       }
       return TYPE_UNKNOWN;
     }
@@ -221,7 +241,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       } else {
         // trying to multiply 2 vectors with different size
         if(log_errors){
-          SEM_ERROR(binary_node, "Right operand type %s, expected %s", get_type_name(r_type), get_type_name(l_type));
+          SEM_ERROR(binary_node,
+                    "Binary operator %s has operands with invalid types %s and %s, expected them to be vectors of the same dimension",
+                    get_binary_op_name(op),
+                    get_type_name(l_type),
+                    get_type_name(r_type));
         }
         return TYPE_UNKNOWN;
       }
@@ -238,7 +262,11 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
         return TYPE_BOOL;
     } else {
       if(log_errors){
-        SEM_ERROR(binary_node, "Operands have types %s and %s, expected both int or float", get_type_name(l_type), get_type_name(r_type));
+        SEM_ERROR(binary_node,
+                  "Binary operator %s has operands with invalid types %s and %s, expected them to be equal, scalar, and arithmetic",
+                  get_binary_op_name(op),
+                  get_type_name(l_type),
+                  get_type_name(r_type));
       }
       return TYPE_UNKNOWN;
     }
@@ -248,10 +276,18 @@ symbol_type validate_binary_expr_node(node *binary_node, bool log_errors) {
       return TYPE_BOOL;
     }
     if(log_errors && r_type != l_type){
-        SEM_ERROR(binary_node, "Operands have types %s and %s, expected to have matching types", get_type_name(l_type), get_type_name(r_type));
+      SEM_ERROR(binary_node,
+                "Binary operator %s has operands with invalid types %s and %s, expected them to be equal",
+                get_binary_op_name(op),
+                get_type_name(l_type),
+                get_type_name(r_type));
     }
     if(log_errors && r_base_type == TYPE_BOOL){
-        SEM_ERROR(binary_node, "Base type %s, arithmetic type expected", get_type_name(r_base_type));
+      SEM_ERROR(binary_node,
+                "Binary operator %s has operands with invalid types %s and %s, expected them to be arithmetic",
+                get_binary_op_name(op),
+                get_type_name(l_type),
+                get_type_name(r_type));
     }
     return TYPE_UNKNOWN;
   default:

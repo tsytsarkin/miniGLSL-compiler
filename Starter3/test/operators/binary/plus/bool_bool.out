@@ -1,4 +1,4 @@
-SEMANTIC ERROR (line 1, column 28): Both operands are expected to have matching arithmetic type
+SEMANTIC ERROR (line 1, column 28): Binary operator + has operands with invalid types bool and bool, expected them to be equal and arithmetic
   1: { bool a; bool b; c = a + b;}
  (SCOPE (DECLARATIONS (DECLARATION a bool) (DECLARATION b bool)) (STATEMENTS (ASSIGN unknown c (BINARY unknown + a b))))
 Failed to compile

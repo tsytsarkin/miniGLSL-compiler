@@ -1,4 +1,4 @@
-SEMANTIC ERROR (line 1, column 28): Both operands are expected to have matching arithmetic type
+SEMANTIC ERROR (line 1, column 28): Binary operator + has operands with invalid types vec3 and vec4, expected them to be equal and arithmetic
   1: { vec3 a; vec4 b; c = a + b;}
  (SCOPE (DECLARATIONS (DECLARATION a vec3) (DECLARATION b vec4)) (STATEMENTS (ASSIGN unknown c (BINARY unknown + a b))))
 Failed to compile

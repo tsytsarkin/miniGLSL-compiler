@@ -1,4 +1,4 @@
-SEMANTIC ERROR (line 1, column 31): Base type bool, arithmetic type expected
+SEMANTIC ERROR (line 1, column 31): Binary operator != has operands with invalid types bvec4 and bvec4, expected them to be arithmetic
   1: { bvec4 a; bvec4 b; c = a != b; }
  (SCOPE (DECLARATIONS (DECLARATION a bvec4) (DECLARATION b bvec4)) (STATEMENTS (ASSIGN unknown c (BINARY unknown != a b))))
 Failed to compile

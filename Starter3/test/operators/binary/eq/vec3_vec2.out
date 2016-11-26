@@ -1,4 +1,4 @@
-SEMANTIC ERROR (line 1, column 29): Operands have types vec3 and vec2, expected to have matching types
+SEMANTIC ERROR (line 1, column 29): Binary operator == has operands with invalid types vec3 and vec2, expected them to be equal
   1: { vec3 a; vec2 b; c = a == b; }
  (SCOPE (DECLARATIONS (DECLARATION a vec3) (DECLARATION b vec2)) (STATEMENTS (ASSIGN unknown c (BINARY unknown == a b))))
 Failed to compile
