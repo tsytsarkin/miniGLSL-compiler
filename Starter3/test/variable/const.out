@@ -1,0 +1,7 @@
+SEMANTIC ERROR (line 3, column 8): Read-only variable i cannot be assigned to
+  1: {
+  2:   const int i = 4;
+  3:   i = 4;
+  4: }
+ (SCOPE (DECLARATIONS (DECLARATION i int 4)) (STATEMENTS (ASSIGN int i 4)))
+Failed to compile
