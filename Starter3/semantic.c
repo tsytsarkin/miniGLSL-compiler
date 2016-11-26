@@ -610,10 +610,18 @@ void validate_variable_node(std::vector<unsigned int> &scope_id_stack,
   node *ident = var_node->expression.variable.identifier;
   symbol_info sym_info = get_symbol_info(scope_id_stack, ident->expression.ident.val);
 
+  // If the variable has TYPE_UNKNOWN then it wasn't declared
   if (sym_info.type == TYPE_UNKNOWN) {
     if (log_errors) {
       SEM_ERROR(var_node,
                 "Undeclared variable %s",
+                ident->expression.ident.val);
+    }
+  } else if (!sym_info.already_declared) {
+    // If the variable has a type, but isn't already_declared, then it hasn't been declared yet
+    if (log_errors) {
+      SEM_ERROR(var_node,
+                "Variable %s used before it was declared",
                 ident->expression.ident.val);
     }
   }

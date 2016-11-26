@@ -23,18 +23,21 @@ void init_symbol_table(std::map<std::string, symbol_info> &symbol_table){
   attribute.write_only = false;
   attribute.constant = false;
   attribute.type = TYPE_VEC4;
+  attribute.already_declared = true;
 
   symbol_info uniform;
   uniform.read_only = true;
   uniform.write_only = false;
   uniform.constant = true;
   uniform.type = TYPE_VEC4;
+  uniform.already_declared = true;
 
   symbol_info result;
   result.read_only = false;
   result.write_only = true;
   result.constant = false;
   result.type = TYPE_VEC4;
+  result.already_declared = true;
 
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragColor", result));
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragCoord", result));
