@@ -76,6 +76,7 @@ void semantic_postorder(node *n, void *data) {
   case DECLARATIONS_NODE:
     break;
   case DECLARATION_NODE:
+    validate_declaration_node(vd->scope_id_stack, n);
     if (n->declaration.assignment_expr != NULL) {
       validate_declaration_assignment_node(vd->scope_id_stack, n);
     }
@@ -504,6 +505,22 @@ void validate_variable_index_node(node *var_node, bool log_errors) {
                 ident->expression.ident.val,
                 get_type_name(var_type));
     }
+  }
+}
+
+void validate_declaration_node(std::vector<unsigned int> &scope_id_stack,
+                                          node *decl_node,
+                                          bool log_errors) {
+  node *ident = decl_node->declaration.identifier;
+  char *symbol_name = ident->expression.ident.val;
+  symbol_info &sym_info = get_symbol_info(scope_id_stack, symbol_name);
+  if(sym_info.already_declared == true){
+    // report error
+    if(log_errors){
+      SEM_ERROR(decl_node, "Variable %s has alreay been declared in this scope", symbol_name);
+    }
+  } else {
+    sym_info.already_declared = true;
   }
 }
 

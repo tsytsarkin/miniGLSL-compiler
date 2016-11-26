@@ -12,6 +12,8 @@ symbol_type validate_unary_expr_node(node *unary_node, bool log_errors = true);
 void validate_function_node(node *func_node, bool log_errors = true);
 void validate_constructor_node(node *constructor_node, bool log_errors = true);
 void validate_variable_index_node(node *var_node, bool log_errors = true);
+void validate_declaration_node(std::vector<unsigned int> &scope_id_stack,
+                                          node *decl_node, bool log_errors = true);
 void validate_declaration_assignment_node(std::vector<unsigned int> &scope_id_stack,
                                           node *decl_node,
                                           bool log_errors = true);
