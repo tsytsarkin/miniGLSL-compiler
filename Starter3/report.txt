@@ -8,3 +8,24 @@ Breakdown of work:
   Nikita
 
 Summary:
+The first step we took to complete this lab was to build the AST. To do this,
+we designed the node structure to allow the type of node to describe its elements.
+This was implemented with nested structs and unions. Then in the grammar, we
+built the AST from the bottom up.
+
+After building the AST, we had to be able to print it and free it. Since we would
+need to be able to traverse the AST for many different purposes, we built a
+general purpose visitor for the AST that allowed us to specify a function to call
+in pre-order and post-order. This allowed us to specify what we wanted to
+print at each node, or how to free each node.
+
+This visitor pattern was also useful when we implemented semantic analysis - we
+used it to specify the rules that apply to each of the different node types.
+
+The bonuses we implemented in this lab are:
+  - Report the line number that an error occurred on
+  - Report the column number that the error occurred on
+
+To implement the line and column numbers, we recorded the line and column number
+of each node as we built the AST. This way, when we found a semantic error, we
+could just use this information from the erroneous node.
