@@ -30,10 +30,15 @@ typedef struct {
   unsigned int constant_id;
 } visit_data;
 
-std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
+const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
                               node *var);
 bool is_register_temporary(node *expr);
-void generate_assignment_code(node *assign);
+void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
+                              node *assign);
+void generate_unary_expr_code(const std::vector<unsigned int> &scope_id_stack,
+                               node *n);
+void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
+                               node *n);
 void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
                             node *func);
 
@@ -45,7 +50,9 @@ void codegen_preorder(node *n, void *data) {
   switch (n->kind) {
   case SCOPE_NODE:
     vd->scope_id_stack.push_back(n->scope.scope_id);
-    register_tables.push_back(std::map<std::string, std::string>());
+    if (vd->scope_id_stack.back() != 0) {
+      register_tables.push_back(std::map<std::string, std::string>());
+    }
     break;
 
   case DECLARATIONS_NODE:
@@ -67,7 +74,7 @@ void codegen_preorder(node *n, void *data) {
   case IF_STATEMENT_NODE:
     break;
   case ASSIGNMENT_NODE:
-    generate_assignment_code(n);
+    generate_assignment_code(vd->scope_id_stack, n);
     break;
   case NESTED_SCOPE_NODE:
     break;
@@ -149,8 +156,20 @@ void codegen_postorder(node *n, void *data) {
     // EXPRESSION_NODE is an abstract node
     break;
   case UNARY_EXPRESSION_NODE:
+    // Only traverse the root of the expression
+    /*if (n->parent != BINARY_EXPRESSION_NODE &&
+        n->parent != UNARY_EXPRESSION_NODE) {
+      generate_unary_expr_code(vd->scope_id_stack, n);
+    }*/
+    generate_unary_expr_code(vd->scope_id_stack, n);
     break;
   case BINARY_EXPRESSION_NODE:
+    // Only traverse the root of the expression
+    /*if (n->parent != BINARY_EXPRESSION_NODE &&
+        n->parent != UNARY_EXPRESSION_NODE) {
+      generate_binary_expr_code(vd->scope_id_stack, n);
+    }*/
+    generate_binary_expr_code(vd->scope_id_stack, n);
     break;
   case INT_NODE:
     break;
@@ -177,13 +196,47 @@ void codegen_postorder(node *n, void *data) {
   }
 }
 
+void register_assign_postorder(node *n, void *data) {
+  int *i = (int *) data;
+  if (is_register_temporary(n)) {
+    intermediate_registers[n] = *i;
+    *i = *i + 1;
+  }
+}
+
+void assign_registers(node *ast) {
+  int i = 0;
+
+  ast_visit(ast, NULL, register_assign_postorder, &i);
+
+  // Mappings for global registers
+  register_tables.push_back(std::map<std::string, std::string>());
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_FragColor", "result.color"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_FragDepth", "result.depth"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_FragCoord", "fragment.position"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_TexCoord", "fragment.texcoord"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_Color", "fragment.texcoord"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_Secondary", "fragment.color.secondary"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_FogFragCoord", "fragment.fogcoord"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_Light_Half", "state.light[0].half"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_Light_Ambient", "state.lightmodel.ambient"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_Material_Shininess", "state.material.shininess"));
+  register_tables[0].insert(std::pair<std::string, std::string>("env1", "program.env[1]"));
+  register_tables[0].insert(std::pair<std::string, std::string>("env2", "program.env[2]"));
+  register_tables[0].insert(std::pair<std::string, std::string>("env3", "program.env[3]"));
+}
+
 void genCode(node *ast) {
   // Print the fragment shader header
   fprintf(outputFile, "!!ARBfp1.0\n");
 
   // Perform code generation
   visit_data vd;
-  vd.constant_id = 0;
+  // Reserve tempVar[0..1] for binary and unary expressions
+  vd.constant_id = 2;
+
+  assign_registers(ast);
+
   ast_visit(ast, codegen_preorder, codegen_postorder, &vd);
 
   // Print the fragment shader footer
@@ -208,7 +261,7 @@ bool is_register_temporary(node *expr) {
   }
 }
 
-std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
+const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
                               node *var) {
   char *variable_name = var->expression.variable.identifier->expression.ident.val;
 
@@ -225,21 +278,81 @@ std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
 
     // If the symbol was found, return it
     if (variable_iter != register_table.end()) {
-      return variable_iter->second;
+      return variable_iter->second.c_str();
     }
   }
   return NULL;
 }
 
-void generate_assignment_code(node *assign) {
-  std::map<node *, unsigned int>::iterator iter;
-  iter = intermediate_registers.find(assign->statement.assignment.expression);
-  if (iter != intermediate_registers.end()) {
-    // TODO: handle the case where the variable is indexed
-    char *var_name = assign->statement.assignment.variable->expression.variable.identifier->expression.ident.val;
-    START_INSTR("MOV");
-    INSTR("%s, tempVar%d", var_name, iter->second);
+void print_register_name(const std::vector<unsigned int> &scope_id_stack,
+                         node *n) {
+  if (is_register_temporary(n)) {
+    INSTR("tempVar%d", intermediate_registers[n]);
+  } else {
+    INSTR("%s", get_register_name(scope_id_stack, n));
+  }
+}
+
+void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
+                              node *assign) {
+  // TODO: handle the case where the variable is indexed
+  START_INSTR("MOV");
+  print_register_name(scope_id_stack, assign->statement.assignment.variable);
+  INSTR(", ");
+  print_register_name(scope_id_stack, assign->statement.assignment.expression);
+  FINISH_INSTR();
+}
+
+void generate_unary_expr_code(const std::vector<unsigned int> &scope_id_stack,
+                               node *n) {
+  unary_op op = n->expression.unary.op;
+
+  switch (op) {
+  case OP_NOT:
+    break;
+  case OP_UMINUS:
+    break;
+  default:
+    break;
+  }
+}
+
+void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
+                               node *n) {
+  binary_op op = n->expression.binary.op;
+
+  node *left = n->expression.binary.left;
+  node *right = n->expression.binary.right;
+
+  switch (op) {
+  case OP_AND: case OP_OR:
+    break;
+  case OP_PLUS:
+    START_INSTR("ADD");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
     FINISH_INSTR();
+    break;
+  case OP_MINUS:
+    START_INSTR("SUB");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    FINISH_INSTR();
+    break;
+  case OP_DIV: case OP_XOR:
+    break;
+  case OP_MUL:
+    break;
+  case OP_LT: case OP_LEQ: case OP_GT: case OP_GEQ:
+    break;
+  default:
+    break;
   }
 }
 
@@ -265,7 +378,7 @@ void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
             intermediate_registers[func]);
     } else {
       INSTR("%s, tempVar%d",
-            get_register_name(scope_id_stack, first_expr).c_str(),
+            get_register_name(scope_id_stack, first_expr),
             intermediate_registers[func]);
     }
     FINISH_INSTR();

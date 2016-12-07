@@ -1,4 +1,10 @@
 !!ARBfp1.0
 TEMP temp;
-PARAM const0 = 1;
+PARAM const2 = 1;
+MOV temp, tempVar4;
+MOV temp, tempVar8;
+MOV temp, fragment.texcoord;
+MOV temp, tempVar16;
+MOV temp, fragment.texcoord;
+MOV result.color, temp;
 END
