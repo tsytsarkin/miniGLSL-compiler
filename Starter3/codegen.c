@@ -31,8 +31,11 @@ typedef struct {
 } visit_data;
 
 std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
-                              char *variable_name);
+                              node *var);
+bool is_register_temporary(node *expr);
 void generate_assignment_code(node *assign);
+void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
+                            node *func);
 
 void codegen_preorder(node *n, void *data) {
   visit_data *vd = (visit_data *) data;
@@ -50,6 +53,8 @@ void codegen_preorder(node *n, void *data) {
   case DECLARATION_NODE:
     str = n->declaration.identifier->expression.ident.val;
     // Assign this variable to the corresponding register
+    // TODO: if a variable overwrites another, we need to give it a new name.
+    // Really what we should do is a liveness analysis
     register_tables[vd->scope_id_stack.back()][str] = str;
 
     START_INSTR("TEMP");
@@ -103,6 +108,7 @@ void codegen_preorder(node *n, void *data) {
   case VAR_NODE:
     break;
   case FUNCTION_NODE:
+    generate_function_code(vd->scope_id_stack, n);
     break;
   case CONSTRUCTOR_NODE:
     break;
@@ -184,8 +190,28 @@ void genCode(node *ast) {
   fprintf(outputFile, "END\n");
 }
 
+bool is_register_temporary(node *expr) {
+  switch (expr->kind) {
+  case UNARY_EXPRESSION_NODE:
+  case BINARY_EXPRESSION_NODE:
+  case INT_NODE:
+  case FLOAT_NODE:
+  case BOOL_NODE:
+  case FUNCTION_NODE:
+  case CONSTRUCTOR_NODE:
+    return true;
+  case IDENT_NODE:
+  case VAR_NODE:
+    return false;
+  default:
+    return false;
+  }
+}
+
 std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
-                              char *variable_name) {
+                              node *var) {
+  char *variable_name = var->expression.variable.identifier->expression.ident.val;
+
   std::vector<unsigned int>::const_reverse_iterator iter;
 
   // Traverse the scope id stack backwards
@@ -214,6 +240,36 @@ void generate_assignment_code(node *assign) {
     START_INSTR("MOV");
     INSTR("%s, tempVar%d", var_name, iter->second);
     FINISH_INSTR();
+  }
+}
+
+void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
+                            node *func) {
+  node *first_arg = func->expression.function.arguments;
+  node *first_expr = first_arg->argument.expression;
+  node *second_arg = first_arg != NULL ? first_arg->argument.next_argument : NULL;
+  node *second_expr = second_arg != NULL ? second_arg->argument.expression : NULL;
+  node *third_arg = second_arg != NULL ? second_arg->argument.next_argument : NULL;
+  node *third_expr = second_arg != NULL ? third_arg->argument.expression : NULL;
+
+  switch (func->expression.function.func_id) {
+  case FUNC_DP3:
+    break;
+  case FUNC_RSQ:
+    break;
+  case FUNC_LIT:
+    START_INSTR("LIT");
+    if (is_register_temporary(first_expr)) {
+      INSTR("tempVar%d, tempVar%d",
+            intermediate_registers[first_expr],
+            intermediate_registers[func]);
+    } else {
+      INSTR("%s, tempVar%d",
+            get_register_name(scope_id_stack, first_expr).c_str(),
+            intermediate_registers[func]);
+    }
+    FINISH_INSTR();
+    break;
   }
 }
 
