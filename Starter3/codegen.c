@@ -4,8 +4,16 @@
 #include <map>
 #include <string>
 
-#define INSTRUCTION(instr, fmt, ...) { \
-  fprintf(outputFile, instr " " fmt ";\n", ##__VA_ARGS__); \
+#define START_INSTR(instr) { \
+  fprintf(outputFile, instr " "); \
+}
+
+#define INSTR(fmt, ...) { \
+  fprintf(outputFile, fmt, ##__VA_ARGS__); \
+}
+
+#define FINISH_INSTR() { \
+  fprintf(outputFile, ";\n"); \
 }
 
 // Map variables to registers
@@ -22,6 +30,8 @@ typedef struct {
   unsigned int constant_id;
 } visit_data;
 
+std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
+                              char *variable_name);
 void generate_assignment_code(node *assign);
 
 void codegen_preorder(node *n, void *data) {
@@ -42,7 +52,9 @@ void codegen_preorder(node *n, void *data) {
     // Assign this variable to the corresponding register
     register_tables[vd->scope_id_stack.back()][str] = str;
 
-    INSTRUCTION("TEMP", "%s", str);
+    START_INSTR("TEMP");
+    INSTR("%s", str);
+    FINISH_INSTR();
     break;
 
   case STATEMENTS_NODE:
@@ -65,19 +77,25 @@ void codegen_preorder(node *n, void *data) {
   case INT_NODE:
     if (n->parent->kind != CONSTRUCTOR_NODE && n->parent->kind != VAR_NODE) {
       constant_registers[n] = vd->constant_id;
-      INSTRUCTION("PARAM", "const%d = %d", vd->constant_id++, n->expression.int_expr.val);
+      START_INSTR("PARAM");
+      INSTR("const%d = %d", vd->constant_id++, n->expression.int_expr.val);
+      FINISH_INSTR();
     }
     break;
   case FLOAT_NODE:
     if (n->parent->kind != CONSTRUCTOR_NODE) {
       constant_registers[n] = vd->constant_id;
-      INSTRUCTION("PARAM", "const%d = %f", vd->constant_id++, n->expression.float_expr.val);
+      START_INSTR("PARAM");
+      INSTR("const%d = %f", vd->constant_id++, n->expression.float_expr.val);
+      FINISH_INSTR();
     }
     break;
   case BOOL_NODE:
     if (n->parent->kind != CONSTRUCTOR_NODE) {
       constant_registers[n] = vd->constant_id;
-      INSTRUCTION("PARAM", "const%d = %d", vd->constant_id++, n->expression.bool_expr.val ? 1 : 0);
+      START_INSTR("PARAM");
+      INSTR("const%d = %d", vd->constant_id++, n->expression.bool_expr.val);
+      FINISH_INSTR();
     }
     break;
   case IDENT_NODE:
@@ -166,13 +184,36 @@ void genCode(node *ast) {
   fprintf(outputFile, "END\n");
 }
 
+std::string get_register_name(const std::vector<unsigned int> &scope_id_stack,
+                              char *variable_name) {
+  std::vector<unsigned int>::const_reverse_iterator iter;
+
+  // Traverse the scope id stack backwards
+  for (iter = scope_id_stack.rbegin(); iter != scope_id_stack.rend(); iter++) {
+
+    // Look at the register table for each scope
+    std::map<std::string, std::string> &register_table = register_tables[*iter];
+
+    // Search for the variable in the table
+    std::map<std::string, std::string>::iterator variable_iter = register_table.find(variable_name);
+
+    // If the symbol was found, return it
+    if (variable_iter != register_table.end()) {
+      return variable_iter->second;
+    }
+  }
+  return NULL;
+}
+
 void generate_assignment_code(node *assign) {
   std::map<node *, unsigned int>::iterator iter;
   iter = intermediate_registers.find(assign->statement.assignment.expression);
   if (iter != intermediate_registers.end()) {
     // TODO: handle the case where the variable is indexed
     char *var_name = assign->statement.assignment.variable->expression.variable.identifier->expression.ident.val;
-    INSTRUCTION("MOV", "%s, tempVar%d", var_name, iter->second);
+    START_INSTR("MOV");
+    INSTR("%s, tempVar%d", var_name, iter->second);
+    FINISH_INSTR();
   }
 }
 
