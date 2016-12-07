@@ -40,10 +40,10 @@ void init_symbol_table(std::map<std::string, symbol_info> &symbol_table){
   result.already_declared = true;
 
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragColor", result));
-  symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragCoord", result));
   result.type = TYPE_BOOL;   
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragDepth", result));
 
+  symbol_table.insert(std::pair<std::string, symbol_info>("gl_FragCoord", attribute));
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_TexCoord", attribute)); 
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_Color", attribute)); 
   symbol_table.insert(std::pair<std::string, symbol_info>("gl_Secondary", attribute)); 
