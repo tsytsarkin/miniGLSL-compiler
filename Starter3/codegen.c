@@ -344,11 +344,29 @@ void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
 void generate_unary_expr_code(const std::vector<unsigned int> &scope_id_stack,
                                node *n) {
   unary_op op = n->expression.unary.op;
+  node *right = n->expression.unary.right;
 
   switch (op) {
   case OP_NOT:
+    START_INSTR("CMP");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    // true and false values are swapped here
+    INSTR(", ");
+    INSTR("FALSE");
+    INSTR(", ");
+    INSTR("TRUE");
+    FINISH_INSTR();
     break;
   case OP_UMINUS:
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    INSTR("TRUE");
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    FINISH_INSTR();
     break;
   default:
     break;
