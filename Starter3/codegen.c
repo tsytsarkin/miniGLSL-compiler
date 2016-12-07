@@ -239,6 +239,9 @@ void genCode(node *ast) {
   START_INSTR("PARAM");
   INSTR("TRUE = { -1, -1, -1, -1 }");
   FINISH_INSTR();
+  START_INSTR("PARAM");
+  INSTR("ONE = { 1, 1, 1, 1 }");
+  FINISH_INSTR();
 
   // Perform code generation
   visit_data vd;
@@ -438,12 +441,104 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     FINISH_INSTR();
     break;
   case OP_LT:
+    // Compare left < right
+    START_INSTR("SLT");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
+
+    // Copy the first entry into all entries
+    START_INSTR("POW");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ONE");
+    FINISH_INSTR();
+
+    // Multiply by TRUE to get (-1, -1, -1, -1) for true
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", TRUE");
+    FINISH_INSTR();
     break;
   case OP_LEQ:
+    // Compare right >= left
+    START_INSTR("SGE");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    FINISH_INSTR();
+
+    // Copy the first entry into all entries
+    START_INSTR("POW");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ONE");
+    FINISH_INSTR();
+
+    // Multiply by TRUE to get (-1, -1, -1, -1) for true
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", TRUE");
+    FINISH_INSTR();
     break;
   case OP_GT:
+    // Compare right < left
+    START_INSTR("SLT");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    FINISH_INSTR();
+
+    // Copy the first entry into all entries
+    START_INSTR("POW");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ONE");
+    FINISH_INSTR();
+
+    // Multiply by TRUE to get (-1, -1, -1, -1) for true
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", TRUE");
+    FINISH_INSTR();
     break;
   case OP_GEQ:
+    // Compare left >= right
+    START_INSTR("SGE");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
+
+    // Copy the first entry into all entries
+    START_INSTR("POW");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ONE");
+    FINISH_INSTR();
+
+    // Multiply by TRUE to get (-1, -1, -1, -1) for true
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", TRUE");
+    FINISH_INSTR();
+    break;
+  case OP_EQ:
+    break;
+  case OP_NEQ:
     break;
   default:
     break;
