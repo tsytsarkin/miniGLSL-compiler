@@ -1,3 +1,4 @@
 !!ARBfp1.0
 TEMP temp;
+PARAM const0 = 1;
 END

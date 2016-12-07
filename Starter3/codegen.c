@@ -14,8 +14,12 @@ std::vector<std::map<std::string, std::string> > register_tables;
 // Map expression nodes to intermediate register number
 std::map<node *, unsigned int> intermediate_registers;
 
+// Map constant nodes to PARAM registers
+std::map<node *, unsigned int> constant_registers;
+
 typedef struct {
   std::vector<unsigned int> scope_id_stack;
+  unsigned int constant_id;
 } visit_data;
 
 void generate_assignment_code(node *assign);
@@ -59,10 +63,22 @@ void codegen_preorder(node *n, void *data) {
   case BINARY_EXPRESSION_NODE:
     break;
   case INT_NODE:
+    if (n->parent->kind != CONSTRUCTOR_NODE && n->parent->kind != VAR_NODE) {
+      constant_registers[n] = vd->constant_id;
+      INSTRUCTION("PARAM", "const%d = %d", vd->constant_id++, n->expression.int_expr.val);
+    }
     break;
   case FLOAT_NODE:
+    if (n->parent->kind != CONSTRUCTOR_NODE) {
+      constant_registers[n] = vd->constant_id;
+      INSTRUCTION("PARAM", "const%d = %f", vd->constant_id++, n->expression.float_expr.val);
+    }
     break;
   case BOOL_NODE:
+    if (n->parent->kind != CONSTRUCTOR_NODE) {
+      constant_registers[n] = vd->constant_id;
+      INSTRUCTION("PARAM", "const%d = %d", vd->constant_id++, n->expression.bool_expr.val ? 1 : 0);
+    }
     break;
   case IDENT_NODE:
     break;
@@ -143,10 +159,11 @@ void genCode(node *ast) {
 
   // Perform code generation
   visit_data vd;
+  vd.constant_id = 0;
   ast_visit(ast, codegen_preorder, codegen_postorder, &vd);
 
   // Print the fragment shader footer
-  fprintf(outputFile, "END");
+  fprintf(outputFile, "END\n");
 }
 
 void generate_assignment_code(node *assign) {
