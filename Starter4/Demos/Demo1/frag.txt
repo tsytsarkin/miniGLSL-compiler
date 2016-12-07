@@ -1,10 +1,27 @@
 !!ARBfp1.0
+TEMP tempVar0;
+TEMP tempVar1;
+TEMP tempVar2;
+TEMP tempVar3;
+TEMP tempVar4;
+TEMP tempVar5;
+TEMP tempVar6;
+TEMP tempVar7;
+TEMP tempVar8;
+TEMP tempVar9;
+TEMP tempVar10;
+TEMP tempVar11;
+TEMP tempVar12;
+TEMP tempVar13;
+TEMP tempVar14;
+TEMP tempVar15;
+TEMP tempVar16;
 TEMP temp;
 PARAM const2 = 1;
-MOV temp, tempVar4;
-MOV temp, tempVar8;
-MOV temp, fragment.texcoord;
-MOV temp, tempVar16;
+MOV temp.x, tempVar4;
+MOV temp.y, tempVar8;
+MOV temp.z, fragment.texcoord.z;
+MOV temp.w, tempVar16;
 MOV temp, fragment.texcoord;
 MOV result.color, temp;
 END

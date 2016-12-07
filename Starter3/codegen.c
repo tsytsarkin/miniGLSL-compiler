@@ -200,6 +200,9 @@ void register_assign_postorder(node *n, void *data) {
   int *i = (int *) data;
   if (is_register_temporary(n)) {
     intermediate_registers[n] = *i;
+    START_INSTR("TEMP");
+    INSTR("tempVar%d", *i);
+    FINISH_INSTR();
     *i = *i + 1;
   }
 }
@@ -290,12 +293,20 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
     INSTR("tempVar%d", intermediate_registers[n]);
   } else {
     INSTR("%s", get_register_name(scope_id_stack, n));
+    if (n->expression.variable.index != NULL) {
+      switch (n->expression.variable.index->expression.int_expr.val) {
+      case 0: INSTR(".x"); break;
+      case 1: INSTR(".y"); break;
+      case 2: INSTR(".z"); break;
+      case 3: INSTR(".w"); break;
+      default: break;
+      }
+    }
   }
 }
 
 void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
                               node *assign) {
-  // TODO: handle the case where the variable is indexed
   START_INSTR("MOV");
   print_register_name(scope_id_stack, assign->statement.assignment.variable);
   INSTR(", ");
