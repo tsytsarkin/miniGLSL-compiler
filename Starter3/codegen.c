@@ -74,7 +74,6 @@ void codegen_preorder(node *n, void *data) {
   case IF_STATEMENT_NODE:
     break;
   case ASSIGNMENT_NODE:
-    generate_assignment_code(vd->scope_id_stack, n);
     break;
   case NESTED_SCOPE_NODE:
     break;
@@ -87,35 +86,16 @@ void codegen_preorder(node *n, void *data) {
   case BINARY_EXPRESSION_NODE:
     break;
   case INT_NODE:
-    if (n->parent->kind != CONSTRUCTOR_NODE && n->parent->kind != VAR_NODE) {
-      constant_registers[n] = vd->constant_id;
-      START_INSTR("PARAM");
-      INSTR("const%d = %d", vd->constant_id++, n->expression.int_expr.val);
-      FINISH_INSTR();
-    }
     break;
   case FLOAT_NODE:
-    if (n->parent->kind != CONSTRUCTOR_NODE) {
-      constant_registers[n] = vd->constant_id;
-      START_INSTR("PARAM");
-      INSTR("const%d = %f", vd->constant_id++, n->expression.float_expr.val);
-      FINISH_INSTR();
-    }
     break;
   case BOOL_NODE:
-    if (n->parent->kind != CONSTRUCTOR_NODE) {
-      constant_registers[n] = vd->constant_id;
-      START_INSTR("PARAM");
-      INSTR("const%d = %d", vd->constant_id++, n->expression.bool_expr.val);
-      FINISH_INSTR();
-    }
     break;
   case IDENT_NODE:
     break;
   case VAR_NODE:
     break;
   case FUNCTION_NODE:
-    generate_function_code(vd->scope_id_stack, n);
     break;
   case CONSTRUCTOR_NODE:
     break;
@@ -148,6 +128,7 @@ void codegen_postorder(node *n, void *data) {
   case IF_STATEMENT_NODE:
     break;
   case ASSIGNMENT_NODE:
+    generate_assignment_code(vd->scope_id_stack, n);
     break;
   case NESTED_SCOPE_NODE:
     break;
@@ -172,16 +153,35 @@ void codegen_postorder(node *n, void *data) {
     generate_binary_expr_code(vd->scope_id_stack, n);
     break;
   case INT_NODE:
+    if (n->parent->kind != CONSTRUCTOR_NODE && n->parent->kind != VAR_NODE) {
+      constant_registers[n] = vd->constant_id;
+      START_INSTR("PARAM");
+      INSTR("const%d = %d", vd->constant_id++, n->expression.int_expr.val);
+      FINISH_INSTR();
+    }
     break;
   case FLOAT_NODE:
+    if (n->parent->kind != CONSTRUCTOR_NODE) {
+      constant_registers[n] = vd->constant_id;
+      START_INSTR("PARAM");
+      INSTR("const%d = %f", vd->constant_id++, n->expression.float_expr.val);
+      FINISH_INSTR();
+    }
     break;
   case BOOL_NODE:
+    if (n->parent->kind != CONSTRUCTOR_NODE) {
+      constant_registers[n] = vd->constant_id;
+      START_INSTR("PARAM");
+      INSTR("const%d = %d", vd->constant_id++, n->expression.bool_expr.val);
+      FINISH_INSTR();
+    }
     break;
   case IDENT_NODE:
     break;
   case VAR_NODE:
     break;
   case FUNCTION_NODE:
+    generate_function_code(vd->scope_id_stack, n);
     break;
   case CONSTRUCTOR_NODE:
     break;
@@ -231,7 +231,14 @@ void assign_registers(node *ast) {
 
 void genCode(node *ast) {
   // Print the fragment shader header
-  fprintf(outputFile, "!!ARBfp1.0\n");
+  INSTR("!!ARBfp1.0\n");
+
+  START_INSTR("PARAM");
+  INSTR("FALSE = { 0, 0, 0, 0 }");
+  FINISH_INSTR();
+  START_INSTR("PARAM");
+  INSTR("TRUE = { -1, -1, -1, -1 }");
+  FINISH_INSTR();
 
   // Perform code generation
   visit_data vd;
@@ -243,19 +250,37 @@ void genCode(node *ast) {
   ast_visit(ast, codegen_preorder, codegen_postorder, &vd);
 
   // Print the fragment shader footer
-  fprintf(outputFile, "END\n");
+  INSTR("END\n");
 }
 
 bool is_register_temporary(node *expr) {
   switch (expr->kind) {
   case UNARY_EXPRESSION_NODE:
   case BINARY_EXPRESSION_NODE:
-  case INT_NODE:
-  case FLOAT_NODE:
-  case BOOL_NODE:
   case FUNCTION_NODE:
   case CONSTRUCTOR_NODE:
     return true;
+  case INT_NODE:
+  case FLOAT_NODE:
+  case BOOL_NODE:
+  case IDENT_NODE:
+  case VAR_NODE:
+    return false;
+  default:
+    return false;
+  }
+}
+
+bool is_register_constant(node *expr) {
+  switch (expr->kind) {
+  case INT_NODE:
+  case FLOAT_NODE:
+  case BOOL_NODE:
+    return true;
+  case UNARY_EXPRESSION_NODE:
+  case BINARY_EXPRESSION_NODE:
+  case FUNCTION_NODE:
+  case CONSTRUCTOR_NODE:
   case IDENT_NODE:
   case VAR_NODE:
     return false;
@@ -291,6 +316,8 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
                          node *n) {
   if (is_register_temporary(n)) {
     INSTR("tempVar%d", intermediate_registers[n]);
+  } else if (is_register_constant(n)) {
+    INSTR("constant%d", constant_registers[n]);
   } else {
     INSTR("%s", get_register_name(scope_id_stack, n));
     if (n->expression.variable.index != NULL) {
@@ -336,31 +363,87 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
   node *right = n->expression.binary.right;
 
   switch (op) {
-  case OP_AND: case OP_OR:
-    break;
-  case OP_PLUS:
-    START_INSTR("ADD");
+  case OP_AND:
+    // Take the max of left and right - if one of them is false
+    // (0, 0, 0, 0) then that is the result
+    START_INSTR("MAX");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
     print_register_name(scope_id_stack, left);
     INSTR(", ");
     print_register_name(scope_id_stack, right);
-    INSTR(", ");
+    FINISH_INSTR();
+    break;
+  case OP_OR:
+    // Take the min of left and right - if one of them is true
+    // (-1, -1, -1, -1) then that is the result
+    START_INSTR("MIN");
     print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
+    break;
+  case OP_PLUS:
+    START_INSTR("ADD");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
     FINISH_INSTR();
     break;
   case OP_MINUS:
     START_INSTR("SUB");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
     print_register_name(scope_id_stack, left);
     INSTR(", ");
     print_register_name(scope_id_stack, right);
-    INSTR(", ");
-    print_register_name(scope_id_stack, n);
     FINISH_INSTR();
     break;
-  case OP_DIV: case OP_XOR:
+  case OP_DIV:
+    // Take reciprocal of the RHS
+    START_INSTR("RCP");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
+    // Multiply the result of the reciprocal by the LHS
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    FINISH_INSTR();
+    break;
+  case OP_XOR:
+    START_INSTR("POW");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
     break;
   case OP_MUL:
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
     break;
-  case OP_LT: case OP_LEQ: case OP_GT: case OP_GEQ:
+  case OP_LT:
+    break;
+  case OP_LEQ:
+    break;
+  case OP_GT:
+    break;
+  case OP_GEQ:
     break;
   default:
     break;
