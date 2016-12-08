@@ -6,7 +6,7 @@
    vec4 shade;
    const vec4 lVec = env1; 
    const vec4 lHalf = gl_Light_Half; 
-   const vec4 red = vec4(1.0,0.0,0.0,1.0);
+   vec4 red = vec4(1.0,0.0,0.0,1.0);
    eyeNorm = fTex;
    eyeNorm[3] = dp3(eyeNorm,eyeNorm);
    eyeNorm[3] = rsq(eyeNorm[3]);

@@ -33,7 +33,8 @@ typedef struct {
 std::pair<const char *, unsigned int> get_register_name(const std::vector<unsigned int> &scope_id_stack,
                                                         node *var);
 void print_register_name(const std::vector<unsigned int> &scope_id_stack,
-                         node *n);
+                         node *n,
+                         bool force_print_index = false);
 bool is_register_temporary(node *expr);
 void generate_expression(visit_data *vd, node *n);
 void generate_const_int(visit_data *vd, node *int_expr);
@@ -320,7 +321,9 @@ void print_index(int i) {
 }
 
 void print_register_name(const std::vector<unsigned int> &scope_id_stack,
-                         node *n) {
+                         node *n,
+                         bool force_print_index) {
+  bool printed_index = false;
   if (is_register_temporary(n)) {
     INSTR("tempVar%d", intermediate_registers[n]);
   } else if (is_register_constant(n)) {
@@ -337,9 +340,15 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
     } else {
       INSTR("%s", pair.first);
     }
+    // Print the explicit index
     if (n->expression.variable.index != NULL) {
       print_index(n->expression.variable.index->expression.int_expr.val);
+      printed_index = true;
     }
+  }
+  // If this register should be used as a scalar
+  if (!printed_index && force_print_index && !(n->expression.expr_type & TYPE_ANY_VEC)) {
+    print_index(0);
   }
 }
 
@@ -568,12 +577,13 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     START_INSTR("POW");
     print_register_name(scope_id_stack, n);
     INSTR(", ");
-    print_register_name(scope_id_stack, left);
+    print_register_name(scope_id_stack, left, true);
     INSTR(", ");
-    print_register_name(scope_id_stack, right);
+    print_register_name(scope_id_stack, right, true);
     FINISH_INSTR();
     break;
   case OP_MUL:
+    // TODO For this class of binary ops, we need to expand scalar values to be 4 wide
     START_INSTR("MUL");
     print_register_name(scope_id_stack, n);
     INSTR(", ");
@@ -594,10 +604,10 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
 
     // Copy the first entry into all entries
     START_INSTR("POW");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ONE.x");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
@@ -620,10 +630,10 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
 
     // Copy the first entry into all entries
     START_INSTR("POW");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ONE.x");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
@@ -646,10 +656,10 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
 
     // Copy the first entry into all entries
     START_INSTR("POW");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ONE.x");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
@@ -672,10 +682,10 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
 
     // Copy the first entry into all entries
     START_INSTR("POW");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ");
-    print_register_name(scope_id_stack, n);
-    INSTR(".x, ONE.x");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ");
+    print_register_name(scope_id_stack, n, true);
+    INSTR(", ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
@@ -784,10 +794,9 @@ void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
     break;
   case FUNC_RSQ:
     START_INSTR("RSQ");
-    print_register_name(scope_id_stack, func);
-    INSTR(".x, ");
-    print_register_name(scope_id_stack, first_expr);
-    INSTR(".x");
+    print_register_name(scope_id_stack, func, true);
+    INSTR(", ");
+    print_register_name(scope_id_stack, first_expr, true);
     FINISH_INSTR();
     break;
   case FUNC_LIT:
@@ -809,8 +818,7 @@ void generate_constructor_code(const std::vector<unsigned int> &scope_id_stack,
     print_register_name(scope_id_stack, constr);
     print_index(i++);
     INSTR(", ");
-    print_register_name(scope_id_stack, argument->argument.expression);
-    INSTR(".x");
+    print_register_name(scope_id_stack, argument->argument.expression, true);
     FINISH_INSTR();
     argument = argument->argument.next_argument;
   }
