@@ -215,7 +215,7 @@ void assign_registers(node *ast) {
   register_tables[0].insert(std::pair<std::string, std::string>("gl_FragDepth", "result.depth"));
   register_tables[0].insert(std::pair<std::string, std::string>("gl_FragCoord", "fragment.position"));
   register_tables[0].insert(std::pair<std::string, std::string>("gl_TexCoord", "fragment.texcoord"));
-  register_tables[0].insert(std::pair<std::string, std::string>("gl_Color", "fragment.texcoord"));
+  register_tables[0].insert(std::pair<std::string, std::string>("gl_Color", "fragment.color"));
   register_tables[0].insert(std::pair<std::string, std::string>("gl_Secondary", "fragment.color.secondary"));
   register_tables[0].insert(std::pair<std::string, std::string>("gl_FogFragCoord", "fragment.fogcoord"));
   register_tables[0].insert(std::pair<std::string, std::string>("gl_Light_Half", "state.light[0].half"));
