@@ -1,0 +1,33 @@
+  1: {
+  2:   bool i = true;
+  3:   bool j;
+  4:   bool h = false;
+  5:   bvec2 k = bvec2(true, false);
+  6:   bvec2 l;
+  7: 
+  8:   j = !i;
+  9:   l = !k;
+ 10: }
+!!ARBfp1.0
+PARAM FALSE = { 0, 0, 0, 0 };
+PARAM TRUE = { -1, -1, -1, -1 };
+PARAM ONE = { 1, 1, 1, 1 };
+TEMP _TEMP;
+TEMP tempVar0;
+TEMP tempVar1;
+TEMP tempVar2;
+TEMP i;
+MOV i,  TRUE;
+TEMP j;
+TEMP h;
+MOV h,  FALSE;
+TEMP k;
+MOV tempVar0.x, TRUE.x;
+MOV tempVar0.y, FALSE.x;
+MOV k,  tempVar0;
+TEMP l;
+CMP tempVar1, i, FALSE, TRUE;
+MOV j, tempVar1;
+CMP tempVar2, k, FALSE, TRUE;
+MOV l, tempVar2;
+END
