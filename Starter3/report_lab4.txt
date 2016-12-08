@@ -9,6 +9,10 @@ Breakdown of work:
     - Implemented constructors
     - Implemented function calls
   Nikita
+    - implemented unary operators
+    - implemented == and != logical operators
+    - added a fix for variable initialization during declaration
+    - tests for binary and unary operators
 
 Summary:
 In order to implement non-trivial math operations, we determined how we could
@@ -57,3 +61,4 @@ what we expected. They can be found in the ./test/ directory. To run them,
 execute tester.sh in that directory. The *.in files in each directory
 represent the input for each test, and the *.out files represent the expected
 output of each test.
+
