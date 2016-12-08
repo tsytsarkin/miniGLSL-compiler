@@ -68,8 +68,6 @@ void codegen_preorder(node *n, void *data) {
   case DECLARATION_NODE:
     str = n->declaration.identifier->expression.ident.val;
     // Assign this variable to the corresponding register
-    // TODO: if a variable overwrites another, we need to give it a new name.
-    // Really what we should do is a liveness analysis
     register_tables[vd->scope_id_stack.back()][str] = str;
 
     START_INSTR("TEMP");
@@ -351,7 +349,8 @@ void generate_expression(visit_data *vd, node *expr) {
     generate_binary_expr_code(vd->scope_id_stack, expr);
     break;
   case INT_NODE:
-    if (expr->parent->kind != CONSTRUCTOR_NODE) {
+    if (expr->parent->kind != CONSTRUCTOR_NODE &&
+        expr->parent->kind != VAR_NODE) {
       generate_const_int(vd, expr);
     }
     break;
