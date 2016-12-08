@@ -1,0 +1,25 @@
+-------------
+operators/binary/boolean
+29a30
+> TEMP _TEMP;
+82a84,87
+> SGE tempVar8, i, j;
+> SGE _TEMP, j, i;
+> MUL tempVar8, _TEMP, tempVar8;
+> MUL tempVar8, TRUE, tempVar8;
+83a89,92
+> SGE tempVar9, g, f;
+> SGE _TEMP, f, g;
+> MUL tempVar9, _TEMP, tempVar9;
+> MUL tempVar9, TRUE, tempVar9;
+84a94,97
+> SGE tempVar10, i, j;
+> SGE _TEMP, j, i;
+> MUL tempVar10, _TEMP, tempVar10;
+> ADD tempVar10, TRUE, tempVar10;
+85a99,102
+> SGE tempVar11, g, f;
+> SGE _TEMP, f, g;
+> MUL tempVar11, _TEMP, tempVar11;
+> ADD tempVar11, TRUE, tempVar11;
+-------------

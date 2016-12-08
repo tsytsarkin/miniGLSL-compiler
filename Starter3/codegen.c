@@ -33,6 +33,10 @@ typedef struct {
 const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
                               node *var);
 bool is_register_temporary(node *expr);
+void generate_expression(visit_data *vd, node *n);
+void generate_const_int(visit_data *vd, node *int_expr);
+void generate_const_float(visit_data *vd, node *float_expr);
+void generate_const_bool(visit_data *vd, node *bool_expr);
 void generate_if_statement_code(const std::vector<unsigned int> &scope_id_stack,
                                 node *if_statement);
 void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
@@ -74,6 +78,10 @@ void codegen_preorder(node *n, void *data) {
   case STATEMENTS_NODE:
     break;
   case IF_STATEMENT_NODE:
+    // The if statement is responsible for generating its own condition code
+    // since the if is generated in preorder but expressions are generated in
+    // postorder
+    generate_expression(vd, n->statement.if_else_statement.condition);
     generate_if_statement_code(vd->scope_id_stack, n);
     break;
   case ASSIGNMENT_NODE:
@@ -137,56 +145,22 @@ void codegen_postorder(node *n, void *data) {
     break;
 
   case EXPRESSION_NODE:
-    // EXPRESSION_NODE is an abstract node
-    break;
   case UNARY_EXPRESSION_NODE:
-    // Only traverse the root of the expression
-    /*if (n->parent != BINARY_EXPRESSION_NODE &&
-        n->parent != UNARY_EXPRESSION_NODE) {
-      generate_unary_expr_code(vd->scope_id_stack, n);
-    }*/
-    generate_unary_expr_code(vd->scope_id_stack, n);
-    break;
   case BINARY_EXPRESSION_NODE:
-    // Only traverse the root of the expression
-    /*if (n->parent != BINARY_EXPRESSION_NODE &&
-        n->parent != UNARY_EXPRESSION_NODE) {
-      generate_binary_expr_code(vd->scope_id_stack, n);
-    }*/
-    generate_binary_expr_code(vd->scope_id_stack, n);
-    break;
   case INT_NODE:
-    if (n->parent->kind != CONSTRUCTOR_NODE && n->parent->kind != VAR_NODE) {
-      constant_registers[n] = vd->constant_id;
-      START_INSTR("PARAM");
-      INSTR("const%d = %d", vd->constant_id++, n->expression.int_expr.val);
-      FINISH_INSTR();
-    }
-    break;
   case FLOAT_NODE:
-    if (n->parent->kind != CONSTRUCTOR_NODE) {
-      constant_registers[n] = vd->constant_id;
-      START_INSTR("PARAM");
-      INSTR("const%d = %f", vd->constant_id++, n->expression.float_expr.val);
-      FINISH_INSTR();
-    }
-    break;
   case BOOL_NODE:
-    if (n->parent->kind != CONSTRUCTOR_NODE) {
-      constant_registers[n] = vd->constant_id;
-      START_INSTR("PARAM");
-      INSTR("const%d = %d", vd->constant_id++, n->expression.bool_expr.val);
-      FINISH_INSTR();
-    }
-    break;
   case IDENT_NODE:
-    break;
   case VAR_NODE:
-    break;
   case FUNCTION_NODE:
-    generate_function_code(vd->scope_id_stack, n);
-    break;
   case CONSTRUCTOR_NODE:
+    // The if statement is responsible for generating its own condition code
+    // since the if is generated in preorder but expressions are generated in
+    // postorder
+    if (n->parent->kind != IF_STATEMENT_NODE ||
+        n != n->parent->statement.if_else_statement.condition) {
+      generate_expression(vd, n);
+    }
     break;
 
   case TYPE_NODE:
@@ -340,6 +314,78 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
       }
     }
   }
+}
+
+void generate_expression(visit_data *vd, node *expr) {
+  switch (expr->kind) {
+  case EXPRESSION_NODE:
+    // EXPRESSION_NODE is an abstract node
+    break;
+  case UNARY_EXPRESSION_NODE:
+    // Only traverse the root of the expression
+    /*if (n->parent != BINARY_EXPRESSION_NODE &&
+        n->parent != UNARY_EXPRESSION_NODE) {
+      generate_unary_expr_code(vd->scope_id_stack, n);
+    }*/
+    generate_unary_expr_code(vd->scope_id_stack, expr);
+    break;
+  case BINARY_EXPRESSION_NODE:
+    // Only traverse the root of the expression
+    /*if (n->parent != BINARY_EXPRESSION_NODE &&
+        n->parent != UNARY_EXPRESSION_NODE) {
+      generate_binary_expr_code(vd->scope_id_stack, n);
+    }*/
+    generate_binary_expr_code(vd->scope_id_stack, expr);
+    break;
+  case INT_NODE:
+    if (expr->parent->kind != CONSTRUCTOR_NODE) {
+      generate_const_int(vd, expr);
+    }
+    break;
+  case FLOAT_NODE:
+    if (expr->parent->kind != CONSTRUCTOR_NODE) {
+      generate_const_float(vd, expr);
+    }
+    break;
+  case BOOL_NODE:
+    if (expr->parent->kind != CONSTRUCTOR_NODE) {
+      generate_const_bool(vd, expr);
+    }
+    break;
+  case IDENT_NODE:
+    break;
+  case VAR_NODE:
+    break;
+  case FUNCTION_NODE:
+    generate_function_code(vd->scope_id_stack, expr);
+    break;
+  case CONSTRUCTOR_NODE:
+    break;
+  default:
+    break;
+  }
+}
+
+void generate_const_int(visit_data *vd, node *int_expr) {
+  constant_registers[int_expr] = vd->constant_id;
+  START_INSTR("PARAM");
+  INSTR("const%d = %d", vd->constant_id++, int_expr->expression.int_expr.val);
+  FINISH_INSTR();
+}
+
+void generate_const_float(visit_data *vd, node *float_expr) {
+  constant_registers[float_expr] = vd->constant_id;
+  START_INSTR("PARAM");
+  INSTR("const%d = %f", vd->constant_id++, float_expr->expression.float_expr.val);
+  FINISH_INSTR();
+}
+
+void generate_const_bool(visit_data *vd, node *bool_expr) {
+  // If statements must 
+  constant_registers[bool_expr] = vd->constant_id;
+  START_INSTR("PARAM");
+  INSTR("const%d = %d", vd->constant_id++, bool_expr->expression.bool_expr.val);
+  FINISH_INSTR();
 }
 
 void generate_if_statement_code(const std::vector<unsigned int> &scope_id_stack,

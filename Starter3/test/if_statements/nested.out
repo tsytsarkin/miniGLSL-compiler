@@ -16,7 +16,7 @@
  16:     }
  17:   } else {
  18:     l = l + 1;
- 19:     if (b2) {
+ 19:     if (b1 || b2) {
  20:       m = m + 1;
  21:     } else {
  22:       n = n + 1;
@@ -27,6 +27,7 @@
 PARAM FALSE = { 0, 0, 0, 0 };
 PARAM TRUE = { -1, -1, -1, -1 };
 PARAM ONE = { 1, 1, 1, 1 };
+TEMP _TEMP;
 TEMP tempVar0;
 TEMP tempVar1;
 TEMP tempVar2;
@@ -36,6 +37,7 @@ TEMP tempVar5;
 TEMP tempVar6;
 TEMP tempVar7;
 TEMP tempVar8;
+TEMP tempVar9;
 TEMP i;
 TEMP j;
 TEMP k;
@@ -44,12 +46,12 @@ TEMP m;
 TEMP n;
 TEMP b1;
 TEMP b2;
-MOV tempVar8, b1;
+MOV tempVar9, b1;
 PARAM const0 = 1;
 ADD tempVar0, i, const0;
-CMP i, tempVar8, tempVar0, i;
+CMP i, tempVar9, tempVar0, i;
 MOV tempVar3, b2;
-MAX tempVar3, tempVar3, tempVar8;
+MAX tempVar3, tempVar3, tempVar9;
 PARAM const1 = 1;
 ADD tempVar1, j, const1;
 CMP j, tempVar3, tempVar1, j;
@@ -58,13 +60,14 @@ ADD tempVar2, k, const2;
 CMP k, tempVar3, k, tempVar2;
 PARAM const3 = 1;
 ADD tempVar4, l, const3;
-CMP l, tempVar8, l, tempVar4;
-MOV tempVar7, b2;
-MAX tempVar7, tempVar7, tempVar8;
+CMP l, tempVar9, l, tempVar4;
+MIN tempVar5, b1, b2;
+MOV tempVar8, tempVar5;
+MAX tempVar8, tempVar8, tempVar9;
 PARAM const4 = 1;
-ADD tempVar5, m, const4;
-CMP m, tempVar7, tempVar5, m;
+ADD tempVar6, m, const4;
+CMP m, tempVar8, tempVar6, m;
 PARAM const5 = 1;
-ADD tempVar6, n, const5;
-CMP n, tempVar7, n, tempVar6;
+ADD tempVar7, n, const5;
+CMP n, tempVar8, n, tempVar7;
 END

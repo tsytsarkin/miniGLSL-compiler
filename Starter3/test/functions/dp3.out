@@ -17,6 +17,7 @@
 PARAM FALSE = { 0, 0, 0, 0 };
 PARAM TRUE = { -1, -1, -1, -1 };
 PARAM ONE = { 1, 1, 1, 1 };
+TEMP _TEMP;
 TEMP tempVar0;
 TEMP tempVar1;
 TEMP tempVar2;
