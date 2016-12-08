@@ -7,4 +7,8 @@ Breakdown of work:
   Nikita
 
 Summary:
-
+In order to implement non-trivial math operations, we determined how we could
+perform those operations using a combination of the available instructions.
+For multiplication, addition, subtraction, and exponentiation there was a 1:1
+mapping. For division, we first had to calculate the reciprocal of the second
+operand and then multiply the result with the first operand.
