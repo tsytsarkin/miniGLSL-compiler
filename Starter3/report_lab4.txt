@@ -12,3 +12,20 @@ perform those operations using a combination of the available instructions.
 For multiplication, addition, subtraction, and exponentiation there was a 1:1
 mapping. For division, we first had to calculate the reciprocal of the second
 operand and then multiply the result with the first operand.
+
+The way we dealt with booleans was interesting: we assigned a value of
+{ 0, 0, 0, 0 } to false, and { -1, -1, -1, -1 } to true. The rationale behind
+this choice was that the CMP instruction allows us to choose one of two values
+for each component, based on whether the component of the condition is < 0.
+By choosing { -1, -1, -1, -1 } to be true, we can implement an if statement on
+an assignment with:
+  CMP out, condition, val, out
+and an else statement with:
+  CMP out, condition, out, val
+This made it much simpler to deal with if statements.
+
+An important observation about an if statement in miniGLSL is that the only
+statement made within an if or else statement that can have an effect on
+anything outside of that if/else statement is an assignment statement. Thus,
+we just replaced those assignment statements with the CMP instruction, which
+allows us to do a conditional move.
