@@ -471,13 +471,15 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     // Copy the first entry into all entries
     START_INSTR("POW");
     print_register_name(scope_id_stack, n);
-    INSTR(", ");
+    INSTR(".x, ");
     print_register_name(scope_id_stack, n);
-    INSTR(", ONE");
+    INSTR(".x, ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
     START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
     print_register_name(scope_id_stack, n);
     INSTR(", TRUE");
     FINISH_INSTR();
@@ -495,13 +497,15 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     // Copy the first entry into all entries
     START_INSTR("POW");
     print_register_name(scope_id_stack, n);
-    INSTR(", ");
+    INSTR(".x, ");
     print_register_name(scope_id_stack, n);
-    INSTR(", ONE");
+    INSTR(".x, ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
     START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
     print_register_name(scope_id_stack, n);
     INSTR(", TRUE");
     FINISH_INSTR();
@@ -519,13 +523,15 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     // Copy the first entry into all entries
     START_INSTR("POW");
     print_register_name(scope_id_stack, n);
-    INSTR(", ");
+    INSTR(".x, ");
     print_register_name(scope_id_stack, n);
-    INSTR(", ONE");
+    INSTR(".x, ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
     START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
     print_register_name(scope_id_stack, n);
     INSTR(", TRUE");
     FINISH_INSTR();
@@ -543,13 +549,15 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     // Copy the first entry into all entries
     START_INSTR("POW");
     print_register_name(scope_id_stack, n);
-    INSTR(", ");
+    INSTR(".x, ");
     print_register_name(scope_id_stack, n);
-    INSTR(", ONE");
+    INSTR(".x, ONE.x");
     FINISH_INSTR();
 
     // Multiply by TRUE to get (-1, -1, -1, -1) for true
     START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
     print_register_name(scope_id_stack, n);
     INSTR(", TRUE");
     FINISH_INSTR();
@@ -567,27 +575,32 @@ void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
                             node *func) {
   node *first_arg = func->expression.function.arguments;
   node *first_expr = first_arg->argument.expression;
-  node *second_arg = first_arg != NULL ? first_arg->argument.next_argument : NULL;
+  node *second_arg = first_arg->argument.next_argument;
   node *second_expr = second_arg != NULL ? second_arg->argument.expression : NULL;
-  node *third_arg = second_arg != NULL ? second_arg->argument.next_argument : NULL;
-  node *third_expr = second_arg != NULL ? third_arg->argument.expression : NULL;
 
   switch (func->expression.function.func_id) {
   case FUNC_DP3:
+    START_INSTR("DP3");
+    print_register_name(scope_id_stack, func);
+    INSTR(", ");
+    print_register_name(scope_id_stack, first_expr);
+    INSTR(", ");
+    print_register_name(scope_id_stack, second_expr);
+    FINISH_INSTR();
     break;
   case FUNC_RSQ:
+    START_INSTR("RSQ");
+    print_register_name(scope_id_stack, func);
+    INSTR(".x, ");
+    print_register_name(scope_id_stack, first_expr);
+    INSTR(".x");
+    FINISH_INSTR();
     break;
   case FUNC_LIT:
     START_INSTR("LIT");
-    if (is_register_temporary(first_expr)) {
-      INSTR("tempVar%d, tempVar%d",
-            intermediate_registers[first_expr],
-            intermediate_registers[func]);
-    } else {
-      INSTR("%s, tempVar%d",
-            get_register_name(scope_id_stack, first_expr),
-            intermediate_registers[func]);
-    }
+    print_register_name(scope_id_stack, func);
+    INSTR(", ");
+    print_register_name(scope_id_stack, first_expr);
     FINISH_INSTR();
     break;
   }

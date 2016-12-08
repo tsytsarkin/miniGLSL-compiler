@@ -1,3 +1,18 @@
+  1: {
+  2:   ivec3 i;
+  3:   ivec3 j;
+  4:   vec3 f;
+  5:   vec3 g;
+  6:   ivec4 i4;
+  7:   ivec4 j4;
+  8:   vec4 f4;
+  9:   vec4 g4;
+ 10: 
+ 11:   i = dp3(i, j);
+ 12:   f = dp3(f, g);
+ 13:   i4 = dp3(i4, j4);
+ 14:   f4 = dp3(f4, g4);
+ 15: }
 !!ARBfp1.0
 PARAM FALSE = { 0, 0, 0, 0 };
 PARAM TRUE = { -1, -1, -1, -1 };

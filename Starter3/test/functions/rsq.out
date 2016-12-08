@@ -1,0 +1,20 @@
+  1: {
+  2:   int i;
+  3:   float f;
+  4: 
+  5:   f = rsq(i);
+  6:   f = rsq(f);
+  7: }
+!!ARBfp1.0
+PARAM FALSE = { 0, 0, 0, 0 };
+PARAM TRUE = { -1, -1, -1, -1 };
+PARAM ONE = { 1, 1, 1, 1 };
+TEMP tempVar0;
+TEMP tempVar1;
+TEMP i;
+TEMP f;
+RSQ tempVar0.x, i.x;
+MOV f, tempVar0;
+RSQ tempVar1.x, f.x;
+MOV f, tempVar1;
+END

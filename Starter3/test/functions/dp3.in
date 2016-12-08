@@ -1,0 +1,15 @@
+{
+  ivec3 i;
+  ivec3 j;
+  vec3 f;
+  vec3 g;
+  ivec4 i4;
+  ivec4 j4;
+  vec4 f4;
+  vec4 g4;
+
+  i = dp3(i, j);
+  f = dp3(f, g);
+  i4 = dp3(i4, j4);
+  f4 = dp3(f4, g4);
+}

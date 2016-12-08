@@ -1,0 +1,7 @@
+{
+  int i;
+  float f;
+
+  f = rsq(i);
+  f = rsq(f);
+}
