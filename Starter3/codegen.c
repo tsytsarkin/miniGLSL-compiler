@@ -264,11 +264,14 @@ bool is_register_temporary(node *expr) {
   case CONSTRUCTOR_NODE:
   case IF_STATEMENT_NODE: // We need a register to store the if condition
     return true;
+  case VAR_NODE:
+    // If this is a variable node that is referenced on the rhs and indexed
+    return (expr->parent->kind != ASSIGNMENT_NODE || expr->parent->statement.assignment.variable != expr) &&
+           expr->expression.variable.index != NULL;
   case INT_NODE:
   case FLOAT_NODE:
   case BOOL_NODE:
   case IDENT_NODE:
-  case VAR_NODE:
     return false;
   default:
     return false;
@@ -397,6 +400,24 @@ void generate_expression(visit_data *vd, node *expr) {
   case IDENT_NODE:
     break;
   case VAR_NODE:
+    // If this is a variable node that is referenced on the rhs
+    if (is_register_temporary(expr)) {
+      START_INSTR("MOV");
+      print_register_name(vd->scope_id_stack, expr);
+      INSTR(", ");
+      print_register_name(vd->scope_id_stack, expr->expression.variable.identifier);
+      FINISH_INSTR();
+      // If this is a scalar
+      if (!(expr->expression.expr_type & TYPE_ANY_VEC)) {
+        // Copy the first entry into all entries
+        START_INSTR("POW");
+        print_register_name(vd->scope_id_stack, expr, true);
+        INSTR(", ");
+        print_register_name(vd->scope_id_stack, expr, true);
+        INSTR(", ONE.x");
+        FINISH_INSTR();
+      }
+    }
     break;
   case FUNCTION_NODE:
     generate_function_code(vd->scope_id_stack, expr);
@@ -594,7 +615,6 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     FINISH_INSTR();
     break;
   case OP_MUL:
-    // TODO For this class of binary ops, we need to expand scalar values to be 4 wide
     START_INSTR("MUL");
     print_register_name(scope_id_stack, n);
     INSTR(", ");
