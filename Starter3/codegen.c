@@ -30,8 +30,10 @@ typedef struct {
   unsigned int constant_id;
 } visit_data;
 
-const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
-                              node *var);
+std::pair<const char *, unsigned int> get_register_name(const std::vector<unsigned int> &scope_id_stack,
+                                                        node *var);
+void print_register_name(const std::vector<unsigned int> &scope_id_stack,
+                         node *n);
 bool is_register_temporary(node *expr);
 void generate_expression(visit_data *vd, node *n);
 void generate_const_int(visit_data *vd, node *int_expr);
@@ -71,7 +73,7 @@ void codegen_preorder(node *n, void *data) {
     register_tables[vd->scope_id_stack.back()][str] = str;
 
     START_INSTR("TEMP");
-    INSTR("%s", str);
+    print_register_name(vd->scope_id_stack, n->declaration.identifier);
     FINISH_INSTR();
     break;
 
@@ -273,11 +275,16 @@ bool is_register_constant(node *expr) {
   }
 }
 
-const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
-                              node *var) {
-  char *variable_name = var->expression.variable.identifier->expression.ident.val;
+std::pair<const char *, unsigned int> get_register_name(const std::vector<unsigned int> &scope_id_stack,
+                                                        node *n) {
+  if (n->kind == VAR_NODE) {
+    return get_register_name(scope_id_stack, n->expression.variable.identifier);
+  }
+
+  char *variable_name = n->expression.ident.val;
 
   std::vector<unsigned int>::const_reverse_iterator iter;
+  std::map<std::string, std::string>::iterator variable_iter;
 
   // Traverse the scope id stack backwards
   for (iter = scope_id_stack.rbegin(); iter != scope_id_stack.rend(); iter++) {
@@ -286,14 +293,14 @@ const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
     std::map<std::string, std::string> &register_table = register_tables[*iter];
 
     // Search for the variable in the table
-    std::map<std::string, std::string>::iterator variable_iter = register_table.find(variable_name);
+    variable_iter = register_table.find(variable_name);
 
     // If the symbol was found, return it
     if (variable_iter != register_table.end()) {
-      return variable_iter->second.c_str();
+      break;
     }
   }
-  return NULL;
+  return std::make_pair(variable_iter->second.c_str(), *iter);
 }
 
 void print_register_name(const std::vector<unsigned int> &scope_id_stack,
@@ -303,7 +310,13 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
   } else if (is_register_constant(n)) {
     INSTR("const%d", constant_registers[n]);
   } else {
-    INSTR("%s", get_register_name(scope_id_stack, n));
+    std::pair<const char *, unsigned int> pair = get_register_name(scope_id_stack, n);
+    // Append the scope id to the register if the scope is greater than 1
+    if (pair.second > 0) {
+      INSTR("%s_%d", pair.first, pair.second);
+    } else {
+      INSTR("%s", pair.first);
+    }
     if (n->expression.variable.index != NULL) {
       switch (n->expression.variable.index->expression.int_expr.val) {
       case 0: INSTR(".x"); break;
