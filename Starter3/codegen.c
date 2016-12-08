@@ -242,6 +242,9 @@ void genCode(node *ast) {
   START_INSTR("PARAM");
   INSTR("ONE = { 1, 1, 1, 1 }");
   FINISH_INSTR();
+  START_INSTR("TEMP");
+  INSTR("_TEMP");
+  FINISH_INSTR();
 
   // Perform code generation
   visit_data vd;
@@ -563,8 +566,78 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
     FINISH_INSTR();
     break;
   case OP_EQ:
+    // Check if left >= right
+    START_INSTR("SGE");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
+
+    // Check if right >= left
+    START_INSTR("SGE");
+    INSTR("_TEMP");
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    FINISH_INSTR();
+
+    // MUL results of previous operations
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    INSTR("_TEMP");
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    FINISH_INSTR();
+
+    // MUL by TRUE
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    INSTR("TRUE");
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    FINISH_INSTR();
     break;
   case OP_NEQ:
+     // Check if left >= right
+    START_INSTR("SGE");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    FINISH_INSTR();
+
+    // Check if right >= left
+    START_INSTR("SGE");
+    INSTR("_TEMP");
+    INSTR(", ");
+    print_register_name(scope_id_stack, right);
+    INSTR(", ");
+    print_register_name(scope_id_stack, left);
+    FINISH_INSTR();
+
+    // MUL results of previous operations
+    START_INSTR("MUL");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    INSTR("_TEMP");
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    FINISH_INSTR();
+
+    // Subtract 1
+    START_INSTR("ADD");
+    print_register_name(scope_id_stack, n);
+    INSTR(", ");
+    INSTR("TRUE");
+    INSTR(", ");
+    print_register_name(scope_id_stack, n);
+    FINISH_INSTR();
     break;
   default:
     break;
