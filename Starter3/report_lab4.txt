@@ -4,6 +4,10 @@ Nikita Tsytsarkin
 
 Breakdown of work:
   Braden
+    - Implemented +, -, *, /, ^, <, <=, >, >=, ||, &&
+    - Implemented if statements
+    - Implemented constructors
+    - Implemented function calls
   Nikita
 
 Summary:
@@ -29,3 +33,10 @@ statement made within an if or else statement that can have an effect on
 anything outside of that if/else statement is an assignment statement. Thus,
 we just replaced those assignment statements with the CMP instruction, which
 allows us to do a conditional move.
+
+To deal with constants, we created a new PARAM for every value we needed to
+assign. We did the same with registers - whenever we had an intermediate
+value that needed to be assigned to a register, we created that register. To
+deal with scalars, we copied the scalars value into all 4 components of the
+register in order to make instructions like MUL work properly for v * s or 
+s * v.
