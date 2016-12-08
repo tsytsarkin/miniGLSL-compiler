@@ -38,7 +38,6 @@ bool is_register_temporary(node *expr);
 void generate_expression(visit_data *vd, node *n);
 void generate_const_int(visit_data *vd, node *int_expr);
 void generate_const_float(visit_data *vd, node *float_expr);
-void generate_const_bool(visit_data *vd, node *bool_expr);
 void generate_if_statement_code(const std::vector<unsigned int> &scope_id_stack,
                                 node *if_statement);
 void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
@@ -49,6 +48,8 @@ void generate_binary_expr_code(const std::vector<unsigned int> &scope_id_stack,
                                node *n);
 void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
                             node *func);
+void generate_constructor_code(const std::vector<unsigned int> &scope_id_stack,
+                               node *assign);
 
 void codegen_preorder(node *n, void *data) {
   visit_data *vd = (visit_data *) data;
@@ -301,12 +302,26 @@ std::pair<const char *, unsigned int> get_register_name(const std::vector<unsign
   return std::make_pair(variable_iter->second.c_str(), *iter);
 }
 
+void print_index(int i) {
+  switch (i) {
+  case 0: INSTR(".x"); break;
+  case 1: INSTR(".y"); break;
+  case 2: INSTR(".z"); break;
+  case 3: INSTR(".w"); break;
+  default: break;
+  }
+}
+
 void print_register_name(const std::vector<unsigned int> &scope_id_stack,
                          node *n) {
   if (is_register_temporary(n)) {
     INSTR("tempVar%d", intermediate_registers[n]);
   } else if (is_register_constant(n)) {
-    INSTR("const%d", constant_registers[n]);
+    if (n->kind == BOOL_NODE) {
+      INSTR(n->expression.bool_expr.val ? "TRUE" : "FALSE");
+    } else {
+      INSTR("const%d", constant_registers[n]);
+    }
   } else {
     std::pair<const char *, unsigned int> pair = get_register_name(scope_id_stack, n);
     // Append the scope id to the register if the scope is greater than 1
@@ -316,13 +331,7 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
       INSTR("%s", pair.first);
     }
     if (n->expression.variable.index != NULL) {
-      switch (n->expression.variable.index->expression.int_expr.val) {
-      case 0: INSTR(".x"); break;
-      case 1: INSTR(".y"); break;
-      case 2: INSTR(".z"); break;
-      case 3: INSTR(".w"); break;
-      default: break;
-      }
+      print_index(n->expression.variable.index->expression.int_expr.val);
     }
   }
 }
@@ -349,20 +358,14 @@ void generate_expression(visit_data *vd, node *expr) {
     generate_binary_expr_code(vd->scope_id_stack, expr);
     break;
   case INT_NODE:
-    if (expr->parent->kind != CONSTRUCTOR_NODE &&
-        expr->parent->kind != VAR_NODE) {
+    if (expr->parent->kind != VAR_NODE) {
       generate_const_int(vd, expr);
     }
     break;
   case FLOAT_NODE:
-    if (expr->parent->kind != CONSTRUCTOR_NODE) {
-      generate_const_float(vd, expr);
-    }
+    generate_const_float(vd, expr);
     break;
   case BOOL_NODE:
-    if (expr->parent->kind != CONSTRUCTOR_NODE) {
-      generate_const_bool(vd, expr);
-    }
     break;
   case IDENT_NODE:
     break;
@@ -372,6 +375,7 @@ void generate_expression(visit_data *vd, node *expr) {
     generate_function_code(vd->scope_id_stack, expr);
     break;
   case CONSTRUCTOR_NODE:
+    generate_constructor_code(vd->scope_id_stack, expr);
     break;
   default:
     break;
@@ -389,14 +393,6 @@ void generate_const_float(visit_data *vd, node *float_expr) {
   constant_registers[float_expr] = vd->constant_id;
   START_INSTR("PARAM");
   INSTR("const%d = %f", vd->constant_id++, float_expr->expression.float_expr.val);
-  FINISH_INSTR();
-}
-
-void generate_const_bool(visit_data *vd, node *bool_expr) {
-  // If statements must 
-  constant_registers[bool_expr] = vd->constant_id;
-  START_INSTR("PARAM");
-  INSTR("const%d = %d", vd->constant_id++, bool_expr->expression.bool_expr.val);
   FINISH_INSTR();
 }
 
@@ -794,6 +790,22 @@ void generate_function_code(const std::vector<unsigned int> &scope_id_stack,
     print_register_name(scope_id_stack, first_expr);
     FINISH_INSTR();
     break;
+  }
+}
+
+void generate_constructor_code(const std::vector<unsigned int> &scope_id_stack,
+                               node *constr) {
+  int i = 0;
+  node *argument = constr->expression.constructor.arguments;
+  while (argument != NULL) {
+    START_INSTR("MOV");
+    print_register_name(scope_id_stack, constr);
+    print_index(i++);
+    INSTR(", ");
+    print_register_name(scope_id_stack, argument->argument.expression);
+    INSTR(".x");
+    FINISH_INSTR();
+    argument = argument->argument.next_argument;
   }
 }
 
