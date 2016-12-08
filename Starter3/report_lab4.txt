@@ -50,4 +50,10 @@ allocating a new register and if they included an assignment, we also had to
 allocate a constant register to store the value and initialize variable to 
 that value. Function calls had 1:1 mapping to ARB instructions. Most of the 
 instructions required resolving the right register where certain variable 
-or result of a previous operation is stored
+or result of a previous operation is stored.
+
+Finally, we wrote tests to ensure that the resulting assembly code was
+what we expected. They can be found in the ./test/ directory. To run them,
+execute tester.sh in that directory. The *.in files in each directory
+represent the input for each test, and the *.out files represent the expected
+output of each test.
