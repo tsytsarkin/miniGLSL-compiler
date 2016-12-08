@@ -134,11 +134,11 @@ void codegen_postorder(node *n, void *data) {
     break;
   case DECLARATION_NODE:
     if (n->declaration.assignment_expr != NULL){
-        START_INSTR("MOV");
-        print_register_name(vd->scope_id_stack, n->declaration.identifier);
-        START_INSTR(", ");
-        print_register_name(vd->scope_id_stack, n->declaration.assignment_expr);    
-        FINISH_INSTR();
+      START_INSTR("MOV");
+      print_register_name(vd->scope_id_stack, n->declaration.identifier);
+      START_INSTR(", ");
+      print_register_name(vd->scope_id_stack, n->declaration.assignment_expr);    
+      FINISH_INSTR();
     }
     break;
 
