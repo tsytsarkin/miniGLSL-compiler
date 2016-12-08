@@ -32,6 +32,7 @@ typedef struct {
 
 std::pair<const char *, unsigned int> get_register_name(const std::vector<unsigned int> &scope_id_stack,
                                                         node *var);
+void print_index(int i);
 void print_register_name(const std::vector<unsigned int> &scope_id_stack,
                          node *n,
                          bool force_print_index = false);
@@ -140,6 +141,16 @@ void codegen_postorder(node *n, void *data) {
       START_INSTR(", ");
       print_register_name(vd->scope_id_stack, n->declaration.assignment_expr);    
       FINISH_INSTR();
+      // If this is a scalar
+      if (!(n->declaration.assignment_expr->expression.expr_type & TYPE_ANY_VEC)) {
+        // Copy the first entry into all entries
+        START_INSTR("POW");
+        print_register_name(vd->scope_id_stack, n->declaration.identifier, true);
+        INSTR(", ");
+        print_register_name(vd->scope_id_stack, n->declaration.identifier, true);
+        INSTR(", ONE.x");
+        FINISH_INSTR();
+      }
     }
     break;
 
@@ -821,6 +832,16 @@ void generate_constructor_code(const std::vector<unsigned int> &scope_id_stack,
     print_register_name(scope_id_stack, argument->argument.expression, true);
     FINISH_INSTR();
     argument = argument->argument.next_argument;
+  }
+  // If this is a scalar
+  if (!(constr->expression.constructor.type->type.type & TYPE_ANY_VEC)) {
+    // Copy the first entry into all entries
+    START_INSTR("POW");
+    print_register_name(scope_id_stack, constr, true);
+    INSTR(", ");
+    print_register_name(scope_id_stack, constr, true);
+    INSTR(", ONE.x");
+    FINISH_INSTR();
   }
 }
 
