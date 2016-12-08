@@ -1,0 +1,25 @@
+{
+  int i;
+  int j;
+  int k;
+  int l;
+  int m;
+  int n;
+  bool b1;
+  bool b2;
+  if (b1) {
+    i = i + 1;
+    if (b2) {
+      j = j + 1;
+    } else {
+      k = k + 1;
+    }
+  } else {
+    l = l + 1;
+    if (b2) {
+      m = m + 1;
+    } else {
+      n = n + 1;
+    }
+  }
+}

@@ -33,6 +33,8 @@ typedef struct {
 const char *get_register_name(const std::vector<unsigned int> &scope_id_stack,
                               node *var);
 bool is_register_temporary(node *expr);
+void generate_if_statement_code(const std::vector<unsigned int> &scope_id_stack,
+                                node *if_statement);
 void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
                               node *assign);
 void generate_unary_expr_code(const std::vector<unsigned int> &scope_id_stack,
@@ -72,6 +74,7 @@ void codegen_preorder(node *n, void *data) {
   case STATEMENTS_NODE:
     break;
   case IF_STATEMENT_NODE:
+    generate_if_statement_code(vd->scope_id_stack, n);
     break;
   case ASSIGNMENT_NODE:
     break;
@@ -246,7 +249,7 @@ void genCode(node *ast) {
   // Perform code generation
   visit_data vd;
   // Reserve tempVar[0..1] for binary and unary expressions
-  vd.constant_id = 2;
+  vd.constant_id = 0;
 
   assign_registers(ast);
 
@@ -262,6 +265,7 @@ bool is_register_temporary(node *expr) {
   case BINARY_EXPRESSION_NODE:
   case FUNCTION_NODE:
   case CONSTRUCTOR_NODE:
+  case IF_STATEMENT_NODE: // We need a register to store the if condition
     return true;
   case INT_NODE:
   case FLOAT_NODE:
@@ -320,7 +324,7 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
   if (is_register_temporary(n)) {
     INSTR("tempVar%d", intermediate_registers[n]);
   } else if (is_register_constant(n)) {
-    INSTR("constant%d", constant_registers[n]);
+    INSTR("const%d", constant_registers[n]);
   } else {
     INSTR("%s", get_register_name(scope_id_stack, n));
     if (n->expression.variable.index != NULL) {
@@ -335,13 +339,69 @@ void print_register_name(const std::vector<unsigned int> &scope_id_stack,
   }
 }
 
+void generate_if_statement_code(const std::vector<unsigned int> &scope_id_stack,
+                                node *if_statement) {
+  // Move the condition into the if statement's dedicated register
+  START_INSTR("MOV");
+  print_register_name(scope_id_stack, if_statement);
+  INSTR(", ");
+  print_register_name(scope_id_stack, if_statement->statement.if_else_statement.condition);
+  FINISH_INSTR();
+
+  // Find the parent if statement
+  node *parent = if_statement->parent;
+  while (parent != NULL && parent->kind != IF_STATEMENT_NODE) {
+    parent = parent->parent;
+  }
+  // And this condition with that of the parent if statement, if there is one
+  if (parent != NULL) {
+    START_INSTR("MAX");
+    print_register_name(scope_id_stack, if_statement);
+    INSTR(", ");
+    print_register_name(scope_id_stack, if_statement);
+    INSTR(", ");
+    print_register_name(scope_id_stack, parent);
+    FINISH_INSTR();
+  }
+}
+
 void generate_assignment_code(const std::vector<unsigned int> &scope_id_stack,
                               node *assign) {
-  START_INSTR("MOV");
-  print_register_name(scope_id_stack, assign->statement.assignment.variable);
-  INSTR(", ");
-  print_register_name(scope_id_stack, assign->statement.assignment.expression);
-  FINISH_INSTR();
+  // Find the parent if statement
+  node *parent = assign->parent;
+  node *parents_child = assign;
+  while (parent != NULL && parent->kind != IF_STATEMENT_NODE) {
+    parents_child = parent;
+    parent = parent->parent;
+  }
+  if (parent != NULL) {
+    START_INSTR("CMP");
+    print_register_name(scope_id_stack, assign->statement.assignment.variable);
+    INSTR(", ");
+    print_register_name(scope_id_stack, parent);
+    INSTR(", ");
+    if (parents_child == parent->statement.if_else_statement.if_statement) {
+      // If the assignment statement is in the if statement then assign the
+      // expression when the condition is true
+      print_register_name(scope_id_stack, assign->statement.assignment.expression);
+      INSTR(", ");
+      print_register_name(scope_id_stack, assign->statement.assignment.variable);
+    } else {
+      // If the assignment statement is in the else statement then assign the
+      // expression when the condition is false
+      print_register_name(scope_id_stack, assign->statement.assignment.variable);
+      INSTR(", ");
+      print_register_name(scope_id_stack, assign->statement.assignment.expression);
+    }
+    FINISH_INSTR();
+  } else {
+    // If the assignment statement isn't within an if or else statement
+    START_INSTR("MOV");
+    print_register_name(scope_id_stack, assign->statement.assignment.variable);
+    INSTR(", ");
+    print_register_name(scope_id_stack, assign->statement.assignment.expression);
+    FINISH_INSTR();
+  }
 }
 
 void generate_unary_expr_code(const std::vector<unsigned int> &scope_id_stack,
