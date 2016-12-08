@@ -56,7 +56,7 @@ MOV k, tempVar2;
 RCP tempVar3, j;
 MUL tempVar3, tempVar3, i;
 MOV k, tempVar3;
-POW tempVar4, i, j;
+POW tempVar4, i.x, j.x;
 MOV k, tempVar4;
 ADD tempVar5, f, g;
 MOV h, tempVar5;
@@ -67,6 +67,6 @@ MOV h, tempVar7;
 RCP tempVar8, g;
 MUL tempVar8, tempVar8, f;
 MOV h, tempVar8;
-POW tempVar9, f, g;
+POW tempVar9, f.x, g.x;
 MOV h, tempVar9;
 END
