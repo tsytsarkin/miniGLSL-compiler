@@ -1,13 +1,14 @@
   1: {
-  2:   ivec2 i;
-  3:   i[0] = 1;
+  2:   vec4 f;
+  3:   f = lit(f);
   4: }
 !!ARBfp1.0
 PARAM FALSE = { 0, 0, 0, 0 };
 PARAM TRUE = { -1, -1, -1, -1 };
 PARAM ONE = { 1, 1, 1, 1 };
 TEMP _TEMP;
-TEMP i;
-PARAM const0 = 1;
-MOV i.x, const0;
+TEMP tempVar0;
+TEMP f;
+LIT tempVar0, f;
+MOV f, tempVar0;
 END

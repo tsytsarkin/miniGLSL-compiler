@@ -1,0 +1,25 @@
+{
+  int i = 1;
+  int j = 2;
+  float f = 0.1;
+  float g = 0.2;
+  bool b;
+
+  b = i < j;
+  b = g < f;
+
+  b = i <= j;
+  b = g <= f;
+
+  b = i > j;
+  b = g > f;
+
+  b = i >= j;
+  b = g >= f;
+
+  b = i == j;
+  b = g == f;
+
+  b = i != j;
+  b = g != f;
+}

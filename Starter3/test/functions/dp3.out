@@ -1,0 +1,41 @@
+  1: {
+  2:   ivec3 i;
+  3:   ivec3 j;
+  4:   vec3 f;
+  5:   vec3 g;
+  6:   ivec4 i4;
+  7:   ivec4 j4;
+  8:   vec4 f4;
+  9:   vec4 g4;
+ 10: 
+ 11:   i = dp3(i, j);
+ 12:   f = dp3(f, g);
+ 13:   i4 = dp3(i4, j4);
+ 14:   f4 = dp3(f4, g4);
+ 15: }
+!!ARBfp1.0
+PARAM FALSE = { 0, 0, 0, 0 };
+PARAM TRUE = { -1, -1, -1, -1 };
+PARAM ONE = { 1, 1, 1, 1 };
+TEMP _TEMP;
+TEMP tempVar0;
+TEMP tempVar1;
+TEMP tempVar2;
+TEMP tempVar3;
+TEMP i;
+TEMP j;
+TEMP f;
+TEMP g;
+TEMP i4;
+TEMP j4;
+TEMP f4;
+TEMP g4;
+DP3 tempVar0, i, j;
+MOV i, tempVar0;
+DP3 tempVar1, f, g;
+MOV f, tempVar1;
+DP3 tempVar2, i4, j4;
+MOV i4, tempVar2;
+DP3 tempVar3, f4, g4;
+MOV f4, tempVar3;
+END

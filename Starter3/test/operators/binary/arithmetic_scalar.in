@@ -1,0 +1,20 @@
+{
+  int i = 1;
+  int j = 2;
+  int k;
+  float f = 0.1;
+  float g = 0.2;
+  float h;
+
+  k = i + j;
+  k = i - j;
+  k = i * j;
+  k = i / j;
+  k = i ^ j;
+
+  h = f + g;
+  h = f - g;
+  h = f * g;
+  h = f / g;
+  h = f ^ g;
+}

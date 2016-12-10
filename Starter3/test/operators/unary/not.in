@@ -1,0 +1,10 @@
+{
+  bool i = true;
+  bool j;
+  bool h = false;
+  bvec2 k = bvec2(true, false);
+  bvec2 l;
+
+  j = !i;
+  l = !k;
+}
